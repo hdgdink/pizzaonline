@@ -113,17 +113,18 @@ nav ul ul ul {
 }
 
 #header p {
-    font-size: 25pt;
-    color: #FF2500;
     padding-top: 2px;
     margin: 0;
-
     text-align: left;
-    z-index: 999;
 }
 
 .button {
+    background-image: none;
+    outline: 0;
+    -webkit-box-shadow: inset 0 3px 5px rgba(0, 0, 0, .125);
+    box-shadow: inset 0 3px 5px rgba(0, 0, 0, .125);
     background-color: #63b427;
+    border-color: #4E8B1F;
     padding: 4px 20px;
     border-radius: 5px;
     cursor: pointer;
@@ -150,13 +151,14 @@ nav ul ul ul {
 }
 
 .labelcount {
-    width: 50px;
+    width: 35px;
+    height: 35px;
     margin-top: 10px;
     border-radius: 5px;
     text-align: center;
 }
 
-#input {
+.input {
     background-color: #63b427;
     padding: 12px 45px;
     border-radius: 5px;
@@ -165,31 +167,39 @@ nav ul ul ul {
     border: none;
     outline: none;
     margin: 0;
-    font-weight: bold;
 }
 
 #username {
     position: absolute;
-    right: 425px;
-    top: 80px;
+    height: 28px;
+    width: 160px;
+    right: 29%;
+    top: 12%;
+    border-radius: 5px;
+    text-align: center;
+
 }
 
 #password {
     position: absolute;
-    right: 225px;
-    top: 80px;
+    height: 28px;
+    width: 160px;
+    right: 17%;
+    top: 12%;
+    border-radius: 5px;
+    text-align: center;
 }
 
 #login {
     position: absolute;
-    right: 140px;
-    top: 80px;
+    right: 10%;
+    top: 12%;
 }
 
 #sigup {
     position: absolute;
-    right: 30px;
-    top: 80px;
+    right: 2%;
+    top: 12%;
 }
 
 #menu {
@@ -200,96 +210,9 @@ nav ul ul ul {
     margin: 0 auto;
 }
 
-.firstImage {
-    margin-top: 10px;
-    margin-left: 30px;
-    margin-right: 20px;
-    border: groove;
-    border-radius: 10px;
-    border-color: #63b427;
-    text-align: center;
-    width: 200px;
-    height: 200px;
-    float: left;
-}
-
-.secondImage {
-    margin-top: 10px;
-    margin-right: 20px;
-    border: groove;
-    border-radius: 10px;
-    border-color: #63b427;
-    text-align: center;
-    width: 200px;
-    height: 200px;
-    float: left;
-}
-
-.thirdImage {
-    margin-top: 10px;
-    margin-right: 20px;
-    border: groove;
-    border-radius: 10px;
-    border-color: #63b427;
-    text-align: center;
-    width: 200px;
-    height: 200px;
-    float: left;
-}
-
-.fourthImage {
-    margin-top: 10px;
-    border: groove;
-    border-radius: 10px;
-    border-color: #63b427;
-    text-align: center;
-    width: 200px;
-    height: 200px;
-    float: left;
-}
-
-.firstElement {
-    margin-left: 30px;
-    margin-right: 20px;
-    border: groove;
-    border-radius: 10px;
-    border-color: #63b427;
-    text-align: center;
-    width: 200px;
-    height: 200px;
-    float: left;
-}
-
-.secondElement {
-    margin-right: 20px;
-    border: groove;
-    border-radius: 10px;
-    border-color: #63b427;
-    text-align: center;
-    width: 200px;
-    height: 200px;
-    float: left;
-}
-
-.thirdElement {
-    margin-right: 20px;
-    border: groove;
-    border-radius: 10px;
-    border-color: #63b427;
-    text-align: center;
-    width: 200px;
-    height: 200px;
-    float: left;
-}
-
-.fourthElement {
-    border: groove;
-    border-radius: 10px;
-    border-color: #63b427;
-    text-align: center;
-    width: 200px;
-    height: 200px;
-    float: left;
+.select{
+    border-radius: 5px;
+    border-color: #4E8B1F;
 }
 
 .action {
@@ -302,14 +225,11 @@ nav ul ul ul {
     width: 25%;
     background-image: url("../img/pinkback2.jpg");
     float: right;
-    height: 885px ;
+    height: 230%;
 }
 
 #order h1 {
     text-align: center;
-
-    border: dashed;
-    border-color: #63b427;
 }
 
 #footer {

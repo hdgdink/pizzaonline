@@ -1,5 +1,5 @@
 package kz.javalab.va.entity;
 
-public enum Access {
-    CLIENT,ADMIN;
+public class Access {
+    private String acces;
 }
