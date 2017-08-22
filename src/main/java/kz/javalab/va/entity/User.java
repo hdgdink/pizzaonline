@@ -2,7 +2,7 @@ package kz.javalab.va.entity;
 
 import java.util.List;
 
-public class User {
+public class User extends Entity{
     private Integer id;
     private String firstname;
     private String lastname;

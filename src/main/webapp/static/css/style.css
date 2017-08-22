@@ -1,49 +1,131 @@
-html {
-    margin: 0;
-    padding: 0;
+body, html {
+    margin: 0px;
+    padding: 0px;
+    height: 100%;
+
 }
 
-body {
-    font-family: 'Handlee', cursive;
-    font-size: 30pt;
-    background-color: #efefef;
-    padding: 10px;
-    margin: 0;
+* html #main {
+    height: 100%;
 }
 
-p {
-    font-size: 15pt;
-    color: #FF2500;
-    text-align: center;
+@import url(https://fonts.googleapis.com/css?family=Lato);
+
+*, *:before, *:after {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
     padding: 0;
     margin: 0;
+    font-family: 'Lato', sans-serif;
+}
+
+/*| Navigation |*/
+
+nav {
+    height: 78px;
+    width: 100%;
+    position: relative;
+    background-image: url("../img/pinkback1.jpg");
+    box-shadow: 0 3px 10px -2px rgba(0, 0, 0, .1);
+    border: 2px solid rgba(0, 0, 0, .1);
+}
+
+nav ul {
+    list-style: none;
+    position: relative;
+    float: right;
+    margin-right: 35%;
+    display: inline-table;
+}
+
+nav ul li {
+    float: left;
+    -webkit-transition: all .2s ease-in-out;
+    -moz-transition: all .2s ease-in-out;
+    transition: all .2s ease-in-out;
+}
+
+nav ul li:hover {
+    background: rgba(0, 0, 0, .15);
+}
+
+nav ul li:hover > ul {
+    display: block;
+}
+
+nav ul li {
+    float: left;
+    -webkit-transition: all .2s ease-in-out;
+    -moz-transition: all .2s ease-in-out;
+    transition: all .2s ease-in-out;
+}
+
+nav ul li a {
+    display: block;
+    padding: 30px 20px;
+    color: #222;
+    font-size: .9em;
+    letter-spacing: 1px;
+    text-decoration: none;
+    text-transform: uppercase;
+}
+
+nav ul ul {
+    display: none;
+    background: #fff;
+    position: absolute;
+    top: 100%;
+    box-shadow: -3px 3px 10px -2px rgba(0, 0, 0, .1);
+    border: 1px solid rgba(0, 0, 0, .1);
+}
+
+nav ul ul li {
+    float: none;
+    position: relative;
+}
+
+nav ul ul li a {
+    padding: 15px 30px;
+    border-bottom: 1px solid rgba(0, 0, 0, .05);
+}
+
+nav ul ul ul {
+    position: absolute;
+    left: 100%;
+    top: 0;
+}
+
+#main {
+    width: 100%;
+    margin: 0 auto;
+    min-height: 100%;
 }
 
 .section {
-    background-color: #3B464C;
     padding: 15px;
     margin-bottom: 10px;
     border-radius: 10px;
 }
 
 #header {
-    background-image: url("../img/header.jpg");
-    background-size: auto;
+    background-image: url("../img/pinkback.jpg");
 }
 
 #header p {
-    font-size: 25pt;
-    color: #FF2500;
-    padding-top: 5px;
+    padding-top: 2px;
     margin: 0;
-    font-weight: bold;
     text-align: left;
-    height: 70px;
 }
 
-.button{
-    background-color: #FF2500;
-    padding: 12px 45px;
+.button {
+    background-image: none;
+    outline: 0;
+    -webkit-box-shadow: inset 0 3px 5px rgba(0, 0, 0, .125);
+    box-shadow: inset 0 3px 5px rgba(0, 0, 0, .125);
+    background-color: #63b427;
+    border-color: #4E8B1F;
+    padding: 4px 20px;
     border-radius: 5px;
     cursor: pointer;
     color: #ffffff;
@@ -51,27 +133,143 @@ p {
     outline: none;
     margin: 0;
     font-weight: bold;
+
 }
 
-#login {
+.count {
+    background-color: #63b427;
+    padding: 4px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    color: #ffffff;
+    border: none;
+    outline: none;
+    margin: 0;
+    margin-top: 10px;
+    font-size: 10px;
+    font-weight: bold;
+}
+
+.labelcount {
+    width: 35px;
+    height: 35px;
+    margin-top: 10px;
+    border-radius: 5px;
+    text-align: center;
+}
+
+.input {
+    background-color: #63b427;
+    padding: 12px 45px;
+    border-radius: 5px;
+    cursor: pointer;
+    color: #ffffff;
+    border: none;
+    outline: none;
+    margin: 0;
+}
+
+.input_select {
+    background-color: transparent;
+    border: none;
+    text-align: center;
+    font-size: x-large;
+    margin: 0;
+    width: 60px;
+}
+.span{
+    background-color: transparent;
+    border-color: #FF2500;
+    text-align: left;
+    font-size: x-large;
+    margin: 0;
+    width: auto;
+}
+
+#user_name {
     position: absolute;
-    right: 180px;
-    top: 40px;
+    height: 28px;
+    width: 160px;
+    right: 29%;
+    top: 12%;
+    border-radius: 5px;
+    text-align: center;
+
 }
 
-#sigup {
+#password {
     position: absolute;
-       right: 30px;
-    top: 40px;
+    height: 28px;
+    width: 160px;
+    right: 17%;
+    top: 12%;
+    border-radius: 5px;
+    text-align: center;
 }
 
-#navigation{
-    left: 65%;
-    margin-left: -500px;
+#login_pop {
     position: absolute;
-    width: 1000px;
+    right: 10%;
+    top: 12%;
 }
 
-.body {
-    background: #20bcd5;
+#join_pop {
+    position: absolute;
+    right: 2%;
+    top: 12%;
+}
+
+#price {
+    width: 30px;
+    background-color: transparent;
+}
+
+#menu {
+    background-image: url("../img/pinkback1.jpg");
+    width: 75%;
+    float: left;
+    text-align: center;
+    margin: 0 auto;
+}
+
+.select {
+    border-radius: 5px;
+    border-color: #4E8B1F;
+}
+
+.action {
+    float: left;
+    margin-left: 25px;
+    margin-top: 10%;
+}
+
+#order {
+    width: 25%;
+    background-image: url("../img/pinkback2.jpg");
+    float: right;
+    height: 230%;
+}
+
+#order h1 {
+    text-align: center;
+}
+
+#footer {
+    background-image: url("../img/pinkback1.jpg");
+    clear: both;
+    height: auto;
+    margin-top: -50px;
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 10px;
+    text-align: left;
+    font-family: 'Handlee', cursive;
+    font-size: 8pt;
+    margin-bottom: 10px;
+    border-radius: 5px;
+}
+
+#rasporka {
+    height: 50px;
 }

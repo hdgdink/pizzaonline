@@ -1,14 +1,19 @@
-var el = document.getElementById('myTable');
+$(document).ready(function () {
 
-function addRowBottom() {
-    var cols_cnt = el.rows[el.rows.length-1].cells.length;
-    var row = el.insertRow(-1);
+    $('#minus').click(function () {
+        var $input = $(this).parent().find('input');
+        var count = parseInt($input.val()) - 1;
+        count = count < 1 ? 1 : count;
+        $input.val(count);
+        $input.change();
+        return false;
+    });
 
-    for (var i=0; i < cols_cnt; i++) {
-        var NewCell = row.insertCell(-1);
-        NewCell.innerHTML = 'Text on bottom ' + (i+1).toString();
-    }
-}
+    $('#plus').click(function () {
+        var $input = $(this).parent().find('input');
+        $input.val(parseInt($input.val()) + 1);
+        $input.change();
+        return false;
+    });
 
-
-
+});

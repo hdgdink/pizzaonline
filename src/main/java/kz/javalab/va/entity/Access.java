@@ -1,5 +1,5 @@
 package kz.javalab.va.entity;
 
-public class Access {
-    private String acces;
+public class Access extends Entity{
+    private String access;
 }

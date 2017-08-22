@@ -11,7 +11,7 @@ public class Controller extends HttpServlet {
     @Override
     protected void service(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
 
-        RequestDispatcher requestDispatcher = req.getRequestDispatcher("/WEB-INF/test1.jsp");
+        RequestDispatcher requestDispatcher = req.getRequestDispatcher("/WEB-INF/main_unreg.jsp");
         requestDispatcher.forward(req, resp);
     }
 }
