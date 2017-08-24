@@ -1,0 +1,31 @@
+INSERT INTO USER VALUES (0, 'Andrey', 'Vassilyev', 'admin', 'admin', 'ADMIN', '0');
+INSERT INTO USER VALUES (1, 'Иван', 'Колымага', 'user', '123', 'USER', '10000');
+INSERT INTO USER VALUES (2, 'Алеша', 'Колотун', 'user1', '123', 'USER', '10000');
+
+INSERT INTO FOOD VALUES (0,'PIZZA','Hawaiian','Pineapple and ham','SMALL',900);
+INSERT INTO FOOD VALUES (1,'PIZZA','Hawaiian','Pineapple and ham','MEDIUM',1200);
+INSERT INTO FOOD VALUES (2,'PIZZA','Hawaiian','Pineapple and ham','BIG',1500);
+INSERT INTO FOOD VALUES (3,'PIZZA','Godfather','Ham, sausage, pepperoni and onions','SMALL',900);
+INSERT INTO FOOD VALUES (4,'PIZZA','Godfather','Ham, sausage, pepperoni and onions','MEDIUM',1200);
+INSERT INTO FOOD VALUES (5,'PIZZA','Godfather','Ham, sausage, pepperoni and onions','BIG',1500);
+INSERT INTO FOOD VALUES (6,'PIZZA','Cuban Style','Sweet plantains and ground beef','SMALL',1100);
+INSERT INTO FOOD VALUES (7,'PIZZA','Cuban Style','Sweet plantains and ground beef','MEDIUM',1400);
+INSERT INTO FOOD VALUES (8,'PIZZA','Cuban Style','Sweet plantains and ground beef','BIG',1700);
+INSERT INTO FOOD VALUES (9,'PIZZA','Mona Lisa','Ham, mushrooms, onions, green peppers and black olives','SMALL',1000);
+INSERT INTO FOOD VALUES (10,'PIZZA','Mona Lisa','Ham, mushrooms, onions, green peppers and black olives','MEDIUM',1300);
+INSERT INTO FOOD VALUES (11,'PIZZA','Mona Lisa','Ham, mushrooms, onions, green peppers and black olives','BIG',1600);
+INSERT INTO FOOD VALUES (12,'PIZZA','White Cheese','Ricotta, mozzarella and parmesan cheese, garlic oil','SMALL',1100);
+INSERT INTO FOOD VALUES (13,'PIZZA','White Cheese','Ricotta, mozzarella and parmesan cheese, garlic oil','MEDIUM',1400);
+INSERT INTO FOOD VALUES (14,'PIZZA','White Cheese','Ricotta, mozzarella and parmesan cheese, garlic oil','BIG',1700);
+INSERT INTO FOOD VALUES (15,'PIZZA','Melany''s','Ham, pineapple, corn and onions','SMALL',900);
+INSERT INTO FOOD VALUES (16,'PIZZA','Melany''s','Ham, pineapple, corn and onions','MEDIUM',1200);
+INSERT INTO FOOD VALUES (17,'PIZZA','Melany''s','Ham, pineapple, corn and onions','BIG',1500);
+INSERT INTO FOOD VALUES (18,'PIZZA','Damian''s','Chicken, BBQ sauce and onions','SMALL',950);
+INSERT INTO FOOD VALUES (19,'PIZZA','Damian''s','Chicken, BBQ sauce and onions','MEDIUM',1250);
+INSERT INTO FOOD VALUES (20,'PIZZA','Damian''s','Chicken, BBQ sauce and onions','BIG',1550);
+INSERT INTO FOOD VALUES (21,'PIZZA','Assorti Gourmet','Cuban style, Melany''s, Damian''s, Hawaiian','SMALL',1100);
+INSERT INTO FOOD VALUES (22,'PIZZA','Assorti Gourmet','Cuban style, Melany''s, Damian''s, Hawaiian','MEDIUM',1400);
+INSERT INTO FOOD VALUES (23,'PIZZA','Assorti Gourmet','Cuban style, Melany''s, Damian''s, Hawaiian','BIG',1700);
+
+INSERT INTO ACCESS VALUES (0,'ADMIN');
+INSERT INTO ACCESS VALUES (1,'USER');

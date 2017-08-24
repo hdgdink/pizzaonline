@@ -1,5 +1,5 @@
 package kz.javalab.va.entity;
 
-public class Entity {
+public abstract class Entity {
     private int id;
 }
