@@ -283,7 +283,23 @@ div#locale_changer {
     width: 25%;
     background-image: url("../img/pinkback2.jpg");
     float: right;
+    height: 248%;
+    text-align: center;
+}
+#order_subs{
+    width: 25%;
+    background-image: url("../img/pinkback2.jpg");
+    float: right;
     height: 230%;
+    text-align: center;
+}
+
+#order_bev{
+    width: 25%;
+    background-image: url("../img/pinkback2.jpg");
+    float: right;
+    height: 150%;
+    text-align: center;
 }
 
 #order h1 {
