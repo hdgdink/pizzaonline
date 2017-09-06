@@ -15,5 +15,6 @@ public class SessionListener implements HttpSessionListener {
         HttpSession session = se.getSession();
         ServletContext context = session.getServletContext();
         context.setAttribute(ATTR_LOCALE, DEFAULT_LOCALE);
+        System.out.println("session created");
     }
 }

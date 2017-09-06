@@ -20,17 +20,16 @@ public class ConnectionPool {
 
 
     private ConnectionPool() {
-                connectionQueue = new ArrayBlockingQueue<>(POOL_SIZE);
+        connectionQueue = new ArrayBlockingQueue<>(POOL_SIZE);
         try {
             Class.forName(DRIVER);
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
         for (int i = 0; i < POOL_SIZE; i++) {
-           Connection connection = null;
+            Connection connection = null;
             try {
-
-                connection = new DriverManager.getConnection(URL, USER, PASSWORD);
+                connection = DriverManager.getConnection(URL, USER, PASSWORD);
             } catch (SQLException e) {
                 throw new ConnectionPoolException("There are no connection to the database", e);
             }
@@ -52,22 +51,16 @@ public class ConnectionPool {
         return connection;
     }
 
-    public static void clearConnectionQueue() {
-        Connection connection;
-        while ((connection = connectionQueue.poll()) != null) {
-            try {
-                if (!connection.getAutoCommit()) {
-                    connection.commit();
-                }
-                connection.close();
-            } catch (SQLException e) {
-                throw new ConnectionPoolException("", e);
-            }
-        }
+    public void returnConnection(Connection connection) {
+        connectionQueue.offer(connection);
     }
 
-    private static void returnConnection(Connection connection) {
-        connectionQueue.offer(connection);
+    public void close(Connection connection) {
+        try {
+            connection.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
 

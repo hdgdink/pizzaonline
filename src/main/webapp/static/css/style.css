@@ -108,6 +108,13 @@ nav ul ul ul {
     border-radius: 10px;
 }
 
+#welcome {
+    position: absolute;
+    right: 31%;
+    top: 6%;
+
+}
+
 #header {
     background-image: url("../img/pinkback.jpg");
 }
@@ -116,6 +123,12 @@ nav ul ul ul {
     padding-top: 2px;
     margin: 0;
     text-align: left;
+}
+
+div#locale_changer {
+    position: absolute;
+    right: 60px;
+    top: 20px;
 }
 
 .button {
@@ -239,6 +252,25 @@ nav ul ul ul {
 .select {
     border-radius: 5px;
     border-color: #4E8B1F;
+}
+
+#input {
+    width: 50px;
+    float: left;
+    text-align: center;
+
+}
+
+#minus {
+    background-color: #4E8B1F;
+    float: left;
+
+}
+
+#plus {
+    background-color: #4E8B1F;
+    float: left;
+
 }
 
 .action {

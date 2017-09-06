@@ -17,24 +17,20 @@
         <script type='text/javascript' src='<c:url value="/webjars/bootstrap/3.2.0/js/bootstrap.js"/>'></script>
     </head>
     <body>
-
-
     <div id="main">
-
-        <t:header/>
-
+        <t:header_log_reg/>
         <t:navigation/>
-
         <div id="menu" class="section">
-            <h1><span><fmt:message key="default.pizzamenu"/></span></h1>
+            <h1><span><fmt:message key="default.subs"/></span></h1>
             <hr>
             <div class="col-sm-6 col-md-4">
                 <div class="thumbnail">
-                    <img src="../static/img/pizza/hawaiipizza.png">
+                    <img src="../static/img/subs/turkey_breast.png">
                     <div class="caption">
-                        <h3><fmt:message key="default.hawaiian"/></h3>
-                        <p><fmt:message key="hawaiian.consist"/></p>
-                        <br>
+                        <h3>Turkey Breast</h3>
+                        <p>Dive into tender turkey breast piled sky-high with everything from lettuce and tomatoes to
+                            crispy cucumbers.</p>
+                        <br><br>
                         <p>
                             <select name="size" class="select"
                                     onchange="document.getElementById('price1').value=this.value">
@@ -42,9 +38,9 @@
                                 <option value="${price}"><fmt:message key="default.medium"/></option>
                                 <option value="${price}"><fmt:message key="default.big"/></option>
                             </select>
-
-                            <t:count_group/>
-
+                        <p/>
+                        <t:count_group/>
+                        <p>
                             <input type="text" value="${price}" readonly="readonly" class="input_select"
                                    id="price1"/>
                             <span class="span"><fmt:message key="default.currency"/></span>
@@ -57,11 +53,12 @@
             </div>
             <div class="col-sm-6 col-md-4">
                 <div class="thumbnail">
-                    <img src="../static/img/pizza/godfatherpizza.png">
+                    <img src="../static/img/subs/cold_cut_combo.png">
                     <div class="caption">
-                        <h3><fmt:message key="default.godfather"/></h3>
-                        <p><fmt:message key="godfather.consist"/></p>
-                        <br>
+                        <h3>Cold Cut Combo</h3>
+                        <p>The Cold Cut Combo is stacked with turkey-based meats - ham, salami and bologna. It's topped
+                            with crisp vegetables and served on freshly baked bread. This combo has a little bit of
+                            everything.</p>
                         <p>
                             <select name="size" class="select"
                                     onchange="document.getElementById('price2').value=this.value">
@@ -84,11 +81,12 @@
             </div>
             <div class="col-sm-6 col-md-4">
                 <div class="thumbnail">
-                    <img src="../static/img/pizza/cubanpizza.png">
+                    <img src="../static/img/subs/italian_bmt.png">
                     <div class="caption">
-                        <h3><fmt:message key="default.cuban"/></h3>
-                        <p><fmt:message key="cuban.consist"/></p>
-                        <br>
+                        <h3>Italian B.M.T.</h3>
+                        <p>This all-time Italian classic is filled with Genoa salami, spicy pepperoni, and Black Forest
+                            Ham. Get it made the way you say with your favorite veggies on freshly baked bread.
+                        </p>
                         <p>
                             <select name="size" class="select"
                                     onchange="document.getElementById('price3').value=this.value">
@@ -111,10 +109,11 @@
             </div>
             <div class="col-sm-6 col-md-4">
                 <div class="thumbnail">
-                    <img src="../static/img/pizza/monalizapizza.png">
+                    <img src="../static/img/subs/meatball_marinara.png">
                     <div class="caption">
-                        <h3><fmt:message key="default.monaliza"/></h3>
-                        <p><fmt:message key="monaliza.consist"/></p>
+                        <h3>Meatball Marinara</h3>
+                        <p> Enjoy Italian style meatballs drenched in irresistible marinara sauce, served on freshly
+                            baked bread. </p>
                         <br>
                         <p>
                             <select name="size" class="select"
@@ -138,11 +137,11 @@
             </div>
             <div class="col-sm-6 col-md-4">
                 <div class="thumbnail">
-                    <img src="../static/img/pizza/cheasepizza.png">
+                    <img src="../static/img/subs/oven_roasten.png">
                     <div class="caption">
-                        <h3><fmt:message key="default.cheese"/></h3>
-                        <p><fmt:message key="cheese.consist"/></p>
-                        <br>
+                        <h3>Oven Roasted Chicken</h3>
+                        <p>The Oven Roasted Chicken you love is piled high atop freshly baked bread with your favorite
+                            toppings like crispy green peppers and cucumbers.</p>
                         <p>
                             <select name="size" class="select"
                                     onchange="document.getElementById('price5').value=this.value">
@@ -165,12 +164,11 @@
             </div>
             <div class="col-sm-6 col-md-4">
                 <div class="thumbnail">
-                    <img src="../static/img/pizza/melonyspizza.png">
+                    <img src="../static/img/subs/roast_beef.png">
                     <div class="caption">
-                        <h3><fmt:message key="default.melany"/></h3>
-                        <p><fmt:message key="melany.consist"/></p>
-                        <br>
-                        <br>
+                        <h3>Roast Beef</h3>
+                        <p>This tasty number, with less than 6g of fat, is piled high with lean roast beef and your
+                            choice of fresh veggies, like crisp green peppers and juicy tomatoes.</p>
                         <p>
                             <select name="size" class="select"
                                     onchange="document.getElementById('price6').value=this.value">
@@ -193,12 +191,12 @@
             </div>
             <div class="col-sm-6 col-md-4">
                 <div class="thumbnail">
-                    <img src="../static/img/pizza/damianpizza.png">
+                    <img src="../static/img/subs/rotisserie_chiken.png">
                     <div class="caption">
-                        <h3><fmt:message key="default.damian"/></h3>
-                        <p><fmt:message key="damian.consist"/></p>
-                        <br>
-                        <br>
+                        <h3>Rotisserie-Style Chicken</h3>
+                        <p>Our Rotisserie-Style Chicken Sandwich is made with tender, hand-pulled all-white meat chicken
+                            with seasoning and marinade, raised without antibiotics. Try it with crisp veggies on
+                            freshly baked bread.</p>
                         <p>
                             <select name="size" class="select"
                                     onchange="document.getElementById('price7').value=this.value">
@@ -221,11 +219,11 @@
             </div>
             <div class="col-sm-6 col-md-4">
                 <div class="thumbnail">
-                    <img src="../static/img/pizza/assortipizza.png">
+                    <img src="../static/img/subs/spicy_italian.png">
                     <div class="caption">
-                        <h3><fmt:message key="default.assorti"/></h3>
-                        <p><fmt:message key="assorti.consist"/></p>
-                        <br>
+                        <h3>Spicy Italian</h3>
+                        <p>A blend of pepperoni and salami, topped with cheese – try it with banana peppers, or your
+                            choice of crisp veggies and condiments served hot on freshly baked bread.</p>
                         <p>
                             <select name="size" class="select"
                                     onchange="document.getElementById('price8').value=this.value">
@@ -238,6 +236,34 @@
                         <p>
                             <input type="text" value="${price}" readonly="readonly" class="input_select"
                                    id="price8"/>
+                            <span class="span"><fmt:message key="default.currency"/></span>
+                            <br>
+                            <input class="btn btn-primary" type="button"
+                                   value="<fmt:message key="default.addtolist"/>">
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6 col-md-4">
+                <div class="thumbnail">
+                    <img src="../static/img/subs/steak_cheese.png">
+                    <div class="caption">
+                        <h3>Steak & Cheese</h3>
+                        <p>Two of the most irresistible ingredients in the world — piled high onto freshly baked bread
+                            and your choice of crisp veggies.</p>
+                        <br><br>
+                        <p>
+                            <select name="size" class="select"
+                                    onchange="document.getElementById('price9').value=this.value">
+                                <option value="${price}"><fmt:message key="default.small"/></option>
+                                <option value="${price}"><fmt:message key="default.medium"/></option>
+                                <option value="${price}"><fmt:message key="default.big"/></option>
+                            </select>
+                        </p>
+                        <t:count_group/>
+                        <p>
+                            <input type="text" value="${price}" readonly="readonly" class="input_select"
+                                   id="price9"/>
                             <span class="span"><fmt:message key="default.currency"/></span>
                             <br>
                             <input class="btn btn-primary" type="button"
@@ -262,7 +288,6 @@
             </table>
             <hr>
             <input class="btn btn-primary" type="submit" value="<fmt:message key="default.checkout"/>"/>
-
         </div>
         <div id="rasporka"></div>
     </div>

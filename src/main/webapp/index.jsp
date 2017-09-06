@@ -3,10 +3,10 @@
 <html>
 <head>
     <title>Online Pizza</title>
-   </head>
+</head>
 <body>
 <%
-    response.sendRedirect(request.getContextPath()+"do/main");
+    response.sendRedirect(request.getContextPath() + "do/main");
 %>
 
 </body>
