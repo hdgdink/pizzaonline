@@ -1,6 +1,6 @@
 package kz.javalab.va.action;
 
-public class ActionException extends RuntimeException {
+public class ActionException extends Exception {
     public ActionException() {
         super();
     }

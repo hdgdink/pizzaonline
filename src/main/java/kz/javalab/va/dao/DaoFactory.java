@@ -1,35 +1,41 @@
 package kz.javalab.va.dao;
 
-import kz.javalab.va.pool.ConnectionPool;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import kz.javalab.va.connection.pool.ConnectionPool;
+import kz.javalab.va.dao.impl.*;
+
 
 public class DaoFactory {
 
+    private ConnectionPool connectionPool;
 
-    ConnectionPool pool = ConnectionPool.getInstance();
-    private Connection connection = pool.getConnection();
+    public DaoFactory(ConnectionPool connectionPool) {
+        this.connectionPool = connectionPool;
+    }
 
-    String query = "SELECT * FROM  ACCESS";
+    public UserDao getUserDao() {
+        return new UserDao(connectionPool);
+    }
 
-    public DaoFactory() throws InterruptedException {
+    public OrderDao getOrderDao() {
+        return new OrderDao(connectionPool);
     }
 
 
-    public void DaoFactory() {
-        try {
-            Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery(query);
-            while (resultSet.next()) {
-                String name = resultSet.getString("access");
-                System.out.println(name);
-            }
-            pool.returnConnection(connection);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+    public OrderDetailsDao getOrderDetailsDao() {
+        return new OrderDetailsDao(connectionPool);
     }
+
+    public FoodDao getFoodDao() {
+        return new FoodDao(connectionPool);
+    }
+
+    public SizeDao getSizeDao() {
+        return new SizeDao(connectionPool);
+    }
+
+    public TypeDao getTypeDao() {
+        return new TypeDao(connectionPool);
+    }
+
 }

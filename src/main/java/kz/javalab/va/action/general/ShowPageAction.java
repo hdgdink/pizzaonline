@@ -1,4 +1,8 @@
-package kz.javalab.va.action;
+package kz.javalab.va.action.general;
+
+import kz.javalab.va.action.Action;
+import kz.javalab.va.action.ActionException;
+import kz.javalab.va.action.ActionResult;
 
 import javax.servlet.http.HttpServletRequest;
 

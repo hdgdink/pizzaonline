@@ -1,14 +1,21 @@
-import kz.javalab.va.dao.DaoFactory;
-
 public class run {
+
     public static void main(String[] args) {
-        DaoFactory factory = null;
+     /*   DaoFactory factory = new kz.javalab.va.dao.DaoFactory();
+        List<User> list;
         try {
-            factory = new DaoFactory();
-        } catch (InterruptedException e) {
+            Connection connection = (Connection) factory.getContext();
+            factory.getDao(connection,daoclass);
+
+            System.out.println(userDao.getByPK(1));
+
+
+        } catch (DaoException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
             e.printStackTrace();
         }
-        factory.DaoFactory();
+*/
     }
 
 }

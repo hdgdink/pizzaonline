@@ -31,26 +31,30 @@
 <div class="popup">
     <h2><fmt:message key="default.signup"/></h2>
     <p><fmt:message key="default.caption"/></p>
-    <div>
-        <label for="login"><fmt:message key="default.username"/></label>
-        <input type="text" id="login" value="" required/>
-    </div>
-    <div>
-        <label for="email"><fmt:message key="default.email"/></label>
-        <input type="text" id="email" value="" required/>
-    </div>
-    <div>
-        <label for="pass"><fmt:message key="default.password"/></label>
-        <input type="password" id="pass" value="" required/>
-    </div>
-    <div>
-        <label for="firstname"><fmt:message key="default.firstname"/></label>
-        <input type="text" id="firstname" value="" required/>
-    </div>
-    <div>
-        <label for="lastname"><fmt:message key="default.lastname"/></label>
-        <input type="text" id="lastname" value="" required/>
-    </div>
-    <input type="button" value="<fmt:message key="default.signup"/>" class="button"/>
+
+    <form id="registration-form" method="post" action="register">
+        <div>
+            <label for="login"><fmt:message key="default.username"/></label>
+            <input type="text" id="login" value="${username}" required/>
+        </div>
+        <div>
+            <label for="email"><fmt:message key="default.email"/></label>
+            <input type="text" id="email" value="${email}" required/>
+        </div>
+        <div>
+            <label for="pass"><fmt:message key="default.password"/></label>
+            <input type="password" id="pass" value="${password}" required/>
+        </div>
+        <div>
+            <label for="firstname"><fmt:message key="default.firstname"/></label>
+            <input type="text" id="firstname" value="${firstname}" required/>
+        </div>
+        <div>
+            <label for="lastname"><fmt:message key="default.lastname"/></label>
+            <input type="text" id="lastname" value="${lastname}" required/>
+        </div>
+        <button type="submit" value="<fmt:message key="default.signup"/>" class="button"/>
+    </form>
+
     <a class="close" href="#close"></a>
 </div>

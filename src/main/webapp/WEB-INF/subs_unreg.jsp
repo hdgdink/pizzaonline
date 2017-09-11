@@ -273,7 +273,7 @@
                 </div>
             </div>
         </div>
-        <div id="order" class="section">
+        <div id="order_subs" class="section">
             <h1><fmt:message key="default.order"/></h1>
             <hr>
             <table id="myTable">

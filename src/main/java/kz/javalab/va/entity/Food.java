@@ -1,7 +1,5 @@
 package kz.javalab.va.entity;
 
-import kz.javalab.va.dao.DaoFactory;
-
 public class Food extends Entity {
     private Integer typeId;
     private String nameEn;
@@ -71,12 +69,7 @@ public class Food extends Entity {
     }
 
     public Type getType() {
-        try {
-            DaoFactory daoFactory = new DaoFactory();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        return type;
+       return type;
     }
 
 

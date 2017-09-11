@@ -1,4 +1,4 @@
-package kz.javalab.va.pool;
+package kz.javalab.va.connection.pool;
 
 public class ConnectionPoolException extends RuntimeException {
     public ConnectionPoolException() {

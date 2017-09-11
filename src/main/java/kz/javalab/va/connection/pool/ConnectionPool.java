@@ -1,4 +1,4 @@
-package kz.javalab.va.pool;
+package kz.javalab.va.connection.pool;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -19,7 +19,7 @@ public class ConnectionPool {
     private static BlockingQueue<Connection> connectionQueue;
 
 
-    private ConnectionPool() {
+    private ConnectionPool() throws ConnectionPoolException {
         connectionQueue = new ArrayBlockingQueue<>(POOL_SIZE);
         try {
             Class.forName(DRIVER);
@@ -41,7 +41,7 @@ public class ConnectionPool {
         return INSTANCE;
     }
 
-    public Connection getConnection() throws InterruptedException {
+    public Connection getConnection() throws ConnectionPoolException {
         Connection connection = null;
         try {
             connection = connectionQueue.take();
