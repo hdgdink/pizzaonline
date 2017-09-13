@@ -5,7 +5,10 @@ import kz.javalab.va.action.ActionException;
 import kz.javalab.va.action.ActionFactory;
 import kz.javalab.va.action.ActionResult;
 
-import javax.servlet.RequestDispatcher;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -13,29 +16,32 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public class Controller extends HttpServlet {
-
+    private static final Logger LOGGER = LoggerFactory.getLogger(Controller.class);
     @Override
-    protected void service(HttpServletRequest request, HttpServletResponse resp) throws IOException, ServletException {
+    protected void service(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+        Action action;
+        ActionResult result;
+        ActionResult.METHOD method;
+        String view;
 
-        Action action = ActionFactory.getAction(request);
-        if (action == null) {
-            resp.sendError(404, request.getRequestURI());
-            return;
-        }
-        ActionResult result = null;
+        action = ActionFactory.getAction(request);
         try {
-            result = action.execute(request);
-        } catch (Exception e) {
-            e.printStackTrace();
+            result = action.execute(request, response);
+        } catch (ActionException e) {
+            throw new ServletException(e);
         }
-        if (result != null && result.isRedirection()) {
-            resp.sendRedirect(request.getContextPath() + "/do/" + result.getView());
-            return;
-        }
-        RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/" + result.getView()+ ".jsp");
-        requestDispatcher.forward(request, resp);
+        method = result.getMethod();
+        view = result.getView();
+        LOGGER.debug(method + "/" + view);
+        switch (method) {
+            case FORWARD:
+                request.getRequestDispatcher("/WEB-INF/" + view + ".jsp")
+                        .forward(request, response);
+                break;
+            case REDIRECT:
+             response.sendRedirect(view);
+                break;
+       }
 
-        //  RequestDispatcher requestDispatcher = req.getRequestDispatcher("/WEB-INF/main_unreg.jsp");
-        //requestDispatcher.forward(req, resp);
     }
 }

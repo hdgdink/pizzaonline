@@ -19,14 +19,14 @@ import java.sql.Connection;
 
 public class RegisterAction implements Action {
     private static final Logger LOGGER = LoggerFactory.getLogger(RegisterAction.class);
-    private static final ActionResult REG_SUCCESS = new ActionResult("main_loged");
+    private static final ActionResult REG_SUCCESS = new ActionResult(ActionResult.METHOD.FORWARD,"main_loged");
     private ActionResult result;
     private DaoFactory factory;
     private UserDao dao;
 
 
     @Override
-    public ActionResult execute(HttpServletRequest request) throws ActionException {
+    public ActionResult execute(HttpServletRequest request, HttpServletResponse response) throws ActionException {
         User user;
         HttpSession session = request.getSession();
 

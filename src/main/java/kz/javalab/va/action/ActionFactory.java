@@ -16,24 +16,22 @@ public class ActionFactory {
     private static final Logger LOGGER = LoggerFactory.getLogger(ActionFactory.class);
 
     private static final Map<String, Action> ACTIONS = new HashMap<>();
-    private static final String PAGE_MAIN = "main_unreg";
     private static final String PAGE_SUBS = "subs_unreg";
-    private static final String PAGE_PIZZA = "main_unreg";
+    private static final String PAGE_PIZZA = "pizza_unreg";
     private static final String PAGE_BEVS = "bev_unreg";
     private static final String PAGE_REGISTERED = "main_loged";
     private static final String ERROR = "error";
 
 
     static {
-        ACTIONS.put("GET/main", new ShowPageAction(PAGE_MAIN));
-        ACTIONS.put("GET/locale", new ChangeLocaleAction());
         ACTIONS.put("GET/subs", new ShowPageAction(PAGE_SUBS));
         ACTIONS.put("GET/pizza", new ShowPageAction(PAGE_PIZZA));
         ACTIONS.put("GET/beverage", new ShowPageAction(PAGE_BEVS));
-        ACTIONS.put("GET/registered",new ShowPageAction(PAGE_REGISTERED));
         ACTIONS.put("GET/error", new ShowPageAction(ERROR));
+        ACTIONS.put("GET/locale", new ChangeLocaleAction());
+        ACTIONS.put("GET/registered", new ShowPageAction(PAGE_REGISTERED));
 
-        ACTIONS.put("POST/register",new RegisterAction());
+        ACTIONS.put("register", new RegisterAction());
     }
 
     public static Action getAction(HttpServletRequest request) {
@@ -41,7 +39,7 @@ public class ActionFactory {
         String req = request.getMethod() + request.getPathInfo();
         Action action = ACTIONS.get(req);
         if (action == null) {
-            action = ACTIONS.get("GET/error");
+            action = ACTIONS.get("error");
             session = request.getSession();
             session.setAttribute("error", "error.notFound");
             LOGGER.debug("Unknown request.");

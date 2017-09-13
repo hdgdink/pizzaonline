@@ -6,7 +6,7 @@
 </head>
 <body>
 <%
-    response.sendRedirect(request.getContextPath() + "do/main");
+    response.sendRedirect(request.getContextPath() + "do/pizza");
 %>
 
 </body>
