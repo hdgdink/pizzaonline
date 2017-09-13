@@ -19,7 +19,7 @@ import java.sql.Connection;
 
 public class RegisterAction implements Action {
     private static final Logger LOGGER = LoggerFactory.getLogger(RegisterAction.class);
-    private static final ActionResult REG_SUCCESS = new ActionResult("registered");
+    private static final ActionResult REG_SUCCESS = new ActionResult("main_loged");
     private ActionResult result;
     private DaoFactory factory;
     private UserDao dao;
@@ -28,7 +28,7 @@ public class RegisterAction implements Action {
     @Override
     public ActionResult execute(HttpServletRequest request) throws ActionException {
         User user;
-        Role role;
+        HttpSession session = request.getSession();
 
         String username = request.getParameter("username");
         String email = request.getParameter("email");
@@ -48,18 +48,22 @@ public class RegisterAction implements Action {
         user.setPassword(password);
         user.setFirstname(firstname);
         user.setLastname(lastname);
+        user.setBalance(0);
+        user.setRole(Role.CLIENT);
 
         LOGGER.debug("User " + user.getEmail()
                 + " has been created. User id: " + user.getId());
-
+        factory = new DaoFactory(ConnectionPool.getInstance());
         dao = factory.getUserDao();
         try {
             dao.persist(user);
+
         } catch (DaoException e) {
             e.printStackTrace();
         }
-        if (user!=null){
-            result=REG_SUCCESS;
+
+        if (user != null) {
+            result = REG_SUCCESS;
         }
 
         return result;

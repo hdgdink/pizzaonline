@@ -53,7 +53,8 @@
             <label for="lastname"><fmt:message key="default.lastname"/></label>
             <input type="text" id="lastname" value="${lastname}" required/>
         </div>
-        <button type="submit" value="<fmt:message key="default.signup"/>" class="button"/>
+        <button type="submit" class="btn btn-primary"><fmt:message key="default.signup"/></button>
+
     </form>
 
     <a class="close" href="#close"></a>

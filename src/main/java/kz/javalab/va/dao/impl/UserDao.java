@@ -16,7 +16,7 @@ import java.util.List;
 
 public class UserDao extends AbstractDao<User, Integer> {
 
-       public UserDao(ConnectionPool connectionPool) {
+    public UserDao(ConnectionPool connectionPool) {
         super(connectionPool);
     }
 
@@ -27,7 +27,7 @@ public class UserDao extends AbstractDao<User, Integer> {
 
     @Override
     public String getCreateQuery() {
-        return "INSERT INTO USER (firstname, lastname, username, email, password, balance, role)" + "VALUES (?, ?, ?, ?, ?);";
+        return "INSERT INTO USER (firstname, lastname, username, email, password, balance, role)" + "VALUES (?, ?, ?, ?, ?,?,?);";
     }
 
     @Override
