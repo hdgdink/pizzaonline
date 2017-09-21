@@ -8,7 +8,7 @@
     <div class="form-group">
         <div class="input-group">
             <span class="btn btn-primary" id="minus">-</span>
-            <input type="number" class="form-control" id="input" value="0">
+            <input type="number" class="form-control" id="input" value="0" readonly="readonly">
             <span class="btn btn-primary" id="plus">+</span>
         </div>
     </div>

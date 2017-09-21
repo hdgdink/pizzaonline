@@ -1,6 +1,6 @@
-INSERT INTO USER VALUES (0, 'Andrey', 'Vassilyev', 'admin', 'admin@mail.ru', 'admin', 'admin', '0');
-INSERT INTO USER VALUES (1, 'Иван', 'Колымага', 'user', 'user@mail.ru', '123', 'client', '10000');
-INSERT INTO USER VALUES (2, 'Алеша', 'Колотун', 'user1', 'user1@mail.ru', '123', 'client', '10000');
+INSERT INTO USER VALUES (0, 'Andrey', 'Vassilyev', 'admin', 'admin@mail.ru', 'admin', 'ADMIN', '0');
+INSERT INTO USER VALUES (1, 'Иван', 'Колымага', 'user', 'user@mail.ru', '123', 'CLIENT', '10000');
+INSERT INTO USER VALUES (2, 'Алеша', 'Колотун', 'user1', 'user1@mail.ru', '123', 'CLIENT', '10000');
 
 INSERT INTO FOOD VALUES (0, 0, 'Hawaiian', 'Pineapple and ham', NULL, 9, NULL);
 INSERT INTO FOOD VALUES (1, 0, 'Godfather', 'Ham, sausage, pepperoni and onions', NULL, 9, NULL);

@@ -1,57 +1,43 @@
 package kz.javalab.va.dao.impl;
 
 import kz.javalab.va.connection.pool.ConnectionPool;
+import kz.javalab.va.connection.pool.ConnectionPoolException;
 import kz.javalab.va.dao.AbstractDao;
-import kz.javalab.va.dao.DaoException;
-import kz.javalab.va.entity.Order;
+import kz.javalab.va.dao.DAOException;
+import kz.javalab.va.entity.user.User;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.util.List;
 
-public class OrderDao  extends AbstractDao<Order,Integer>{
+public class OrderDao  extends AbstractDao<Integer, User> {
 
-    public OrderDao(ConnectionPool connectionPool) {
-        super(connectionPool);
-    }
 
     @Override
-    public String getSelectQuery() {
+    public List<User> getAll() throws DAOException, ConnectionPoolException {
         return null;
     }
 
     @Override
-    public String getCreateQuery() {
+    public User getById(Integer id) throws DAOException {
         return null;
     }
 
     @Override
-    public String getUpdateQuery() {
-        return null;
+    public boolean delete(Integer id) throws DAOException {
+        return false;
     }
 
     @Override
-    public String getDeleteQuery() {
-        return null;
+    public boolean delete(User entity) throws DAOException {
+        return false;
     }
 
     @Override
-    protected List<Order> parseResultSet(ResultSet rs) throws DaoException {
-        return null;
+    public int create(User entity) throws DAOException {
+        return 0;
     }
 
     @Override
-    protected void prepareStatementForInsert(PreparedStatement statement, Order object) throws DaoException {
-
-    }
-
-    @Override
-    protected void prepareStatementForUpdate(PreparedStatement statement, Order object) throws DaoException {
-
-    }
-
-    @Override
-    public Order create() throws DaoException {
-        return null;
+    public int update(User entity) throws DAOException {
+        return 0;
     }
 }

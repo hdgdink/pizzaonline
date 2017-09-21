@@ -6,7 +6,8 @@
 <div id="header" class="section">
     <p><img src="../static/img/turtlelogo.png"></p>
     <div id="welcome">
-        <h3>Happy to see you  ${firstname}</h3>
+
+        <h3>Happy to see you ${firstname}</h3>
     </div>
     <div id="locale_changer" class="dropdown">
         <button class="btn btn-default dropdown-toggle" id="dropdownMenu1" data-toggle="dropdown">

@@ -6,7 +6,7 @@ import kz.javalab.va.dao.impl.*;
 
 
 public class DaoFactory {
-
+/*
     private ConnectionPool connectionPool;
 
     public DaoFactory(ConnectionPool connectionPool) {
@@ -37,5 +37,5 @@ public class DaoFactory {
     public TypeDao getTypeDao() {
         return new TypeDao(connectionPool);
     }
-
+*/
 }

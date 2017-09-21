@@ -1,8 +1,6 @@
 package kz.javalab.va.entity;
 
-import kz.javalab.va.dao.Identified;
-
-public abstract class Entity implements Identified {
+public abstract class Entity {
     private Integer Id;
 
     public Integer getId() {

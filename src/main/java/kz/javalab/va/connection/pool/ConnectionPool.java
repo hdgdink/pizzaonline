@@ -21,18 +21,28 @@ public class ConnectionPool {
     private static final String USER = RB.getString("db.user");
     private static final String PASSWORD = RB.getString("db.password");
     private static final int POOL_SIZE = Integer.parseInt(RB.getString("db.pool_size"));
-    private static final ConnectionPool INSTANCE = new ConnectionPool();
+    private static ConnectionPool instance;
     private static BlockingQueue<Connection> pool = null;
 
-    public static ConnectionPool getInstance() {
-        return INSTANCE;
+    public static ConnectionPool getInstance() throws ConnectionPoolException {
+        ConnectionPool localInstance = instance;
+        if (localInstance == null) {
+            synchronized (ConnectionPool.class) {
+                localInstance = instance;
+                if (localInstance == null) {
+                    instance = localInstance = new ConnectionPool();
+                    instance.createPool();
+                }
+            }
+        }
+        return localInstance;
     }
 
-    private ConnectionPool() {
+    private ConnectionPool() throws ConnectionPoolException {
         createPool();
     }
 
-    private static void createPool() {
+    private static void createPool() throws ConnectionPoolException {
         pool = new ArrayBlockingQueue<>(POOL_SIZE, true);
         try {
             Class.forName(DRIVER);
@@ -52,7 +62,7 @@ public class ConnectionPool {
         }
     }
 
-    public synchronized Connection getConnection() {
+    public synchronized Connection getConnection() throws ConnectionPoolException {
         Connection connection = null;
         try {
             connection = pool.take();

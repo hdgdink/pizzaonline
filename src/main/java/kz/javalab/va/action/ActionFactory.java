@@ -1,6 +1,7 @@
 package kz.javalab.va.action;
 
 
+import kz.javalab.va.action.account.LoginAction;
 import kz.javalab.va.action.account.RegisterAction;
 import kz.javalab.va.action.general.ChangeLocaleAction;
 import kz.javalab.va.action.general.ShowPageAction;
@@ -16,10 +17,10 @@ public class ActionFactory {
     private static final Logger LOGGER = LoggerFactory.getLogger(ActionFactory.class);
 
     private static final Map<String, Action> ACTIONS = new HashMap<>();
-    private static final String PAGE_SUBS = "subs_unreg";
-    private static final String PAGE_PIZZA = "pizza_unreg";
-    private static final String PAGE_BEVS = "bev_unreg";
-    private static final String PAGE_REGISTERED = "main_loged";
+    private static final String PAGE_SUBS = "subs";
+    private static final String PAGE_PIZZA = "pizza";
+    private static final String PAGE_BEVS = "bev";
+    private static final String PAGE_REGISTERED = "pizza_loged";
     private static final String ERROR = "error";
 
 
@@ -29,9 +30,10 @@ public class ActionFactory {
         ACTIONS.put("GET/beverage", new ShowPageAction(PAGE_BEVS));
         ACTIONS.put("GET/error", new ShowPageAction(ERROR));
         ACTIONS.put("GET/locale", new ChangeLocaleAction());
-        ACTIONS.put("GET/registered", new ShowPageAction(PAGE_REGISTERED));
+        ACTIONS.put("GET/registered", new ShowPageAction(PAGE_PIZZA));
 
-        ACTIONS.put("register", new RegisterAction());
+        ACTIONS.put("POST/register", new RegisterAction());
+        ACTIONS.put("POST/login", new LoginAction());
     }
 
     public static Action getAction(HttpServletRequest request) {

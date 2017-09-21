@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <html>
@@ -5,9 +6,7 @@
     <title>Online Pizza</title>
 </head>
 <body>
-<%
-    response.sendRedirect(request.getContextPath() + "do/pizza");
-%>
+<c:redirect url="/do/pizza"/>
 
 </body>
 </html>

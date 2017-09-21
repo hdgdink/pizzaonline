@@ -41,5 +41,8 @@ public class ActionResult {
         this.view = view;
         this.redirection = redirection;
     }
+    public ActionResult(){
+        super();
+    }
 
 }

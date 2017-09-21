@@ -10,7 +10,7 @@ public class run {
             System.out.println(userDao.getByPK(1));
 
 
-        } catch (DaoException e) {
+        } catch (DAOException e) {
             e.printStackTrace();
         } catch (SQLException e) {
             e.printStackTrace();

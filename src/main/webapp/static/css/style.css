@@ -171,6 +171,12 @@ div#locale_changer {
     text-align: center;
 }
 
+#msg {
+    color: red;
+    display: none;
+
+}
+
 .input {
     background-color: #63b427;
     padding: 12px 45px;
