@@ -8,7 +8,7 @@
     <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-        <title><fmt:message key="default.welcome"/>${username}</title>
+        <title><fmt:message key="default.welcome"/></title>
         <link rel="stylesheet" type="text/css" href="../static/css/style.css"/>
         <link rel="stylesheet" type="text/css" href="../static/css/bootstrap.css"/>
         <link rel="stylesheet" type="text/css" href="../static/css/modal.css"/>

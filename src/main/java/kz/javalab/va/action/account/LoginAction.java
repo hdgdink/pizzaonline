@@ -19,15 +19,7 @@ public class LoginAction implements Action {
     private ActionResult result;
     private UserDao dao;
 
-    /**
-     * Is used to perform required actions and define method and view for
-     * <code>Controller</code>. Returns result as <code>ActionResult</code>.
-     *
-     * @param request  Request to process.
-     * @param response Response to send.
-     * @return ActionResult where to redirect user
-     * @throws ActionException If something fails during method performing.
-     */
+
     @Override
     public ActionResult execute(HttpServletRequest request,
                                 HttpServletResponse response) throws ActionException {
@@ -44,21 +36,28 @@ public class LoginAction implements Action {
             throw new ActionException(e);
         }
         if (user == null) {
-            session.setAttribute("signInError", "account.notFound");
-            LOGGER.debug("Account not found.");
+            session.setAttribute("logInError", "account.notFound");
+            LOGGER.debug("Wrong username.");
             result.setMethod(ActionResult.METHOD.FORWARD);
             result.setView("pizza_unreg");
             return result;
         }
-        LOGGER.debug(user.getPassword());
+        if (!password.equals(user.getPassword())) {
+            session.setAttribute("logInError", "password.isBad");
+            LOGGER.debug("Wrong password. " + password);
+            result.setMethod(ActionResult.METHOD.FORWARD);
+            result.setView("pizza_unreg");
+            return result;
+        }
+
         session.setAttribute("user", user);
         session.removeAttribute("email");
         session.removeAttribute("signInError");
         session.removeAttribute("error");
         session.removeAttribute("link");
-        LOGGER.debug("User " + user.getEmail() + " has been registered.");
-        result = new ActionResult(ActionResult.METHOD.REDIRECT, "pizza_loged");
-        System.out.println(user.getUsername());
+        LOGGER.debug("User " + user.getEmail() + " has been logged.");
+        result = new ActionResult(ActionResult.METHOD.FORWARD, "pizza_loged");
+        System.out.println(session.getAttribute("username"));
         return result;
     }
 
