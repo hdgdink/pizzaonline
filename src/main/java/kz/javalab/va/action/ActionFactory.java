@@ -17,9 +17,9 @@ public class ActionFactory {
     private static final Logger LOGGER = LoggerFactory.getLogger(ActionFactory.class);
 
     private static final Map<String, Action> ACTIONS = new HashMap<>();
-    private static final String PAGE_SUBS = "subs";
-    private static final String PAGE_PIZZA = "pizza";
-    private static final String PAGE_BEVS = "bev";
+    private static final String PAGE_SUBS = "subs_unreg";
+    private static final String PAGE_PIZZA = "pizza_unreg";
+    private static final String PAGE_BEVS = "bev_unreg";
     private static final String PAGE_REGISTERED = "pizza_loged";
     private static final String ERROR = "error";
 

@@ -24,10 +24,40 @@
         <t:header_log_reg/>
 
         <t:navigation/>
+            <div id="menu" class="section">
+                <h1><span><fmt:message key="default.pizzamenu"/></span></h1>
+                <hr>
+        <c:forEach items="${foodList}" var="food">
+            <div class="col-sm-6 col-md-4">
+                <div class="thumbnail">
+                    <img src=${food.img}>
+                    <div class="caption">
+                        <h3>${food.nameRu}</h3>
+                        <p>${food.discriptionRu}</p>
 
-        <div id="menu" class="section">
-            <h1><span><fmt:message key="default.pizzamenu"/></span></h1>
-            <hr>
+                        <p>
+                            <select name="size" class="select"
+                                    onchange="document.getElementById('price1').value=this.value">
+                                <option value="${price}"><fmt:message key="default.small"/></option>
+                                <option value="${price}"><fmt:message key="default.medium"/></option>
+                                <option value="${price}"><fmt:message key="default.big"/></option>
+                            </select>
+                        <p/>
+                        <t:count_group/>
+                        <p>
+                            <input type="text" value="${price}" readonly="readonly" class="input_select"
+                                   id="price1"/>
+                            <span class="span"><fmt:message key="default.currency"/></span>
+                            <br>
+                            <input class="btn btn-primary" type="button"
+                                   value="<fmt:message key="default.addtolist"/>">
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </c:forEach>
+<!---
+
             <div class="col-sm-6 col-md-4">
                 <div class="thumbnail">
                     <img src="../static/img/pizza/hawaiipizza.png">
@@ -246,7 +276,9 @@
                     </div>
                 </div>
             </div>
-        </div>
+
+        ---->
+            </div>
         <div id="order" class="section">
             <h1><fmt:message key="default.order"/></h1>
             <hr>

@@ -13,25 +13,15 @@ import javax.servlet.http.HttpSession;
 public class ShowPageAction implements Action {
     private ActionResult result;
     User user;
-    String view;
+
 
     public ShowPageAction(String view) {
-         if (user!=null)
-           view = view + "_loged";
-         else view = view + "_unreg";
         result = new ActionResult(ActionResult.METHOD.FORWARD, view);
-    //    this.view = view;
     }
 
 
     @Override
     public ActionResult execute(HttpServletRequest request, HttpServletResponse response) throws ActionException {
-        HttpSession session = request.getSession();
-       // String username = String.valueOf(session.getAttribute("username"));
-      //  if (username != "")
-     //       view = view + "_loged";
-      //  else view = view + "_unreg";
-      //  result = new ActionResult(ActionResult.METHOD.FORWARD, view);
         return result;
     }
 }

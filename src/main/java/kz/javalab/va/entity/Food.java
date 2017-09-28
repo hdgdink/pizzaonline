@@ -12,6 +12,15 @@ public class Food extends Entity {
     private Size size;
     private String img;
 
+
+    public String getImg() {
+        return img;
+    }
+
+    public void setImg(String img) {
+        this.img = img;
+    }
+
     public Integer getTypeId() {
         return typeId;
     }
@@ -69,7 +78,7 @@ public class Food extends Entity {
     }
 
     public Type getType() {
-       return type;
+        return type;
     }
 
 
