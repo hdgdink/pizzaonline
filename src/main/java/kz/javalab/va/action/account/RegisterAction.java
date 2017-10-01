@@ -7,17 +7,16 @@ import kz.javalab.va.dao.DAOException;
 import kz.javalab.va.dao.impl.UserDao;
 import kz.javalab.va.entity.user.Role;
 import kz.javalab.va.entity.user.User;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.log4j.Logger;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.io.IOException;
-import java.security.NoSuchAlgorithmException;
+
 
 public class RegisterAction implements Action {
-    private static final Logger LOGGER = LoggerFactory.getLogger(RegisterAction.class);
-    private static final ActionResult REG_SUCCESS = new ActionResult(ActionResult.METHOD.FORWARD, "pizza_loged");
+    private static final Logger LOGGER = Logger.getLogger(RegisterAction.class);
+    private static final ActionResult REG_SUCCESS = new ActionResult(ActionResult.METHOD.FORWARD, "loged");
     private static final ActionResult REG_FAILED = new ActionResult(ActionResult.METHOD.REDIRECT, "pizza_unreg");
     private ActionResult result;
     private UserDao userDAO = null;
@@ -42,10 +41,6 @@ public class RegisterAction implements Action {
         String email = request.getParameter("email");
         String password = request.getParameter("password");
 
-
-        // Before processing data, check that the passwords match.
-
-        // Passwords match, forward request to the command.
         User user = null;
         try {
             user = userDAO.getByUsername(email);

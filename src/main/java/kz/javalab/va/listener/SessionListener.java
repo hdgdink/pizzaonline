@@ -22,8 +22,12 @@ public class SessionListener implements HttpSessionListener {
         ServletContext context = session.getServletContext();
         context.setAttribute(ATTR_LOCALE, DEFAULT_LOCALE);
         try {
-            List<Food> foodList = new FoodDao().getAll();
-            context.setAttribute("foodList",foodList);
+            List<Food> pizzaList = new FoodDao().getAllByTypeId(0);
+            List<Food> subList = new FoodDao().getAllByTypeId(1);
+            List<Food> bevList = new FoodDao().getAllByTypeId(2);
+            context.setAttribute("pizzaList",pizzaList);
+            context.setAttribute("subList",subList);
+            context.setAttribute("bevList",bevList);
         } catch (DAOException e) {
             e.printStackTrace();
         } catch (ConnectionPoolException e) {

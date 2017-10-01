@@ -4,9 +4,7 @@ import kz.javalab.va.action.Action;
 import kz.javalab.va.action.ActionException;
 import kz.javalab.va.action.ActionFactory;
 import kz.javalab.va.action.ActionResult;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.log4j.Logger;
 
 
 import javax.servlet.ServletException;
@@ -16,7 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public class Controller extends HttpServlet {
-    private static final Logger LOGGER = LoggerFactory.getLogger(Controller.class);
+    private static final Logger LOGGER = Logger.getLogger(Controller.class);
     @Override
     protected void service(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         Action action;

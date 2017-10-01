@@ -1,8 +1,6 @@
 package kz.javalab.va.connection.pool;
 
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.log4j.Logger;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -12,8 +10,9 @@ import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 
 
+
 public class ConnectionPool {
-    private static final Logger LOGGER = LoggerFactory.getLogger(ConnectionPool.class);
+    private static final Logger LOGGER = Logger.getLogger(ConnectionPool.class);
 
     private static final ResourceBundle RB = ResourceBundle.getBundle("db");
     private static final String DRIVER = RB.getString("db.driver");

@@ -7,18 +7,16 @@ import kz.javalab.va.connection.pool.ConnectionPoolException;
 import kz.javalab.va.dao.DAOException;
 import kz.javalab.va.dao.impl.UserDao;
 import kz.javalab.va.entity.user.User;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 public class LoginAction implements Action {
-    private static final Logger LOGGER = LoggerFactory.getLogger(LoginAction.class);
+    private static final Logger LOGGER = Logger.getLogger(LoginAction.class);
     private ActionResult result;
     private UserDao dao;
-
 
     @Override
     public ActionResult execute(HttpServletRequest request,
@@ -27,8 +25,6 @@ public class LoginAction implements Action {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
         User user;
-
-        session.setAttribute("username", username);
         try {
             user = userDao().getByUsername(username);
         } catch (DAOException e) {
@@ -38,16 +34,14 @@ public class LoginAction implements Action {
         if (user == null) {
             session.setAttribute("logInError", "account.notFound");
             LOGGER.debug("Wrong username.");
-            result.setMethod(ActionResult.METHOD.FORWARD);
-            result.setView("pizza_unreg");
+            result = new ActionResult(ActionResult.METHOD.FORWARD, "pizza_unreg");
             return result;
         }
         if (!password.equals(user.getPassword())) {
-            session.setAttribute("logInError", "password.isBad");
+            session.setAttribute("logInError", "account.isBad");
             LOGGER.debug("Wrong password. " + password);
-            result.setMethod(ActionResult.METHOD.FORWARD);
-            result.setView("pizza_unreg");
-            return result;
+            result = new ActionResult(ActionResult.METHOD.FORWARD, "pizza_unreg");
+                        return result;
         }
 
         session.setAttribute("user", user);
@@ -56,8 +50,8 @@ public class LoginAction implements Action {
         session.removeAttribute("error");
         session.removeAttribute("link");
         LOGGER.debug("User " + user.getEmail() + " has been logged.");
-        result = new ActionResult(ActionResult.METHOD.FORWARD, "pizza_loged");
-        System.out.println(session.getAttribute("username"));
+        result = new ActionResult(ActionResult.METHOD.FORWARD, "loged");
+        System.out.println("LoginAction:"+session.getAttribute("user"));
         return result;
     }
 

@@ -110,9 +110,21 @@ nav ul ul ul {
 
 #welcome {
     position: absolute;
-    right: 31%;
-    top: 6%;
+    right: 71%;
+    top: 4%;
+}
 
+#balance {
+    position: absolute;
+    right: 21%;
+    top: 4%;
+}
+
+#logout {
+    position: absolute;
+    right: 0%;
+    top: 6%;
+    width: auto;
 }
 
 #header {
@@ -125,10 +137,10 @@ nav ul ul ul {
     text-align: left;
 }
 
-div#locale_changer {
+#locale_changer {
     position: absolute;
-    right: 60px;
-    top: 20px;
+    right: 4%;
+    top: 0%;
 }
 
 .button {
@@ -232,7 +244,6 @@ div#locale_changer {
     right: 11%;
     top: 12%;
     width: auto;
-
 }
 
 #join_pop {
@@ -252,6 +263,13 @@ div#locale_changer {
     width: 75%;
     float: left;
     text-align: center;
+    margin: 0 auto;
+}
+
+#cabinet {
+    background-image: url("../img/pinkback1.jpg");
+    width: auto;
+    height: 80%;
     margin: 0 auto;
 }
 
@@ -292,7 +310,8 @@ div#locale_changer {
     height: 248%;
     text-align: center;
 }
-#order_subs{
+
+#order_subs {
     width: 25%;
     background-image: url("../img/pinkback2.jpg");
     float: right;
@@ -300,7 +319,7 @@ div#locale_changer {
     text-align: center;
 }
 
-#order_bev{
+#order_bev {
     width: 25%;
     background-image: url("../img/pinkback2.jpg");
     float: right;

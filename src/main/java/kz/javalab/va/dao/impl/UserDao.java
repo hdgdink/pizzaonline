@@ -6,8 +6,7 @@ import kz.javalab.va.dao.AbstractDao;
 import kz.javalab.va.dao.DAOException;
 import kz.javalab.va.entity.user.Role;
 import kz.javalab.va.entity.user.User;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.log4j.Logger;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -17,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserDao extends AbstractDao<Integer, User> {
-    private static final Logger LOGGER = LoggerFactory.getLogger(UserDao.class);
+    private static final Logger LOGGER = Logger.getLogger(UserDao.class);
     private final ConnectionPool pool = ConnectionPool.getInstance();
 
     private static final String USER_CREATE = "INSERT INTO USER(firstname, lastname, username, email, password, ROLE, " +

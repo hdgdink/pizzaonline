@@ -1,15 +1,15 @@
 package kz.javalab.va.dao.impl;
 
-import kz.javalab.va.connection.pool.ConnectionPool;
 import kz.javalab.va.connection.pool.ConnectionPoolException;
 import kz.javalab.va.dao.AbstractDao;
 import kz.javalab.va.dao.DAOException;
 import kz.javalab.va.entity.user.User;
+import org.apache.log4j.Logger;
 
 import java.util.List;
 
 public class TypeDao  extends AbstractDao<Integer, User>  {
-
+    private static final Logger LOGGER = Logger.getLogger(TypeDao.class);
 
 
     @Override
