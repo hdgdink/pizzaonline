@@ -41,7 +41,7 @@ public class LoginAction implements Action {
             session.setAttribute("logInError", "account.isBad");
             LOGGER.debug("Wrong password. " + password);
             result = new ActionResult(ActionResult.METHOD.FORWARD, "pizza_unreg");
-                        return result;
+            return result;
         }
 
         session.setAttribute("user", user);
@@ -51,7 +51,7 @@ public class LoginAction implements Action {
         session.removeAttribute("link");
         LOGGER.debug("User " + user.getEmail() + " has been logged.");
         result = new ActionResult(ActionResult.METHOD.FORWARD, "loged");
-        System.out.println("LoginAction:"+session.getAttribute("user"));
+        System.out.println("LoginAction:" + session.getAttribute("user"));
         return result;
     }
 

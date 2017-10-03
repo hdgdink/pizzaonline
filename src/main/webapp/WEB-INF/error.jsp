@@ -17,7 +17,6 @@
     <img src="/static/img/error.png"/>
     <br>
     <a href="pizza"><fmt:message key="default.mainpage"/></a>
-
 </div>
 </body>
 </html>

@@ -27,51 +27,59 @@
 
         <div id="cabinet" class="section">
 
+            <div class="col-sm-6 col-md-4">
+                <div class="thumbnail">
+                    <form id="about-form" method="POST" action="info_update">
+                        <div>
+                            <label for="username"><fmt:message key="default.username"/></label>
+                            <input type="text" id="username" name="username" value="${user.username}" readonly/>
+                        </div>
+                        <div>
+                            <label for="email"><fmt:message key="default.email"/></label>
+                            <input type="email" id="email" name="email" value="${user.email}" required autofocus/>
+                        </div>
+                        <div>
+                            <label for="firstname"><fmt:message key="default.firstname"/></label>
+                            <input type="text" id="firstname" name="firstname" value="${user.firstname}" required/>
+                        </div>
+                        <div>
+                            <label for="lastname"><fmt:message key="default.lastname"/></label>
+                            <input type="text" id="lastname" name="lastname" value="${user.lastname}" required/>
+                        </div>
 
-            <form id="about-form" method="post" action="info_update">
-                <div>
-                    <label for="username"><fmt:message key="default.username"/></label>
-                    <input type="text" id="username" name="username" value="${user.username}" required autofocus/>
+                        <button type="submit" class="btn btn-primary"><fmt:message key="default.update"/></button>
+                    </form>
                 </div>
-                <div>
-                    <label for="email"><fmt:message key="default.email"/></label>
-                    <input type="email" id="email" name="email" value="${user.email}" required/>
+            </div>
+
+            <div class="col-sm-6 col-md-4">
+                <div class="thumbnail">
+                    <form id="pass_update" method="POST" action="pass_update">
+                        <div>
+                            <label for="old_pass"><fmt:message key="default.oldPassword"/></label>
+                            <input type="password" id="old_pass" name="old_password" required/>
+                        </div>
+                        <div>
+                            <label for="new_pass"><fmt:message key="default.newPassword"/></label>
+                            <input type="password" id="new_pass" name="re-password" required/>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary"><fmt:message key="default.update"/></button>
+                    </form>
                 </div>
-                                <div>
-                    <label for="firstname"><fmt:message key="default.firstname"/></label>
-                    <input type="text" id="firstname" name="firstname" value="${user.firstname}" required/>
+            </div>
+
+            <div class="col-sm-6 col-md-4">
+                <div class="thumbnail">
+                    <form id="balance_update" method="POST" action="balance_update">
+                        <div>
+                            <label for="new_pass"><fmt:message key="default.balance"/></label>
+                            <input type="text" id="balance" name="old_password" value="${user.balance}" readonly/>
+                        </div>
+                        <button type="submit" class="btn btn-primary"><fmt:message key="default.reup"/></button>
+                    </form>
                 </div>
-                <div>
-                    <label for="lastname"><fmt:message key="default.lastname"/></label>
-                    <input type="text" id="lastname" name="lastname" value="${user.lastname}" required/>
-                </div>
-
-                <button type="submit" class="btn btn-primary"><fmt:message key="default.update"/></button>
-            </form>
-
-            <form id="pass_update" method="post" action="pass_update">
-                <div>
-                    <label for="old_pass"><fmt:message key="default.oldPassword"/></label>
-                    <input type="password" id="old_pass" name="old_password"  required />
-                </div>
-                <div>
-                    <label for="new_pass"><fmt:message key="default.newPassword"/></label>
-                    <input type="password" id="new_pass" name="re-password" required />
-                </div>
-
-                <button type="submit" class="btn btn-primary"><fmt:message key="default.update"/></button>
-            </form>
-
-            <form id="balance_update" method="post" action="balance_update">
-                <div>
-                   <fmt:message key="default.balance"/><p>${user.balance}</p>
-                    <input type="password" id="old_pass" name="old_password"  required />
-                </div>
-
-
-                <button type="submit" class="btn btn-primary"><fmt:message key="default.update"/></button>
-            </form>
-
+            </div>
         </div>
 
         <div id="rasporka"></div>

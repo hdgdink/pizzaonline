@@ -19,22 +19,15 @@ public class UserDao extends AbstractDao<Integer, User> {
     private static final Logger LOGGER = Logger.getLogger(UserDao.class);
     private final ConnectionPool pool = ConnectionPool.getInstance();
 
-    private static final String USER_CREATE = "INSERT INTO USER(firstname, lastname, username, email, password, ROLE, " +
+    private static final String USER_CREATE = "INSERT INTO USER(FIRSTNAME, LASTNAME, USERNAME, EMAIL, PASSWORD, ROLE, " +
             "BALANCE) VALUES(?, ?, ?, ?, ?, ?, ?);";
     private static final String GET_USER_BY_USERNAME = "SELECT * FROM USER WHERE USERNAME = ?;";
     private static final String GET_USER_BY_ID = "SELECT * FROM USER WHERE ID = ?;";
     private static final String GET_USER_BY_UUID = "SELECT * FROM USER WHERE remember_uuid = ?;";
     private static final String GET_USER_BY_STATUS = "SELECT * FROM USER WHERE account_status = ?;";
     private static final String USER_FIND_ALL = "SELECT * FROM USER;";
-    private static final String USER_UPDATE = "UPDATE USER SET " +
-            "FIRSTNAME = ?," +
-            "LASTNAME = ?," +
-            "USERNAME = ?," +
-            "EMAIL = ?," +
-            "PASSWORD = ?," +
-            "ROLE = ?, " +
-            "BALANCE = ? " +
-            "WHERE `id` = ?;";
+    private static final String USER_UPDATE = "UPDATE USER SET FIRSTNAME = ?, LASTNAME = ?, USERNAME = ?, EMAIL = ?," +
+            " PASSWORD = ?, ROLE = ?, BALANCE = ?  WHERE ID = ?;";
 
     public UserDao() throws ConnectionPoolException {
     }
@@ -48,7 +41,6 @@ public class UserDao extends AbstractDao<Integer, User> {
         } catch (ConnectionPoolException e) {
             e.printStackTrace();
         }
-
         try (PreparedStatement statement = connection.prepareStatement(GET_USER_BY_USERNAME)) {
             statement.setString(1, username);
             ResultSet resultSet = statement.executeQuery();
@@ -63,7 +55,6 @@ public class UserDao extends AbstractDao<Integer, User> {
                 user.setRole(Role.valueOf(resultSet.getString("role")));
                 user.setBalance(resultSet.getInt("balance"));
             }
-
         } catch (Exception e) {
             throw new DAOException(e);
         } finally {
@@ -72,71 +63,6 @@ public class UserDao extends AbstractDao<Integer, User> {
         return user;
     }
 
-   /* public User getByUUID(String uuid) throws DAOException, ConnectionPoolException {
-        User user = null;
-        Connection connection = pool.getConnection();
-
-        try (PreparedStatement statement = connection.prepareStatement(GET_USER_BY_UUID)) {
-            statement.setString(1, uuid);
-            ResultSet resultSet = statement.executeQuery();
-
-            if (resultSet.first()) {
-                user = new User();
-                user.setId(resultSet.getInt("id"));
-                user.setEmail(resultSet.getString("email"));
-                user.setPassword(resultSet.getString("password"));
-                user.setCreateTime(resultSet.getTimestamp("create_time"));
-                user.setAccountStatus(resultSet.getString("account_status"));
-                user.setRememberUUID(resultSet.getString("remember_uuid"));
-
-                GroupDAO groupDAO = daoFactory.getGroupDAO();
-                Group group = groupDAO.getById(resultSet.getInt("group_id"));
-                user.setGroup(group);
-            }
-
-        } catch (Exception e) {
-            throw new DAOException(e);
-        } finally {
-            pool.closeConnection(connection);
-        }
-        return user;
-    }*/
-
-
-  /*  public List<User> findByStatus(AccountStatus status) throws DAOException {
-        List<User> users = null;
-        Connection connection = pool.getConnection();
-
-        try (PreparedStatement statement = connection.prepareStatement(GET_USER_BY_STATUS)) {
-            statement.setString(1, status.toString());
-            ResultSet resultSet = statement.executeQuery();
-
-            while (resultSet.next()) {
-                if (users == null) {
-                    users = new ArrayList<>();
-                }
-
-                User user = new User();
-                user.setId(resultSet.getInt("id"));
-                user.setEmail(resultSet.getString("email"));
-                user.setPassword(resultSet.getString("password"));
-                user.setCreateTime(resultSet.getTimestamp("create_time"));
-                user.setAccountStatus(resultSet.getString("account_status"));
-                user.setRememberUUID(resultSet.getString("remember_uuid"));
-
-                GroupDAO groupDAO = daoFactory.getGroupDAO();
-                Group group = groupDAO.getById(resultSet.getInt("group_id"));
-                user.setGroup(group);
-
-                users.add(user);
-            }
-        } catch (Exception e) {
-            throw new DAOException(e);
-        } finally {
-            pool.closeConnection(connection);
-        }
-        return users;
-    }*/
 
     @Override
     public List<User> getAll() throws DAOException {
@@ -147,7 +73,6 @@ public class UserDao extends AbstractDao<Integer, User> {
         } catch (ConnectionPoolException e) {
             e.printStackTrace();
         }
-
         try (Statement statement = connection.createStatement()) {
             ResultSet resultSet = statement.executeQuery(USER_FIND_ALL);
             while (resultSet.next()) {
@@ -182,7 +107,6 @@ public class UserDao extends AbstractDao<Integer, User> {
         } catch (ConnectionPoolException e) {
             e.printStackTrace();
         }
-
         try (PreparedStatement statement = connection.prepareStatement(GET_USER_BY_ID)) {
             statement.setInt(1, id);
             ResultSet resultSet = statement.executeQuery();
@@ -225,9 +149,7 @@ public class UserDao extends AbstractDao<Integer, User> {
         } catch (ConnectionPoolException e) {
             e.printStackTrace();
         }
-
         try (PreparedStatement statement = connection.prepareStatement(USER_CREATE)) {
-
             entity.setRole(Role.CLIENT);
             entity.setBalance(0);
             statement.setString(1, entity.getFirstname());
@@ -251,21 +173,25 @@ public class UserDao extends AbstractDao<Integer, User> {
         Connection connection = null;
         try {
             connection = pool.getConnection();
+            LOGGER.debug("Connection has been taken.");
         } catch (ConnectionPoolException e) {
+            LOGGER.warn("Connection cannot be taken.", e);
             e.printStackTrace();
         }
-
         try (PreparedStatement statement = connection.prepareStatement(USER_UPDATE)) {
-            statement.setInt(1, entity.getId());
-            statement.setString(2, entity.getFirstname());
-            statement.setString(3, entity.getLastname());
-            statement.setString(4, entity.getUsername());
-            statement.setString(5, entity.getEmail());
-            statement.setString(6, entity.getPassword());
-            statement.setString(7, String.valueOf(entity.getRole()));
+            statement.setString(1, entity.getFirstname());
+            statement.setString(2, entity.getLastname());
+            statement.setString(3, entity.getUsername());
+            statement.setString(4, entity.getEmail());
+            statement.setString(5, entity.getPassword());
+            statement.setString(6, String.valueOf(entity.getRole()));
+            statement.setInt(7, entity.getBalance());
+            statement.setInt(8, entity.getId());
+            System.out.println("userdao update entity:" +entity.getId()+ entity.toString());
+            LOGGER.debug("Statement has been created.");
             return statement.executeUpdate();
-
         } catch (Exception e) {
+            LOGGER.warn("Statement cannot be created.", e);
             throw new DAOException(e);
         } finally {
             pool.returnConnection(connection);

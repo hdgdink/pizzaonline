@@ -1,9 +1,7 @@
 package kz.javalab.va.action;
 
 
-import kz.javalab.va.action.account.LoginAction;
-import kz.javalab.va.action.account.LogoutAction;
-import kz.javalab.va.action.account.RegisterAction;
+import kz.javalab.va.action.account.*;
 import kz.javalab.va.action.general.ChangeLocaleAction;
 import kz.javalab.va.action.general.ShowPageAction;
 import org.apache.log4j.Logger;
@@ -42,6 +40,8 @@ public class ActionFactory {
 
         ACTIONS.put("POST/register", new RegisterAction());
         ACTIONS.put("POST/login", new LoginAction());
+        ACTIONS.put("POST/info_update", new UserInfoUpdateAction());
+        ACTIONS.put("POST/pass_update", new UserPassUpdateAction());
     }
 
     public static Action getAction(HttpServletRequest request) {

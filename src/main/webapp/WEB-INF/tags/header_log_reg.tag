@@ -27,7 +27,7 @@
     <h2><fmt:message key="default.signup"/></h2>
     <p><fmt:message key="default.caption"/></p>
 
-    <form id="registration-form" method="post" action="register">
+    <form id="registration-form" method="POST" action="register">
         <div>
             <label for="login"><fmt:message key="default.username"/></label>
             <input type="text" id="login" name="username" required autofocus/>

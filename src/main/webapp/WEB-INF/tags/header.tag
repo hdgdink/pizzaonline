@@ -7,7 +7,7 @@
 <div id="header" class="section">
     <p><img src="../static/img/turtlelogo.png"></p>
     <div id="welcome">
-        <h2><fmt:message key="default.happy"/>${user.firstname}</h2>
+        <h2><fmt:message key="default.happy"/><a href="cabinet" title="Cabinet"> ${user.firstname}</a> </h2>
     </div>
     <div id="balance">
         <h3><fmt:message key="default.balance"/>${user.balance}</h3>
