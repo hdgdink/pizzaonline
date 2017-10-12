@@ -37,6 +37,9 @@
     <listener>
         <listener-class>kz.javalab.va.listener.SessionListener</listener-class>
     </listener>
+    <listener>
+        <listener-class>kz.javalab.va.listener.ContextListener</listener-class>
+    </listener>
 
     <filter>
         <filter-name>CharsetFilter</filter-name>

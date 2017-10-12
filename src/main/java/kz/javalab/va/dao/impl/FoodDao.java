@@ -17,8 +17,14 @@ import java.util.List;
 public class FoodDao extends AbstractDao<Integer, Food> {
     private static final Logger LOGGER = Logger.getLogger(FoodDao.class);
     private final ConnectionPool pool = ConnectionPool.getInstance();
-    private final String FOOD_FIND_ALL = "SELECT * FROM FOOD ";
-    private final String GET_ALL_FOOD_BY_TYPE = "SELECT * FROM FOOD WHERE TYPE_ID = ?;";
+    private static final String GET_FOOD_BY_ID = "SELECT * FROM FOOD WHERE ID = ?;";
+    private static final String FOOD_FIND_ALL = "SELECT * FROM FOOD ";
+    private static final String FOOD_CREATE = "INSERT INTO FOOD(TYPE_ID,NAME_RU, NAME_EN, COMPOS_RU, COMPOS_EN, PRICE," +
+            " IMG, ACTIVE) VALUES(?, ?, ?, ?, ?, ?, ?, ?);";
+    private static final String GET_ALL_FOOD_BY_TYPE = "SELECT * FROM FOOD WHERE TYPE_ID = ?;";
+    private static final String FOOD_UPDATE = "UPDATE FOOD SET TYPE_ID = ?, NAME_RU = ?, NAME_EN = ?, COMPOS_RU = ?," +
+            " COMPOS_EN = ?,PRICE = ?,  IMG = ?, ACTIVE = ?  WHERE ID = ?;";
+    private static final String DELETE_BY_ID = "DELETE FROM FOOD WHERE ID=?;";
 
     public FoodDao() throws ConnectionPoolException {
     }
@@ -45,9 +51,9 @@ public class FoodDao extends AbstractDao<Integer, Food> {
                 food.setNameEn(resultSet.getString("NAME_EN"));
                 food.setDiscriptionRu(resultSet.getString("COMPOS_RU"));
                 food.setDiscriptionEn(resultSet.getString("COMPOS_EN"));
-                food.setSizeId(resultSet.getInt("SIZE_ID"));
                 food.setPrice(resultSet.getInt("PRICE"));
                 food.setImg(resultSet.getString("IMG"));
+                food.setActive(resultSet.getBoolean("ACTIVE"));
                 foods.add(food);
             }
         } catch (Exception e) {
@@ -60,27 +66,110 @@ public class FoodDao extends AbstractDao<Integer, Food> {
 
     @Override
     public Food getById(Integer id) throws DAOException {
-        return null;
+        LOGGER.info("FoodDao.getById()");
+        Food food = null;
+        Connection connection = null;
+        try {
+            connection = pool.getConnection();
+            LOGGER.debug("Connection has been taken.");
+        } catch (ConnectionPoolException e) {
+            LOGGER.warn("Connection cannot be taken.", e);
+            e.printStackTrace();
+        }
+        try (PreparedStatement statement = connection.prepareStatement(GET_FOOD_BY_ID)) {
+            statement.setInt(1, id);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                food = new Food();
+                food.setId(resultSet.getInt("ID"));
+                food.setTypeId(resultSet.getInt("TYPE_ID"));
+                food.setNameRu(resultSet.getString("NAME_RU"));
+                food.setNameEn(resultSet.getString("NAME_EN"));
+                food.setDiscriptionRu(resultSet.getString("COMPOS_RU"));
+                food.setDiscriptionEn(resultSet.getString("COMPOS_EN"));
+                food.setPrice(resultSet.getInt("PRICE"));
+                food.setImg(resultSet.getString("IMG"));
+                food.setActive(resultSet.getBoolean("ACTIVE"));
+            }
+        } catch (Exception e) {
+            LOGGER.warn("Statement cannot be created.", e);
+            throw new DAOException(e);
+        } finally {
+            pool.returnConnection(connection);
+        }
+        return food;
     }
 
     @Override
-    public boolean delete(Integer id) throws DAOException {
-        return false;
+    public void delete(Integer id) throws DAOException {
+        throw new DAOException("Unsupported operation.");
+
     }
 
     @Override
-    public boolean delete(Food entity) throws DAOException {
-        return false;
+    public void delete(Food entity) throws DAOException {
+        throw new DAOException("Unsupported operation.");
     }
 
     @Override
     public int create(Food entity) throws DAOException {
-                return 0;
+        LOGGER.info("UserDao.createUser()");
+        Connection connection = null;
+        try {
+            connection = pool.getConnection();
+            LOGGER.debug("Connection has been taken.");
+        } catch (ConnectionPoolException e) {
+            LOGGER.warn("Connection cannot be taken.", e);
+            e.printStackTrace();
+        }
+        try (PreparedStatement statement = connection.prepareStatement(FOOD_CREATE)) {
+            statement.setInt(1, entity.getTypeId());
+            statement.setString(2, entity.getNameRu());
+            statement.setString(3, entity.getNameEn());
+            statement.setString(4, entity.getDiscriptionRu());
+            statement.setString(5, entity.getDiscriptionEn());
+            statement.setInt(6, entity.getPrice());
+            statement.setString(7, entity.getImg());
+            statement.setBoolean(8, entity.isActive());
+            return statement.executeUpdate();
+        } catch (Exception e) {
+            LOGGER.warn("Statement cannot be created.", e);
+            throw new DAOException(e);
+        } finally {
+            pool.returnConnection(connection);
+        }
     }
 
     @Override
     public int update(Food entity) throws DAOException {
-        return 0;
+        LOGGER.info("FoodDao.updateFood()");
+        Connection connection = null;
+        try {
+            connection = pool.getConnection();
+            LOGGER.debug("Connection has been taken.");
+        } catch (ConnectionPoolException e) {
+            LOGGER.warn("Connection cannot be taken.", e);
+            e.printStackTrace();
+        }
+        try (PreparedStatement statement = connection.prepareStatement(FOOD_UPDATE)) {
+            statement.setInt(1, entity.getTypeId());
+            statement.setString(2, entity.getNameRu());
+            statement.setString(3, entity.getNameEn());
+            statement.setString(4, entity.getDiscriptionRu());
+            statement.setString(5, entity.getDiscriptionEn());
+            statement.setInt(6, entity.getPrice());
+            statement.setString(7, entity.getImg());
+            statement.setBoolean(8, entity.isActive());
+            statement.setInt(9, entity.getId());
+            System.out.println("fooddao update entity:" + entity.getId() + entity.toString());
+            LOGGER.debug("Statement has been created.");
+            return statement.executeUpdate();
+        } catch (Exception e) {
+            LOGGER.warn("Statement cannot be created.", e);
+            throw new DAOException(e);
+        } finally {
+            pool.returnConnection(connection);
+        }
     }
 
 
@@ -106,10 +195,10 @@ public class FoodDao extends AbstractDao<Integer, Food> {
                 food.setNameEn(resultSet.getString("NAME_EN"));
                 food.setDiscriptionRu(resultSet.getString("COMPOS_RU"));
                 food.setDiscriptionEn(resultSet.getString("COMPOS_EN"));
-                food.setSizeId(resultSet.getInt("SIZE_ID"));
                 food.setPrice(resultSet.getInt("PRICE"));
                 food.setImg(resultSet.getString("IMG"));
-                foods.add(food);
+                food.setActive(resultSet.getBoolean("ACTIVE"));
+                if (food.isActive())     foods.add(food);
             }
         } catch (Exception e) {
             throw new DAOException(e);

@@ -40,7 +40,7 @@ public class UserInfoUpdateAction implements Action {
         LOGGER.debug("Account has been changed.");
         try {
             userDao().update(userAfter);
-            System.out.println("infoupdateAction userafter: "+ userAfter.getId() + userAfter);
+            System.out.println("infoupdateAction userafter: " + userAfter.getId() + userAfter);
             LOGGER.debug("User " + userAfter.getUsername() + " has been updated.");
         } catch (DAOException e) {
             e.printStackTrace();
@@ -48,9 +48,11 @@ public class UserInfoUpdateAction implements Action {
         if (userBefore.getId() == userAfter.getId()) {
             LOGGER.debug("User's own account.");
             session.setAttribute("user", userAfter);
-            System.out.println("infoupdateaction session attribute user:"+session.getAttribute("user.id")+session.getAttribute("user"));
+            System.out.println("infoupdateaction session attribute user:" + session.getAttribute("user.id") + session.getAttribute("user"));
         }
-        return new ActionResult(ActionResult.METHOD.REDIRECT, request.getHeader("referer"));
+        String referer = request.getHeader("referer");
+        referer = referer.substring(referer.lastIndexOf("/") + 1, referer.length());
+        return new ActionResult(ActionResult.METHOD.REDIRECT, referer);
     }
 
     private UserDao userDao() throws DAOException {

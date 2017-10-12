@@ -57,13 +57,16 @@
                     <form id="pass_update" method="POST" action="pass_update">
                         <div>
                             <label for="old_pass"><fmt:message key="default.oldPassword"/></label>
-                            <input type="password" id="old_pass" name="old_password" required/>
+                            <input type="password" id="old_pass" name="old-password" required/>
                         </div>
                         <div>
-                            <label for="new_pass"><fmt:message key="default.newPassword"/></label>
-                            <input type="password" id="new_pass" name="re-password" required/>
+                            <label for="new_pass1"><fmt:message key="default.newPassword"/></label>
+                            <input type="password" id="new_pass1" name="new-password1" required/>
                         </div>
-
+                        <div>
+                            <label for="new_pass2"><fmt:message key="default.newPassword"/></label>
+                            <input type="password" id="new_pass2" name="new-password2" required/>
+                        </div>
                         <button type="submit" class="btn btn-primary"><fmt:message key="default.update"/></button>
                     </form>
                 </div>
@@ -71,13 +74,19 @@
 
             <div class="col-sm-6 col-md-4">
                 <div class="thumbnail">
-                    <form id="balance_update" method="POST" action="balance_update">
+
                         <div>
-                            <label for="new_pass"><fmt:message key="default.balance"/></label>
+                            <label for="balance"><fmt:message key="default.balance"/></label>
                             <input type="text" id="balance" name="old_password" value="${user.balance}" readonly/>
                         </div>
-                        <button type="submit" class="btn btn-primary"><fmt:message key="default.reup"/></button>
-                    </form>
+                    <a href="#reup_form" title="Re-up balance" class="btn btn-primary">
+                        <fmt:message key="default.reup"/></a>
+
+                    <a href="#x" class="overlay" id="reup_form"></a>
+                    <div class="popup">
+                        <h2><fmt:message key="default.underConstruction"/></h2>
+                        <a class="close" href="#close"></a>
+                    </div>
                 </div>
             </div>
         </div>

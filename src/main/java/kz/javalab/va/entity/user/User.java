@@ -1,7 +1,7 @@
 package kz.javalab.va.entity.user;
 
 import kz.javalab.va.entity.Entity;
-import kz.javalab.va.entity.Order;
+import kz.javalab.va.entity.order.Order;
 
 import java.util.List;
 

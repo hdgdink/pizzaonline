@@ -15,6 +15,7 @@
         <script type='text/javascript' src='<c:url value="/static/js/bootstrap-select.js"/>'></script>
         <script type='text/javascript' src='<c:url value="/webjars/jquery/1.11.1/jquery.js"/>'></script>
         <script type='text/javascript' src='<c:url value="/webjars/bootstrap/3.2.0/js/bootstrap.js"/>'></script>
+        <script type='text/javascript' src='<c:url value="/static/js/count_button.js"/>'></script>
     </head>
     <body>
     <div id="main">
@@ -24,9 +25,8 @@
         <div id="menu" class="section">
             <h1><span><fmt:message key="default.subs"/></span></h1>
             <hr>
-
             <c:forEach items="${subList}" var="sub">
-                <div class="col-sm-6 col-md-4">
+            <div class="col-sm-6 col-md-4">
                     <div class="thumbnail">
                         <img src=${sub.img}>
                         <div class="caption">
@@ -34,11 +34,14 @@
                             <c:if test="${locale.language=='en'}"><h3>${sub.nameEn}</h3></c:if>
                             <c:if test="${locale.language=='ru'}"><p>${sub.discriptionRu}</p></h3></c:if>
                             <c:if test="${locale.language=='en'}"><p>${sub.discriptionEn}</p></h3></c:if>
+                            <input type="hidden" name="food" value="${sub.id}"/>
                             <p>
-                                <select name="size" class="select">
-                                    <option value="${price}"><fmt:message key="default.small"/></option>
-                                    <option value="${price}"><fmt:message key="default.medium"/></option>
-                                    <option value="${price}"><fmt:message key="default.big"/></option>
+                                <select name="size" class="select"
+                                        onchange="document.getElementById('size').value=value">
+                                    <c:forEach items="${sizeList}" var="size">
+                                        <option value="${size.size}"><fmt:message key="default.small"/></option>
+                                    </c:forEach>
+                                    <input type="hidden" name="size" class="size"/>
                                 </select>
                             <p/>
                             <t:count_group/>
@@ -47,31 +50,23 @@
                                        id="price1"/>
                                 <span class="span"><fmt:message key="default.currency"/></span>
                                 <br>
-                                <input class="btn btn-primary" type="button"
-                                       value="<fmt:message key="default.addtolist"/>">
+                                <a href="#message_form" title="Add to order" class="add btn btn-primary">
+                                    <fmt:message key="default.addtolist"/></a>
                             </p>
+
+                            <a href="#x" class="overlay" id="message_form"></a>
+                            <div class="popup">
+                                <h2><fmt:message key="default.loginNeed"/></h2>
+                                <a class="close" href="#close"></a>
+                            </div>
                         </div>
                     </div>
                 </div>
             </c:forEach>
         </div>
 
-        <div id="order_subs" class="section">
-            <h1><fmt:message key="default.order"/></h1>
-            <hr>
-            <table id="myTable">
-                <tr>
-                    <td><fmt:message key="default.name"/></td>
-                    <td></td>
-                    <td>. . . . . . . . . . . . . . . . . . . . . . . . . .</td>
-                    <td></td>
-                    <td><fmt:message key="default.price"/></td>
-                </tr>
+        <t:order_list/>
 
-            </table>
-            <hr>
-            <input class="btn btn-primary" type="submit" value="<fmt:message key="default.checkout"/>"/>
-        </div>
         <div id="rasporka"></div>
     </div>
     <t:footer/>

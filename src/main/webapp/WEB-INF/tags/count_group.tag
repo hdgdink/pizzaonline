@@ -2,34 +2,17 @@
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-
-</p>
+<p>
 <form class="form-inline">
     <div class="form-group">
         <div class="input-group">
-            <span class="btn btn-primary" id="minus">-</span>
-            <input type="number" class="form-control" id="input" value="0" readonly="readonly">
-            <span class="btn btn-primary" id="plus">+</span>
+            <c:set var="count" value="0" scope="request"/>
+            <span class="quont-minus btn btn-primary" id="minus">-</span>
+            <input type="text" class="form-control" id="input" value="${count}" name="count"
+                   readonly="readonly">
+            <span class="quont-plus btn btn-primary" id="plus" >+</span>
         </div>
     </div>
 </form>
-<p>
+</p>
 
-    <script>
-        $(document).ready(function () {
-            $('#minus').click(function () {
-                var $input = $(this).parent().find('input');
-                var count = parseInt($input.val()) - 1;
-                count = count < 1 ? 0 : count;
-                $input.val(count);
-                $input.change();
-                return false;
-            });
-            $('#plus').click(function () {
-                var $input = $(this).parent().find('input');
-                $input.val(parseInt($input.val()) + 1);
-                $input.change();
-                return false;
-            });
-        });
-    </script>

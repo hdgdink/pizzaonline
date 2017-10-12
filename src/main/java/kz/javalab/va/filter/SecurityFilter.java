@@ -1,5 +1,6 @@
 package kz.javalab.va.filter;
 
+import kz.javalab.va.action.admin.CreateEntityAdmin;
 import kz.javalab.va.entity.user.Role;
 import kz.javalab.va.entity.user.User;
 
@@ -28,7 +29,7 @@ public class SecurityFilter implements Filter {
         EnumSet<Role> unreg = EnumSet.of(Role.UNREGISTERED_USER);
         EnumSet<Role> admin = EnumSet.of(Role.ADMIN);
         actions.put("GET/subs", unreg);
-        actions.put("GET/pizza",unreg);
+        actions.put("GET/pizza", unreg);
         actions.put("GET/beverage", unreg);
         actions.put("GET/subs_loged", authorized);
         actions.put("GET/pizza_loged", authorized);
@@ -37,11 +38,22 @@ public class SecurityFilter implements Filter {
         actions.put("GET/locale", all);
         actions.put("GET/registered", authorized);
         actions.put("GET/logout", authorized);
-        actions.put("GET/cabinet",authorized);
+        actions.put("GET/cabinet", authorized);
+        actions.put("GET/add_to_orderlist", authorized);
+        actions.put("GET/del_from_orderlist", authorized);
+        actions.put("GET/products", admin);
+        actions.put("GET/orders", admin);
+        actions.put("GET/order_details", admin);
+        actions.put("GET/sizes", admin);
+        actions.put("GET/types", admin);
 
         actions.put("POST/register", unreg);
         actions.put("POST/login", unreg);
-
+        actions.put("POST/chekout_order", authorized);
+        actions.put("POST/info_update", client);
+        actions.put("POST/pass_update", client);
+        actions.put("POST/create_product", admin);
+        actions.put("POST/create_user", admin);
     }
 
     /**

@@ -3,7 +3,10 @@ package kz.javalab.va.listener;
 import kz.javalab.va.connection.pool.ConnectionPoolException;
 import kz.javalab.va.dao.DAOException;
 import kz.javalab.va.dao.impl.FoodDao;
+import kz.javalab.va.dao.impl.SizeDao;
 import kz.javalab.va.entity.Food;
+import kz.javalab.va.entity.Size;
+import kz.javalab.va.util.AttributeSetter;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
@@ -21,17 +24,8 @@ public class SessionListener implements HttpSessionListener {
         HttpSession session = se.getSession();
         ServletContext context = session.getServletContext();
         context.setAttribute(ATTR_LOCALE, DEFAULT_LOCALE);
-        try {
-            List<Food> pizzaList = new FoodDao().getAllByTypeId(0);
-            List<Food> subList = new FoodDao().getAllByTypeId(1);
-            List<Food> bevList = new FoodDao().getAllByTypeId(2);
-            context.setAttribute("pizzaList",pizzaList);
-            context.setAttribute("subList",subList);
-            context.setAttribute("bevList",bevList);
-        } catch (DAOException e) {
-            e.printStackTrace();
-        } catch (ConnectionPoolException e) {
-            e.printStackTrace();
-        }
+        AttributeSetter setter = new AttributeSetter();
+        setter.setAttributes(session);
+
     }
 }

@@ -6,6 +6,7 @@ import kz.javalab.va.action.ActionResult;
 import kz.javalab.va.connection.pool.ConnectionPoolException;
 import kz.javalab.va.dao.DAOException;
 import kz.javalab.va.dao.impl.UserDao;
+import kz.javalab.va.entity.user.Role;
 import kz.javalab.va.entity.user.User;
 import org.apache.log4j.Logger;
 
@@ -22,6 +23,7 @@ public class LoginAction implements Action {
     public ActionResult execute(HttpServletRequest request,
                                 HttpServletResponse response) throws ActionException {
         HttpSession session = request.getSession();
+        Integer finalPrice=0;
         String username = request.getParameter("username");
         String password = request.getParameter("password");
         User user;
@@ -43,15 +45,19 @@ public class LoginAction implements Action {
             result = new ActionResult(ActionResult.METHOD.FORWARD, "pizza_unreg");
             return result;
         }
-
+        if (user.getRole().equals(Role.ADMIN))
+            result = new ActionResult(ActionResult.METHOD.REDIRECT, "cabinet");
+        else result = new ActionResult(ActionResult.METHOD.REDIRECT, "pizza_loged");
         session.setAttribute("user", user);
+        session.setAttribute("id", user.getId());
+        session.setAttribute("finalPrice",finalPrice);
+        System.out.println(session.getAttribute("id"));
         session.removeAttribute("email");
         session.removeAttribute("signInError");
         session.removeAttribute("error");
         session.removeAttribute("link");
         LOGGER.debug("User " + user.getEmail() + " has been logged.");
-        result = new ActionResult(ActionResult.METHOD.FORWARD, "loged");
-        System.out.println("LoginAction:" + session.getAttribute("user"));
+                System.out.println("LoginAction:" + session.getAttribute("user"));
         return result;
     }
 

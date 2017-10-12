@@ -6,7 +6,7 @@
 
 <html>
 <head>
-    <title>Title</title>
+    <title>Error</title>
 </head>
 <body>
 <div  align="center">
@@ -16,7 +16,9 @@
 
     <img src="/static/img/error.png"/>
     <br>
-    <a href="pizza"><fmt:message key="default.mainpage"/></a>
+    <a href="pizza">
+        <fmt:message key="default.mainpage"/>
+    </a>
 </div>
 </body>
 </html>

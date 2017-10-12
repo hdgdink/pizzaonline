@@ -7,7 +7,7 @@ public class ActionResult {
 
     private METHOD method;
     private String view;
-    private boolean redirection;
+
 
     public ActionResult(METHOD method, String view) {
         super();
@@ -37,11 +37,7 @@ public class ActionResult {
         this.view = view;
     }
 
-    public ActionResult(String view, boolean redirection) {
-        this.view = view;
-        this.redirection = redirection;
-    }
-    public ActionResult(){
+    public ActionResult() {
         super();
     }
 

@@ -97,15 +97,36 @@ nav ul ul ul {
 }
 
 #main {
-    width: 100%;
+    width: auto;
     margin: 0 auto;
     min-height: 100%;
+    height: auto;
 }
 
 .section {
     padding: 15px;
     margin-bottom: 10px;
     border-radius: 10px;
+}
+.caption{
+    background-image: url("../img/pinkback1.jpg");
+}
+
+.nav_section {
+    text-align: center;
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 10px;
+    width: 100%;
+}
+
+.del {
+
+}
+
+#caption p {
+    text-align: center;
+    align-items: center;
 }
 
 #welcome {
@@ -139,8 +160,8 @@ nav ul ul ul {
 
 #locale_changer {
     position: absolute;
-    right: 40%;
-    top: 10%;
+    right: 4%;
+    top: 0%;
 }
 
 .button {
@@ -266,11 +287,22 @@ nav ul ul ul {
     margin: 0 auto;
 }
 
+
+
 #cabinet {
     background-image: url("../img/pinkback1.jpg");
     width: auto;
-    height: 80%;
     margin: 0 auto;
+}
+
+
+
+.msg-error {
+    background-color: red;
+    font-size: 12px;
+    text-align: center;
+    color: rgb(255, 255, 255);
+    margin-bottom: 10px;
 }
 
 .select {

@@ -2,8 +2,10 @@ package kz.javalab.va.listener;
 
 import kz.javalab.va.connection.pool.ConnectionPool;
 import kz.javalab.va.connection.pool.ConnectionPoolException;
+import kz.javalab.va.entity.user.Role;
 import org.apache.log4j.Logger;
 
+import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
@@ -16,7 +18,10 @@ public class ContextListener implements ServletContextListener {
 
     @Override
     public void contextInitialized(ServletContextEvent sce) {
+        ServletContext context = sce.getServletContext();
         LOGGER.debug("Servlet initilization...");
+        context.setAttribute("roles", Role.values());
+
     }
 
 

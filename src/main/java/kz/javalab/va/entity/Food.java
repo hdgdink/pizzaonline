@@ -1,17 +1,19 @@
 package kz.javalab.va.entity;
 
+import kz.javalab.va.connection.pool.ConnectionPoolException;
+import kz.javalab.va.dao.DAOException;
+import kz.javalab.va.dao.impl.TypeDao;
+
 public class Food extends Entity {
     private Integer typeId;
     private String nameEn;
     private String nameRu;
     private String discriptionEn;
     private String discriptionRu;
-    private Integer sizeId;
     private Integer price;
     private Type type;
-    private Size size;
     private String img;
-
+    private Boolean active;
 
     public String getImg() {
         return img;
@@ -61,13 +63,6 @@ public class Food extends Entity {
         this.discriptionRu = discriptionRu;
     }
 
-    public Integer getSizeId() {
-        return sizeId;
-    }
-
-    public void setSizeId(Integer sizeId) {
-        this.sizeId = sizeId;
-    }
 
     public Integer getPrice() {
         return price;
@@ -78,13 +73,23 @@ public class Food extends Entity {
     }
 
     public Type getType() {
+        try {
+            TypeDao typeDao = new TypeDao();
+            type = typeDao.getById(typeId);
+        } catch (ConnectionPoolException e) {
+            e.printStackTrace();
+        } catch (DAOException e) {
+            e.printStackTrace();
+            throw new RuntimeException("Error getting vehicle model from database", e);
+        }
         return type;
     }
 
-
-    public Size getSize() {
-        return size;
+    public boolean isActive() {
+        return active;
     }
 
-
+    public void setActive(Boolean active) {
+        this.active = active;
+    }
 }

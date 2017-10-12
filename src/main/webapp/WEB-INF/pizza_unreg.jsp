@@ -15,6 +15,7 @@
         <script type='text/javascript' src='<c:url value="/static/js/bootstrap-select.js"/>'></script>
         <script type='text/javascript' src='<c:url value="/webjars/jquery/1.11.1/jquery.js"/>'></script>
         <script type='text/javascript' src='<c:url value="/webjars/bootstrap/3.2.0/js/bootstrap.js"/>'></script>
+        <script type='text/javascript' src='<c:url value="/static/js/count_button.js"/>'></script>
     </head>
     <body>
 
@@ -39,42 +40,36 @@
                             <c:if test="${locale.language=='en'}"><p>${pizza.discriptionEn}</p></h3></c:if>
                             <p>
                                 <select name="size" class="select">
-                                    <option value="${price}"><fmt:message key="default.small"/></option>
-                                    <option value="${price}"><fmt:message key="default.medium"/></option>
-                                    <option value="${price}"><fmt:message key="default.big"/></option>
+                                    <c:forEach items="${sizeList}" var="size">
+                                        <option value="${size.size}"><fmt:message key="${size.name}"/></option>
+                                    </c:forEach>
                                 </select>
                             <p/>
                             <t:count_group/>
                             <p>
-                                <input type="text" value="${price}" readonly="readonly" class="input_select"
-                                       id="price1"/>
+
+                                <input type="text" value="${calcPrice}" readonly="readonly" class="input_select"/>
                                 <span class="span"><fmt:message key="default.currency"/></span>
                                 <br>
-                                <input class="btn btn-primary" type="button"
-                                       value="<fmt:message key="default.addtolist"/>">
+
+                                <input type="hidden" name="food" value="${pizza.id}"/>
+                                <br>
+                                <a href="#message_form" title="Add to order" class="add btn btn-primary">
+                                    <fmt:message key="default.addtolist"/></a>
                             </p>
+
+                            <a href="#x" class="overlay" id="message_form"></a>
+                            <div class="popup">
+                                <h2><fmt:message key="default.loginNeed"/></h2>
+                                <a class="close" href="#close"></a>
+                            </div>
                         </div>
                     </div>
                 </div>
             </c:forEach>
         </div>
 
-        <div id="order" class="section">
-            <h1><fmt:message key="default.order"/></h1>
-            <hr>
-            <table id="myTable">
-                <tr>
-                    <td><fmt:message key="default.name"/></td>
-                    <td></td>
-                    <td>. . . . . . . . . . . . . . . . . . . . . . . . . .</td>
-                    <td></td>
-                    <td><fmt:message key="default.price"/></td>
-                </tr>
-
-            </table>
-            <hr>
-            <input class="btn btn-primary" type="submit" value="<fmt:message key="default.checkout"/>"/>
-        </div>
+        <t:order_list/>
 
         <div id="rasporka"></div>
     </div>

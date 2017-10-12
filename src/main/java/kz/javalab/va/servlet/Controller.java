@@ -21,7 +21,6 @@ public class Controller extends HttpServlet {
         ActionResult result;
         ActionResult.METHOD method;
         String view;
-
         action = ActionFactory.getAction(request);
         try {
             result = action.execute(request, response);
@@ -37,7 +36,7 @@ public class Controller extends HttpServlet {
                         .forward(request, response);
                 break;
             case REDIRECT:
-             response.sendRedirect(view);
+            response.sendRedirect(request.getContextPath() + "/do/" + result.getView());
                 break;
        }
 
