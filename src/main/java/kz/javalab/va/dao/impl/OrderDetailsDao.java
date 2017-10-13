@@ -7,12 +7,26 @@ import kz.javalab.va.dao.DAOException;
 import kz.javalab.va.entity.OrderDetails;
 import org.apache.log4j.Logger;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
 public class OrderDetailsDao extends AbstractDao<Integer, OrderDetails> {
     private static final Logger LOGGER = Logger.getLogger(OrderDetailsDao.class);
+    private static final String ID = "ID";
+    private static final String FOOD_ID = "FOOD_ID";
+    private static final String FOOD_NAME_RU = "FOOD_NAME_RU";
+    private static final String FOOD_NAME_EN = "FOOD_NAME_EN";
+    private static final String ORDER_ID = "ORDER_ID";
+    private static final String TYPE_ID = "TYPE_ID";
+    private static final String TYPE_NAME = "TYPE_NAME";
+    private static final String SIZE_NAME = "SIZE_NAME";
+    private static final String QNT = "QUANTITY";
+    private static final String PRICE = "PRICE";
+
     private final ConnectionPool pool = ConnectionPool.getInstance();
     private DaoFactory daoFactory = new DaoFactory();
     private static final String UPDATE_ORDER_DETAILS = "UPDATE ORDER_DETAILS SET ORDER_ID = ?, FOOD_ID = ?," +
@@ -42,16 +56,16 @@ public class OrderDetailsDao extends AbstractDao<Integer, OrderDetails> {
                     details = new ArrayList<>();
                 }
                 OrderDetails orderDetails = new OrderDetails();
-                orderDetails.setId(resultSet.getInt("ID"));
-                orderDetails.setFoodId(resultSet.getInt("FOOD_ID"));
-                orderDetails.setFoodNameRu(resultSet.getString("FOOD_NAME_RU"));
-                orderDetails.setFoodNameEn(resultSet.getString("FOOD_NAME_EN"));
-                orderDetails.setOrderId(resultSet.getInt("ORDER_ID"));
-                orderDetails.setTypeId(resultSet.getInt("TYPE_ID"));
-                orderDetails.setTypeName(resultSet.getString("TYPE_NAME"));
-                orderDetails.setSizeName(resultSet.getString("SIZE_NAME"));
-                orderDetails.setQuantity(resultSet.getInt("QUANTITY"));
-                orderDetails.setFinalPrice(resultSet.getInt("PRICE"));
+                orderDetails.setId(resultSet.getInt(ID));
+                orderDetails.setFoodId(resultSet.getInt(FOOD_ID));
+                orderDetails.setFoodNameRu(resultSet.getString(FOOD_NAME_RU));
+                orderDetails.setFoodNameEn(resultSet.getString(FOOD_NAME_EN));
+                orderDetails.setOrderId(resultSet.getInt(ORDER_ID));
+                orderDetails.setTypeId(resultSet.getInt(TYPE_ID));
+                orderDetails.setTypeName(resultSet.getString(TYPE_NAME));
+                orderDetails.setSizeName(resultSet.getString(SIZE_NAME));
+                orderDetails.setQuantity(resultSet.getInt(QNT));
+                orderDetails.setFinalPrice(resultSet.getInt(PRICE));
                 details.add(orderDetails);
             }
         } catch (Exception e) {
@@ -73,16 +87,16 @@ public class OrderDetailsDao extends AbstractDao<Integer, OrderDetails> {
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
                 orderDetails = new OrderDetails();
-                orderDetails.setId(resultSet.getInt("ID"));
-                orderDetails.setFoodId(resultSet.getInt("FOOD_ID"));
-                orderDetails.setFoodNameRu(resultSet.getString("FOOD_NAME_RU"));
-                orderDetails.setFoodNameEn(resultSet.getString("FOOD_NAME_EN"));
-                orderDetails.setOrderId(resultSet.getInt("ORDER_ID"));
-                orderDetails.setTypeId(resultSet.getInt("TYPE_ID"));
-                orderDetails.setTypeName(resultSet.getString("TYPE_NAME"));
-                orderDetails.setSizeName(resultSet.getString("SIZE_NAME"));
-                orderDetails.setQuantity(resultSet.getInt("QUANTITY"));
-                orderDetails.setFinalPrice(resultSet.getInt("PRICE"));
+                orderDetails.setId(resultSet.getInt(ID));
+                orderDetails.setFoodId(resultSet.getInt(FOOD_ID));
+                orderDetails.setFoodNameRu(resultSet.getString(FOOD_NAME_RU));
+                orderDetails.setFoodNameEn(resultSet.getString(FOOD_NAME_EN));
+                orderDetails.setOrderId(resultSet.getInt(ORDER_ID));
+                orderDetails.setTypeId(resultSet.getInt(TYPE_ID));
+                orderDetails.setTypeName(resultSet.getString(TYPE_NAME));
+                orderDetails.setSizeName(resultSet.getString(SIZE_NAME));
+                orderDetails.setQuantity(resultSet.getInt(QNT));
+                orderDetails.setFinalPrice(resultSet.getInt(PRICE));
             }
         } catch (Exception e) {
             LOGGER.warn("Statement cannot be created.", e);
@@ -174,16 +188,16 @@ public class OrderDetailsDao extends AbstractDao<Integer, OrderDetails> {
                     details = new ArrayList<>();
                 }
                 OrderDetails orderDetails = new OrderDetails();
-                orderDetails.setId(resultSet.getInt("ID"));
-                orderDetails.setFoodId(resultSet.getInt("FOOD_ID"));
-                orderDetails.setFoodNameRu(resultSet.getString("FOOD_NAME_RU"));
-                orderDetails.setFoodNameEn(resultSet.getString("FOOD_NAME_EN"));
-                orderDetails.setQuantity(resultSet.getInt("QUANTITY"));
-                orderDetails.setOrderId(resultSet.getInt("ORDER_ID"));
-                orderDetails.setTypeId(resultSet.getInt("TYPE_ID"));
-                orderDetails.setTypeName(resultSet.getString("TYPE_NAME"));
-                orderDetails.setSizeName(resultSet.getString("SIZE_NAME"));
-                orderDetails.setFinalPrice(resultSet.getInt("PRICE"));
+                orderDetails.setId(resultSet.getInt(ID));
+                orderDetails.setFoodId(resultSet.getInt(FOOD_ID));
+                orderDetails.setFoodNameRu(resultSet.getString(FOOD_NAME_RU));
+                orderDetails.setFoodNameEn(resultSet.getString(FOOD_NAME_EN));
+                orderDetails.setOrderId(resultSet.getInt(ORDER_ID));
+                orderDetails.setTypeId(resultSet.getInt(TYPE_ID));
+                orderDetails.setQuantity(resultSet.getInt(QNT));
+                orderDetails.setTypeName(resultSet.getString(TYPE_NAME));
+                orderDetails.setSizeName(resultSet.getString(SIZE_NAME));
+                orderDetails.setFinalPrice(resultSet.getInt(PRICE));
                 details.add(orderDetails);
             }
         } catch (Exception e) {

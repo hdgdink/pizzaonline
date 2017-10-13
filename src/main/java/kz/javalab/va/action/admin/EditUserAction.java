@@ -17,26 +17,37 @@ import javax.servlet.http.HttpSession;
 
 public class EditUserAction implements Action {
     private static final Logger LOGGER = Logger.getLogger(EditUserAction.class);
+    private static final String ID = "id";
+    private static final String USERNAME = "username";
+    private static final String EMAIL = "email";
+    private static final String FIRSTNAME = "firstname";
+    private static final String LASTNAME = "lastname";
+    private static final String BALANCE = "balance";
+    private static final String PASSWORD = "password";
+    private static final String ROLE = "role";
+    private static final String USER_CHANGE_ERROR = "user_change_error";
+    private static final Object BUSY_USERNAME = "error.busy-username";
+    private static final String REFERER = "referer";
     private UserDao dao;
     private User user = null;
 
     @Override
     public ActionResult execute(HttpServletRequest request, HttpServletResponse response) throws ActionException {
         HttpSession session = request.getSession();
-        Integer id = Integer.parseInt(request.getParameter("id"));
-        String username = request.getParameter("username");
-        String email = request.getParameter("email");
-        String firstName = request.getParameter("firstname");
-        String lastName = request.getParameter("lastname");
-        Integer balance = Integer.parseInt(request.getParameter("balance"));
-        String password = request.getParameter("password");
-        Role role = Role.valueOf(request.getParameter("role"));
+        Integer id = Integer.parseInt(request.getParameter(ID));
+        String username = request.getParameter(USERNAME);
+        String email = request.getParameter(EMAIL);
+        String firstName = request.getParameter(FIRSTNAME);
+        String lastName = request.getParameter(LASTNAME);
+        Integer balance = Integer.parseInt(request.getParameter(BALANCE));
+        String password = request.getParameter(PASSWORD);
+        Role role = Role.valueOf(request.getParameter(ROLE));
 
         try {
             user = userDao().getById(id);
             if ((!user.getUsername().equals(username)) && (userDao().getUsersListByUsername(username) != null)) {
                 LOGGER.info("Username is busy, select another");
-                session.setAttribute("user_change_error", "error.busy-username");
+                session.setAttribute(USER_CHANGE_ERROR, BUSY_USERNAME);
             } else {
                 user.setUsername(username);
                 user.setId(id);
@@ -53,7 +64,7 @@ public class EditUserAction implements Action {
             LOGGER.error("Error of SizeDao", e);
             e.printStackTrace();
         }
-        String referer = request.getHeader("referer");
+        String referer = request.getHeader(REFERER);
         referer = referer.substring(referer.lastIndexOf("/") + 1, referer.length());
         return new ActionResult(ActionResult.METHOD.REDIRECT, referer);
     }

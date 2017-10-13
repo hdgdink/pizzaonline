@@ -16,15 +16,19 @@ import javax.servlet.http.HttpSession;
 
 public class EditTypeAction implements Action {
     private static final Logger LOGGER = Logger.getLogger(EditTypeAction.class);
+    private static final String ID = "id";
+    private static final String ACTIVE = "active";
+    private static final String REFERER = "referer";
+    private static final String TYPE = "type";
     private TypeDao dao;
     private Type type = null;
 
     @Override
     public ActionResult execute(HttpServletRequest request, HttpServletResponse response) throws ActionException {
         HttpSession session = request.getSession();
-        Integer id = Integer.parseInt(request.getParameter("id"));
-        String value = request.getParameter("type");
-        Boolean active = Boolean.parseBoolean(request.getParameter("active"));
+        Integer id = Integer.parseInt(request.getParameter(ID));
+        String value = request.getParameter(TYPE);
+        Boolean active = Boolean.parseBoolean(request.getParameter(ACTIVE));
         try {
             type = typeDao().getById(id);
             type.setType(value);
@@ -37,7 +41,7 @@ public class EditTypeAction implements Action {
         }
         AttributeSetter setter = new AttributeSetter();
         setter.setAttributes(session);
-        String referer = request.getHeader("referer");
+        String referer = request.getHeader(REFERER);
         referer = referer.substring(referer.lastIndexOf("/") + 1, referer.length());
         return new ActionResult(ActionResult.METHOD.REDIRECT, referer);
     }

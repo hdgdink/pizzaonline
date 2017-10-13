@@ -35,6 +35,7 @@ public class ActionFactory {
     private static final String TYPE = "type";
     private static final String ORDER_DETAILS = "orderDetails";
     private static final String ORDER = "order";
+    private static final Object ERROR_NOT_FOUND = "error.notFound";
 
     static {
         ACTIONS.put("GET/subs", new ShowPageAction(PAGE_SUBS));
@@ -90,7 +91,7 @@ public class ActionFactory {
         if (action == null) {
             action = ACTIONS.get("GET/error");
             session = request.getSession();
-            session.setAttribute("error", "error.notFound");
+            session.setAttribute(ERROR, ERROR_NOT_FOUND);
             LOGGER.debug("Unknown request.");
             return action;
         }

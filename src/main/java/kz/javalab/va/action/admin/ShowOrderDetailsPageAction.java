@@ -14,20 +14,23 @@ import javax.servlet.http.HttpSession;
 import java.util.List;
 
 public class ShowOrderDetailsPageAction implements Action {
+    private static final String ADMIN_ORDER_DETAILS = "admin_order_details";
+    private static final String ORDER_DETAILS_LIST = "allOrderDetails";
+
     @Override
     public ActionResult execute(HttpServletRequest request, HttpServletResponse response) throws ActionException {
         HttpSession session = request.getSession();
 
         try {
             List<OrderDetails> detailsList = new OrderDetailsDao().getAll();
-            session.setAttribute("allOrderDetails", detailsList);
+            session.setAttribute(ORDER_DETAILS_LIST, detailsList);
         } catch (DAOException e) {
             e.printStackTrace();
         } catch (ConnectionPoolException e) {
             e.printStackTrace();
         }
 
-        return new ActionResult(ActionResult.METHOD.FORWARD, "admin_order_details");
+        return new ActionResult(ActionResult.METHOD.FORWARD, ADMIN_ORDER_DETAILS);
 
     }
 }

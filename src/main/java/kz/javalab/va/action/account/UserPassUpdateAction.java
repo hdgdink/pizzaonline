@@ -8,7 +8,6 @@ import kz.javalab.va.dao.DAOException;
 import kz.javalab.va.dao.impl.UserDao;
 import kz.javalab.va.entity.user.User;
 import kz.javalab.va.util.validator.FieldsValidator;
-import kz.javalab.va.util.validator.ValidationException;
 import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;

@@ -5,7 +5,6 @@ import kz.javalab.va.connection.pool.ConnectionPoolException;
 import kz.javalab.va.dao.AbstractDao;
 import kz.javalab.va.dao.DAOException;
 import kz.javalab.va.entity.Type;
-
 import org.apache.log4j.Logger;
 
 import java.sql.Connection;
@@ -23,6 +22,9 @@ public class TypeDao extends AbstractDao<Integer, Type> {
     private static final String TYPE_FIND_ALL = "SELECT * FROM TYPE ";
     private static final String TYPE_UPDATE = "UPDATE TYPE SET TYPE = ?, ACTIVE = ?  WHERE ID = ?;";
     private static final String TYPE_CREATE = "INSERT INTO TYPE ( TYPE, ACTIVE) VALUES(?, ?);";
+    private static final String ID = "ID";
+    private static final String TYPE = "TYPE";
+    private static final String ACTIVE = "ACTIVE";
     private final ConnectionPool pool = ConnectionPool.getInstance();
     private DaoFactory daoFactory = new DaoFactory();
 
@@ -42,9 +44,9 @@ public class TypeDao extends AbstractDao<Integer, Type> {
                     types = new ArrayList<>();
                 }
                 Type type = new Type();
-                type.setId(resultSet.getInt("id"));
-                type.setType(resultSet.getString("TYPE"));
-                type.setActive(resultSet.getBoolean("ACTIVE"));
+                type.setId(resultSet.getInt(ID));
+                type.setType(resultSet.getString(TYPE));
+                type.setActive(resultSet.getBoolean(ACTIVE));
                 types.add(type);
             }
         } catch (Exception e) {
@@ -66,9 +68,9 @@ public class TypeDao extends AbstractDao<Integer, Type> {
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.first()) {
                 type = new Type();
-                type.setId(resultSet.getInt("id"));
-                type.setType(resultSet.getString("TYPE"));
-                type.setActive(resultSet.getBoolean("ACTIVE"));
+                type.setId(resultSet.getInt(ID));
+                type.setType(resultSet.getString(TYPE));
+                type.setActive(resultSet.getBoolean(ACTIVE));
             }
         } catch (Exception e) {
             LOGGER.warn("Statement cannot be created.", e);
@@ -131,7 +133,7 @@ public class TypeDao extends AbstractDao<Integer, Type> {
             statement.setInt(1, id);
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
-                name = resultSet.getString("TYPE");
+                name = resultSet.getString(TYPE);
             }
         } catch (Exception e) {
             LOGGER.warn("Statement cannot be created.", e);
@@ -150,7 +152,7 @@ public class TypeDao extends AbstractDao<Integer, Type> {
             statement.setString(1, name);
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
-                id = resultSet.getInt("ID");
+                id = resultSet.getInt(ID);
             }
         } catch (Exception e) {
             LOGGER.warn("Statement cannot be created.", e);

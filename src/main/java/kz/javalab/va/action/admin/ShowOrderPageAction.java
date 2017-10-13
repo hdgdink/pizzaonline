@@ -14,17 +14,20 @@ import javax.servlet.http.HttpSession;
 import java.util.List;
 
 public class ShowOrderPageAction implements Action {
+    private static final String ORDER_LIST = "orderList";
+    private static final String ADMIN_ORDERS = "admin_orders";
+
     @Override
     public ActionResult execute(HttpServletRequest request, HttpServletResponse response) throws ActionException {
         HttpSession session = request.getSession();
         try {
             List<Order> orderList = new OrderDao().getAll();
-            session.setAttribute("orderList", orderList);
+            session.setAttribute(ORDER_LIST, orderList);
         } catch (DAOException e) {
             e.printStackTrace();
         } catch (ConnectionPoolException e) {
             e.printStackTrace();
         }
-        return new ActionResult(ActionResult.METHOD.FORWARD, "admin_orders");
+        return new ActionResult(ActionResult.METHOD.FORWARD, ADMIN_ORDERS);
     }
 }

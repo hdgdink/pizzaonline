@@ -14,19 +14,21 @@ import javax.servlet.http.HttpSession;
 import java.util.List;
 
 public class ShowSizesPageAction implements Action {
+    private static final String SIZE_LIST = "allSizes";
+    private static final String ADMIN_SIZES = "admin_sizes";
 
     @Override
     public ActionResult execute(HttpServletRequest request, HttpServletResponse response) throws ActionException {
         HttpSession session = request.getSession();
         try {
             List<Size> sizeList = new SizeDao().getAll();
-            session.setAttribute("allSizes", sizeList);
+            session.setAttribute(SIZE_LIST, sizeList);
         } catch (DAOException e) {
             e.printStackTrace();
         } catch (ConnectionPoolException e) {
             e.printStackTrace();
         }
-        return new ActionResult(ActionResult.METHOD.FORWARD, "admin_sizes");
+        return new ActionResult(ActionResult.METHOD.FORWARD, ADMIN_SIZES);
 
     }
 

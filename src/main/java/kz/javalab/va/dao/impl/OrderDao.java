@@ -17,6 +17,12 @@ import java.util.List;
 
 public class OrderDao extends AbstractDao<Integer, Order> {
     private static final Logger LOGGER = Logger.getLogger(OrderDao.class);
+    private static final String STATUS = "STATUS";
+    private static final String ID = "ID";
+    private static final String USER_ID = "USER_ID";
+    private static final String SUM = "SUM";
+    private static final String ADDRESS = "ADDRESS";
+    private static final String PHONE = "PHONE";
     private final ConnectionPool pool = ConnectionPool.getInstance();
     private DaoFactory daoFactory = new DaoFactory();
     private static final String ORDER_CREATE = "INSERT INTO CLIENT_ORDER(USER_ID, SUM, ADDRESS, PHONE, STATUS) VALUES(?, ?, ?, ?, ?);";
@@ -41,12 +47,12 @@ public class OrderDao extends AbstractDao<Integer, Order> {
                     orders = new ArrayList<>();
                 }
                 Order order = new Order();
-                order.setId(resultSet.getInt("id"));
-                order.setUserId(resultSet.getInt("USER_ID"));
-                order.setSumOfOrder(resultSet.getInt("SUM"));
-                order.setAddress(resultSet.getString("ADDRESS"));
-                order.setPhone(resultSet.getString("PHONE"));
-                order.setStatus(Status.valueOf(resultSet.getString("STATUS")));
+                order.setId(resultSet.getInt(ID));
+                order.setUserId(resultSet.getInt(USER_ID));
+                order.setSumOfOrder(resultSet.getInt(SUM));
+                order.setAddress(resultSet.getString(ADDRESS));
+                order.setPhone(resultSet.getString(PHONE));
+                order.setStatus(Status.valueOf(resultSet.getString(STATUS)));
                 orders.add(order);
             }
         } catch (Exception e) {
@@ -68,12 +74,12 @@ public class OrderDao extends AbstractDao<Integer, Order> {
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
                 order = new Order();
-                order.setId(resultSet.getInt("id"));
-                order.setUserId(resultSet.getInt("USER_ID"));
-                order.setSumOfOrder(resultSet.getInt("SUM"));
-                order.setAddress(resultSet.getString("ADDRESS"));
-                order.setPhone(resultSet.getString("PHONE"));
-                order.setStatus(Status.valueOf(resultSet.getString("STATUS")));
+                order.setId(resultSet.getInt(ID));
+                order.setUserId(resultSet.getInt(USER_ID));
+                order.setSumOfOrder(resultSet.getInt(SUM));
+                order.setAddress(resultSet.getString(ADDRESS));
+                order.setPhone(resultSet.getString(PHONE));
+                order.setStatus(Status.valueOf(resultSet.getString(STATUS)));
             }
         } catch (Exception e) {
             LOGGER.warn("Statement cannot be created.", e);

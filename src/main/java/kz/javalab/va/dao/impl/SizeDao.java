@@ -16,6 +16,10 @@ import java.util.List;
 
 public class SizeDao extends AbstractDao<Integer, Size> {
     private static final Logger LOGGER = Logger.getLogger(SizeDao.class);
+    private static final String ID = "ID";
+    private static final String SIZE = "SIZE";
+    private static final String NAME = "NAME";
+    private static final String ACTIVE = "ACTIVE";
     private final ConnectionPool pool = ConnectionPool.getInstance();
     private DaoFactory daoFactory = new DaoFactory();
     private static final String SIZE_UPDATE = "UPDATE SIZE SET SIZE = ?, NAME = ?, ACTIVE = ?  WHERE ID = ?;";
@@ -40,10 +44,10 @@ public class SizeDao extends AbstractDao<Integer, Size> {
                     sizes = new ArrayList<>();
                 }
                 Size size = new Size();
-                size.setId(resultSet.getInt("ID"));
-                size.setSize(resultSet.getInt("SIZE"));
-                size.setName(resultSet.getString("NAME"));
-                size.setActive(resultSet.getBoolean("ACTIVE"));
+                size.setId(resultSet.getInt(ID));
+                size.setSize(resultSet.getInt(SIZE));
+                size.setName(resultSet.getString(NAME));
+                size.setActive(resultSet.getBoolean(ACTIVE));
                 sizes.add(size);
             }
         } catch (Exception e) {
@@ -65,10 +69,10 @@ public class SizeDao extends AbstractDao<Integer, Size> {
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
                 size = new Size();
-                size.setId(resultSet.getInt("ID"));
-                size.setName(resultSet.getString("NAME"));
-                size.setSize(resultSet.getInt("SIZE"));
-                size.setActive(resultSet.getBoolean("ACTIVE"));
+                size.setId(resultSet.getInt(ID));
+                size.setName(resultSet.getString(NAME));
+                size.setSize(resultSet.getInt(SIZE));
+                size.setActive(resultSet.getBoolean(ACTIVE));
             }
         } catch (Exception e) {
             LOGGER.warn("Statement cannot be created.", e);
@@ -134,10 +138,10 @@ public class SizeDao extends AbstractDao<Integer, Size> {
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
                 size = new Size();
-                size.setId(resultSet.getInt("ID"));
-                size.setName(resultSet.getString("NAME"));
-                size.setSize(resultSet.getInt("SIZE"));
-                size.setActive(resultSet.getBoolean("ACTIVE"));
+                size.setId(resultSet.getInt(ID));
+                size.setName(resultSet.getString(NAME));
+                size.setSize(resultSet.getInt(SIZE));
+                size.setActive(resultSet.getBoolean(ACTIVE));
             }
         } catch (Exception e) {
             LOGGER.warn("Statement cannot be created.", e);
@@ -159,10 +163,10 @@ public class SizeDao extends AbstractDao<Integer, Size> {
                     sizeList = new ArrayList<>();
                 }
                 Size size = new Size();
-                size.setId(resultSet.getInt("ID"));
-                size.setSize(resultSet.getInt("SIZE"));
-                size.setName(resultSet.getString("NAME"));
-                size.setActive(resultSet.getBoolean("ACTIVE"));
+                size.setId(resultSet.getInt(ID));
+                size.setSize(resultSet.getInt(SIZE));
+                size.setName(resultSet.getString(NAME));
+                size.setActive(resultSet.getBoolean(ACTIVE));
                 if (size.getActive())
                     sizeList.add(size);
             }

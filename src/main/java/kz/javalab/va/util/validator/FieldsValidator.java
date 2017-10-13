@@ -1,15 +1,15 @@
 package kz.javalab.va.util.validator;
 
-import java.util.ResourceBundle;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import java.util.regex.PatternSyntaxException;
-
 import kz.javalab.va.connection.pool.ConnectionPoolException;
 import kz.javalab.va.dao.DAOException;
 import kz.javalab.va.dao.impl.UserDao;
 import kz.javalab.va.entity.user.User;
 import org.apache.log4j.Logger;
+
+import java.util.ResourceBundle;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
 
 public class FieldsValidator {
     private final static Logger LOGGER = Logger.getLogger(FieldsValidator.class);

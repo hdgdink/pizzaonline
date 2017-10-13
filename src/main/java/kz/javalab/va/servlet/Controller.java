@@ -14,6 +14,9 @@ import java.io.IOException;
 
 public class Controller extends HttpServlet {
     private static final Logger LOGGER = Logger.getLogger(Controller.class);
+    private static final String JSP = ".jsp";
+    private static final String WEB_INF = "/WEB-INF/";
+    private static final String DO = "/do/";
 
     @Override
     protected void service(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
@@ -32,11 +35,11 @@ public class Controller extends HttpServlet {
         LOGGER.debug(method + "/" + view);
         switch (method) {
             case FORWARD:
-                request.getRequestDispatcher("/WEB-INF/" + view + ".jsp")
+                request.getRequestDispatcher(WEB_INF + view + JSP)
                         .forward(request, response);
                 break;
             case REDIRECT:
-                response.sendRedirect(request.getContextPath() + "/do/" + result.getView());
+                response.sendRedirect(request.getContextPath() + DO + result.getView());
                 break;
         }
 

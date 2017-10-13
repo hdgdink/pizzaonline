@@ -14,6 +14,9 @@ import java.util.Map;
 
 public class SecurityFilter implements Filter {
     private static final Logger LOGGER = Logger.getLogger(SecurityFilter.class);
+    private static final String USER = "user";
+    private static final String ERROR = "error";
+    private static final String ACCESS_DEN = "error.accessDenied";
     private Map<String, EnumSet<Role>> actions = new HashMap<String, EnumSet<Role>>();
 
     /**
@@ -67,7 +70,7 @@ public class SecurityFilter implements Filter {
         EnumSet<Role> allowedRoles = actions.get(httpRequest.getMethod()
                 + httpRequest.getPathInfo());
         LOGGER.info("Path" + httpRequest.getMethod() + "/" + httpRequest.getPathInfo());
-        User currentUser = (User) session.getAttribute("user");
+        User currentUser = (User) session.getAttribute(USER);
         Role currentUserRole;
         if (currentUser == null) {
             currentUserRole = Role.UNREGISTERED_USER;
@@ -79,8 +82,8 @@ public class SecurityFilter implements Filter {
             return;
         }
         if (!allowedRoles.contains(currentUserRole)) {
-            session.setAttribute("error", "error.accessDenied");
-            request.getRequestDispatcher("error").forward(request, response);
+            session.setAttribute(ERROR, ACCESS_DEN);
+            request.getRequestDispatcher(ERROR).forward(request, response);
             return;
         }
         chain.doFilter(request, response);

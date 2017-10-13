@@ -8,12 +8,23 @@ import kz.javalab.va.entity.user.Role;
 import kz.javalab.va.entity.user.User;
 import org.apache.log4j.Logger;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
 public class UserDao extends AbstractDao<Integer, User> {
     private static final Logger LOGGER = Logger.getLogger(UserDao.class);
+    private static final String ID = "ID";
+    private static final String FIRSTNAME = "FIRSTNAME";
+    private static final String LASTNAME = "LASTNAME";
+    private static final String USERNAME = "USERNAME";
+    private static final String EMAIL = "EMAIL";
+    private static final String PASSWORD = "PASSWORD";
+    private static final String ROLE = "ROLE";
+    private static final String BALANCE = "BALANCE";
     private final ConnectionPool pool = ConnectionPool.getInstance();
     private DaoFactory daoFactory = new DaoFactory();
     private static final String USER_CREATE = "INSERT INTO USER(FIRSTNAME, LASTNAME, USERNAME, EMAIL, PASSWORD, ROLE, " +
@@ -39,14 +50,14 @@ public class UserDao extends AbstractDao<Integer, User> {
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.first()) {
                 user = new User();
-                user.setId(resultSet.getInt("id"));
-                user.setFirstname(resultSet.getString("firstname"));
-                user.setLastname(resultSet.getString("lastname"));
-                user.setUsername(resultSet.getString("username"));
-                user.setEmail(resultSet.getString("email"));
-                user.setPassword(resultSet.getString("password"));
-                user.setRole(Role.valueOf(resultSet.getString("role")));
-                user.setBalance(resultSet.getInt("balance"));
+                user.setId(resultSet.getInt(ID));
+                user.setFirstname(resultSet.getString(FIRSTNAME));
+                user.setLastname(resultSet.getString(LASTNAME));
+                user.setUsername(resultSet.getString(USERNAME));
+                user.setEmail(resultSet.getString(EMAIL));
+                user.setPassword(resultSet.getString(PASSWORD));
+                user.setRole(Role.valueOf(resultSet.getString(ROLE)));
+                user.setBalance(resultSet.getInt(BALANCE));
             }
         } catch (Exception e) {
             LOGGER.warn("Statement cannot be created.", e);
@@ -70,14 +81,14 @@ public class UserDao extends AbstractDao<Integer, User> {
                     users = new ArrayList<>();
                 }
                 User user = new User();
-                user.setId(resultSet.getInt("id"));
-                user.setFirstname(resultSet.getString("FIRSTNAME"));
-                user.setLastname(resultSet.getString("LASTNAME"));
-                user.setUsername(resultSet.getString("USERNAME"));
-                user.setEmail(resultSet.getString("EMAIL"));
-                user.setPassword(resultSet.getString("PASSWORD"));
-                user.setRole(Role.valueOf(resultSet.getString("ROLE")));
-                user.setBalance(resultSet.getInt("BALANCE"));
+                user.setId(resultSet.getInt(ID));
+                user.setFirstname(resultSet.getString(FIRSTNAME));
+                user.setLastname(resultSet.getString(LASTNAME));
+                user.setUsername(resultSet.getString(USERNAME));
+                user.setEmail(resultSet.getString(EMAIL));
+                user.setPassword(resultSet.getString(PASSWORD));
+                user.setRole(Role.valueOf(resultSet.getString(ROLE)));
+                user.setBalance(resultSet.getInt(BALANCE));
                 users.add(user);
             }
         } catch (Exception e) {
@@ -99,14 +110,14 @@ public class UserDao extends AbstractDao<Integer, User> {
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.first()) {
                 user = new User();
-                user.setId(resultSet.getInt("id"));
-                user.setFirstname(resultSet.getString("FIRSTNAME"));
-                user.setLastname(resultSet.getString("LASTNAME"));
-                user.setUsername(resultSet.getString("USERNAME"));
-                user.setEmail(resultSet.getString("EMAIL"));
-                user.setPassword(resultSet.getString("PASSWORD"));
-                user.setRole(Role.valueOf(resultSet.getString("ROLE")));
-                user.setBalance(resultSet.getInt("BALANCE"));
+                user.setId(resultSet.getInt(ID));
+                user.setFirstname(resultSet.getString(FIRSTNAME));
+                user.setLastname(resultSet.getString(LASTNAME));
+                user.setUsername(resultSet.getString(USERNAME));
+                user.setEmail(resultSet.getString(EMAIL));
+                user.setPassword(resultSet.getString(PASSWORD));
+                user.setRole(Role.valueOf(resultSet.getString(ROLE)));
+                user.setBalance(resultSet.getInt(BALANCE));
             }
         } catch (Exception e) {
             LOGGER.warn("Statement cannot be created.", e);
@@ -198,14 +209,14 @@ public class UserDao extends AbstractDao<Integer, User> {
                     users = new ArrayList<>();
                 }
                 User user = new User();
-                user.setId(resultSet.getInt("id"));
-                user.setFirstname(resultSet.getString("FIRSTNAME"));
-                user.setLastname(resultSet.getString("LASTNAME"));
-                user.setUsername(resultSet.getString("USERNAME"));
-                user.setEmail(resultSet.getString("EMAIL"));
-                user.setPassword(resultSet.getString("PASSWORD"));
-                user.setRole(Role.valueOf(resultSet.getString("ROLE")));
-                user.setBalance(resultSet.getInt("BALANCE"));
+                user.setId(resultSet.getInt(ID));
+                user.setFirstname(resultSet.getString(FIRSTNAME));
+                user.setLastname(resultSet.getString(LASTNAME));
+                user.setUsername(resultSet.getString(USERNAME));
+                user.setEmail(resultSet.getString(EMAIL));
+                user.setPassword(resultSet.getString(PASSWORD));
+                user.setRole(Role.valueOf(resultSet.getString(ROLE)));
+                user.setBalance(resultSet.getInt(BALANCE));
                 users.add(user);
             }
         } catch (Exception e) {

@@ -16,6 +16,15 @@ import java.util.List;
 
 public class FoodDao extends AbstractDao<Integer, Food> {
     private static final Logger LOGGER = Logger.getLogger(FoodDao.class);
+    private static final String ID = "ID";
+    private static final String TYPE_ID = "TYPE_ID";
+    private static final String NAME_RU = "NAME_RU";
+    private static final String NAME_EN = "NAME_EN";
+    private static final String COMPOS_RU = "COMPOS_RU";
+    private static final String COMPOS_EN = "COMPOS_EN";
+    private static final String PRICE = "PRICE";
+    private static final String IMG = "IMG";
+    private static final String ACTIVE = "ACTIVE";
     private final ConnectionPool pool = ConnectionPool.getInstance();
     private DaoFactory daoFactory = new DaoFactory();
     private static final String GET_FOOD_BY_ID = "SELECT * FROM FOOD WHERE ID = ?;";
@@ -42,15 +51,15 @@ public class FoodDao extends AbstractDao<Integer, Food> {
                     foods = new ArrayList<>();
                 }
                 Food food = new Food();
-                food.setId(resultSet.getInt("id"));
-                food.setTypeId(resultSet.getInt("TYPE_ID"));
-                food.setNameRu(resultSet.getString("NAME_RU"));
-                food.setNameEn(resultSet.getString("NAME_EN"));
-                food.setDiscriptionRu(resultSet.getString("COMPOS_RU"));
-                food.setDiscriptionEn(resultSet.getString("COMPOS_EN"));
-                food.setPrice(resultSet.getInt("PRICE"));
-                food.setImg(resultSet.getString("IMG"));
-                food.setActive(resultSet.getBoolean("ACTIVE"));
+                food.setId(resultSet.getInt(ID));
+                food.setTypeId(resultSet.getInt(TYPE_ID));
+                food.setNameRu(resultSet.getString(NAME_RU));
+                food.setNameEn(resultSet.getString(NAME_EN));
+                food.setDiscriptionRu(resultSet.getString(COMPOS_RU));
+                food.setDiscriptionEn(resultSet.getString(COMPOS_EN));
+                food.setPrice(resultSet.getInt(PRICE));
+                food.setImg(resultSet.getString(IMG));
+                food.setActive(resultSet.getBoolean(ACTIVE));
                 foods.add(food);
             }
         } catch (Exception e) {
@@ -72,15 +81,15 @@ public class FoodDao extends AbstractDao<Integer, Food> {
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
                 food = new Food();
-                food.setId(resultSet.getInt("ID"));
-                food.setTypeId(resultSet.getInt("TYPE_ID"));
-                food.setNameRu(resultSet.getString("NAME_RU"));
-                food.setNameEn(resultSet.getString("NAME_EN"));
-                food.setDiscriptionRu(resultSet.getString("COMPOS_RU"));
-                food.setDiscriptionEn(resultSet.getString("COMPOS_EN"));
-                food.setPrice(resultSet.getInt("PRICE"));
-                food.setImg(resultSet.getString("IMG"));
-                food.setActive(resultSet.getBoolean("ACTIVE"));
+                food.setId(resultSet.getInt(ID));
+                food.setTypeId(resultSet.getInt(TYPE_ID));
+                food.setNameRu(resultSet.getString(NAME_RU));
+                food.setNameEn(resultSet.getString(NAME_EN));
+                food.setDiscriptionRu(resultSet.getString(COMPOS_RU));
+                food.setDiscriptionEn(resultSet.getString(COMPOS_EN));
+                food.setPrice(resultSet.getInt(PRICE));
+                food.setImg(resultSet.getString(IMG));
+                food.setActive(resultSet.getBoolean(ACTIVE));
             }
         } catch (Exception e) {
             LOGGER.warn("Statement cannot be created.", e);
@@ -160,15 +169,15 @@ public class FoodDao extends AbstractDao<Integer, Food> {
                     foods = new ArrayList<>();
                 }
                 Food food = new Food();
-                food.setId(resultSet.getInt("id"));
-                food.setTypeId(resultSet.getInt("TYPE_ID"));
-                food.setNameRu(resultSet.getString("NAME_RU"));
-                food.setNameEn(resultSet.getString("NAME_EN"));
-                food.setDiscriptionRu(resultSet.getString("COMPOS_RU"));
-                food.setDiscriptionEn(resultSet.getString("COMPOS_EN"));
-                food.setPrice(resultSet.getInt("PRICE"));
-                food.setImg(resultSet.getString("IMG"));
-                food.setActive(resultSet.getBoolean("ACTIVE"));
+                food.setId(resultSet.getInt(ID));
+                food.setTypeId(resultSet.getInt(TYPE_ID));
+                food.setNameRu(resultSet.getString(NAME_RU));
+                food.setNameEn(resultSet.getString(NAME_EN));
+                food.setDiscriptionRu(resultSet.getString(COMPOS_RU));
+                food.setDiscriptionEn(resultSet.getString(COMPOS_EN));
+                food.setPrice(resultSet.getInt(PRICE));
+                food.setImg(resultSet.getString(IMG));
+                food.setActive(resultSet.getBoolean(ACTIVE));
                 if (food.isActive())
                     foods.add(food);
             }

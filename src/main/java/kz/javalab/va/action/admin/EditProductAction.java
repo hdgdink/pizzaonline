@@ -16,6 +16,16 @@ import javax.servlet.http.HttpSession;
 
 public class EditProductAction implements Action {
     private static final Logger LOGGER = Logger.getLogger(EditProductAction.class);
+    private static final String TYPE_ID = "type_Id";
+    private static final String PRICE = "price";
+    private static final String ACTIVE = "active";
+    private static final String COMPOS_RU = "composRu";
+    private static final String COMPOS_EN = "composEn";
+    private static final String IMG_PATH = "imgPath";
+    private static final String REFERER = "referer";
+    private static final String ID = "id";
+    private static final String NAME_EN = "nameEn";
+    private static final String NAME_RU = "nameRu";
     private FoodDao dao;
     private Food food = null;
     private HttpServletRequest req;
@@ -28,22 +38,21 @@ public class EditProductAction implements Action {
         updateProduct();
         AttributeSetter setter = new AttributeSetter();
         setter.setAttributes(session);
-        String referer = request.getHeader("referer");
+        String referer = request.getHeader(REFERER);
         referer = referer.substring(referer.lastIndexOf("/") + 1, referer.length());
         return new ActionResult(ActionResult.METHOD.REDIRECT, referer);
     }
 
-
     private void updateProduct() {
-        Integer id = Integer.parseInt(req.getParameter("id"));
-        Integer typeId = Integer.parseInt(req.getParameter("type_id"));
-        String nameRu = req.getParameter("nameRu");
-        String nameEn = req.getParameter("nameEn");
-        String discriptionRu = req.getParameter("composRu");
-        String dicriptionEn = req.getParameter("composEn");
-        Integer price = Integer.parseInt(req.getParameter("price"));
-        String img = req.getParameter("imgPath");
-        Boolean active = Boolean.parseBoolean(req.getParameter("active"));
+        Integer id = Integer.parseInt(req.getParameter(ID));
+        Integer typeId = Integer.parseInt(req.getParameter(TYPE_ID));
+        String nameRu = req.getParameter(NAME_RU);
+        String nameEn = req.getParameter(NAME_EN);
+        String discriptionRu = req.getParameter(COMPOS_RU);
+        String dicriptionEn = req.getParameter(COMPOS_EN);
+        Integer price = Integer.parseInt(req.getParameter(PRICE));
+        String img = req.getParameter(IMG_PATH);
+        Boolean active = Boolean.parseBoolean(req.getParameter(ACTIVE));
 
         try {
             food = foodDao().getById(id);
@@ -62,7 +71,6 @@ public class EditProductAction implements Action {
             e.printStackTrace();
         }
     }
-
 
     private FoodDao foodDao() throws DAOException {
         if (dao == null) {

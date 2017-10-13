@@ -15,25 +15,29 @@ import javax.servlet.http.HttpSession;
 import java.util.List;
 
 public class ShowCabinetPageAction implements Action {
+    private static final String USER = "user";
+    private static final String USER_CABINET = "user_cabinet";
+    private static final String ADMIN_CABINET = "admin_cabinet";
+    private static final String USER_LIST = "user_list";
     private ActionResult result;
 
 
     @Override
     public ActionResult execute(HttpServletRequest request, HttpServletResponse response) throws ActionException {
         HttpSession session = request.getSession();
-        User user = (User) session.getAttribute("user");
+        User user = (User) session.getAttribute(USER);
         if (user.getRole().equals(Role.CLIENT))
-            result = new ActionResult(ActionResult.METHOD.FORWARD, "user_cabinet");
+            result = new ActionResult(ActionResult.METHOD.FORWARD, USER_CABINET);
         else if (user.getRole().equals(Role.ADMIN)) {
             try {
                 List<User> userList = new UserDao().getAll();
-                session.setAttribute("user_list", userList);
+                session.setAttribute(USER_LIST, userList);
             } catch (DAOException e) {
                 e.printStackTrace();
             } catch (ConnectionPoolException e) {
                 e.printStackTrace();
             }
-            result = new ActionResult(ActionResult.METHOD.FORWARD, "admin_cabinet");
+            result = new ActionResult(ActionResult.METHOD.FORWARD, ADMIN_CABINET);
         }
         return result;
     }

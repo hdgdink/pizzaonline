@@ -1,6 +1,5 @@
 package kz.javalab.va.action.account;
 
-import com.sun.org.apache.xpath.internal.SourceTree;
 import kz.javalab.va.action.Action;
 import kz.javalab.va.action.ActionException;
 import kz.javalab.va.action.ActionResult;
@@ -22,18 +21,27 @@ import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class LoginAction implements Action {
     private static final Logger LOGGER = Logger.getLogger(LoginAction.class);
-    private ActionResult result;
-    private UserDao dao;
+    private static final String PIZZA_UNREG = "pizza_unreg";
+    private static final String CABINET = "cabinet";
+    private static final String LOGIN_ERROR = "logInError";
+    private static final String ACCOUNT = "account";
+    private static final String NOT_FOUND = ".notFound";
+    private static final String IS_BAD = ".isBad";
+    private static final String ORDER_DETAILS = "order_details";
+    private static final String ORDER = "order";
     private static final String USERNAME = "username";
     private static final String PASSWORD = "password";
     private static final String USER = "user";
     private static final String ID = "id";
     private static final String FINALPRICE = "finalPrice";
-    private static final ActionResult LOGIN_FAILED = new ActionResult(ActionResult.METHOD.REDIRECT, "pizza");
-    private static final ActionResult ADMIN_LOGGED = new ActionResult(ActionResult.METHOD.REDIRECT, "cabinet");
-    private static final ActionResult CLIENT_LOGGED = new ActionResult(ActionResult.METHOD.REDIRECT, "pizza_loged");
+    private static final String PIZZA_LOGED = "pizza_loged";
+    private static final String EMAIL = "email";
+    private static final String ERROR = "error";
+    private ActionResult result;
+    private UserDao dao;
     private OrderDao orderDao;
     OrderDetailsDao orderDetailsDao;
     private Order order = null;
@@ -46,7 +54,6 @@ public class LoginAction implements Action {
             orderDao = new OrderDao();
             orderDetailsDao = new OrderDetailsDao();
             orderDetails = new ArrayList<>();
-            //order = new Order();
         } catch (ConnectionPoolException e) {
             e.printStackTrace();
         }
@@ -61,21 +68,21 @@ public class LoginAction implements Action {
             throw new ActionException(e);
         }
         if (user == null) {
-            session.setAttribute("logInError", "account.notFound");
+            session.setAttribute(LOGIN_ERROR, ACCOUNT + NOT_FOUND);
             LOGGER.debug("Wrong username.");
-            result = new ActionResult(ActionResult.METHOD.FORWARD, "pizza_unreg");
+            result = new ActionResult(ActionResult.METHOD.FORWARD, PIZZA_UNREG);
             return result;
         }
         if (!password.equals(user.getPassword())) {
-            session.setAttribute("logInError", "account.isBad");
+            session.setAttribute(LOGIN_ERROR, ACCOUNT + IS_BAD);
             LOGGER.debug("Wrong password. " + password);
-            result = new ActionResult(ActionResult.METHOD.FORWARD, "pizza_unreg");
+            result = new ActionResult(ActionResult.METHOD.FORWARD, PIZZA_UNREG);
             return result;
         }
         if (user.getRole().equals(Role.ADMIN))
-            result = new ActionResult(ActionResult.METHOD.REDIRECT, "cabinet");
+            result = new ActionResult(ActionResult.METHOD.REDIRECT, CABINET);
         else if (user.getRole().equals(Role.UNREGISTERED_USER))
-            result = new ActionResult(ActionResult.METHOD.FORWARD, "pizza_unreg");
+            result = new ActionResult(ActionResult.METHOD.FORWARD, PIZZA_UNREG);
         else {
             try {
                 int orderId = orderDao.getByUserId(user.getId());
@@ -83,8 +90,8 @@ public class LoginAction implements Action {
                     order = orderDao.getById(orderId);
                     orderDetails = orderDetailsDao.getAllByOrderId(order.getId());
                     if (order.getStatus().equals(Status.UNPAID)) {
-                        session.setAttribute("order_details", orderDetails);
-                        session.setAttribute("order", order);
+                        session.setAttribute(ORDER_DETAILS, orderDetails);
+                        session.setAttribute(ORDER, order);
                     }
                 }
             } catch (DAOException e) {
@@ -93,16 +100,15 @@ public class LoginAction implements Action {
                 e.printStackTrace();
             }
 
-            result = new ActionResult(ActionResult.METHOD.REDIRECT, "pizza_loged");
+            result = new ActionResult(ActionResult.METHOD.REDIRECT, PIZZA_LOGED);
         }
 
         session.setAttribute(USER, user);
         session.setAttribute(ID, user.getId());
         session.setAttribute(FINALPRICE, finalPrice);
-        session.removeAttribute("email");
-        session.removeAttribute("signInError");
-        session.removeAttribute("error");
-        session.removeAttribute("link");
+        session.removeAttribute(EMAIL);
+        session.removeAttribute(LOGIN_ERROR);
+        session.removeAttribute(ERROR);
         LOGGER.debug("User " + user.getEmail() + " has been logged.");
         return result;
     }

@@ -18,18 +18,25 @@ import javax.servlet.http.HttpSession;
 
 public class EditOrderAction implements Action {
     private static final Logger LOGGER = Logger.getLogger(EditTypeAction.class);
+    private static final String ID = "id";
+    private static final String SUM_OF_ORDER = "sumOfOrder";
+    private static final String USER_ID = "userId";
+    private static final String ADDRESS = "address";
+    private static final String PHONE = "phone";
+    private static final String STATUS = "status";
+    private static final String ORDERS = "orders";
     private OrderDao dao;
     private Order order = null;
 
     @Override
     public ActionResult execute(HttpServletRequest request, HttpServletResponse response) throws ActionException {
         HttpSession session = request.getSession();
-        Integer id = Integer.parseInt(request.getParameter("id"));
-        Integer sumOfOrder = Integer.parseInt(request.getParameter("sumOfOrder"));
-        Integer userId = Integer.parseInt(request.getParameter("id"));
-        String address = request.getParameter("address");
-        String phone = request.getParameter("phone");
-        Status status = Status.valueOf(request.getParameter("status"));
+        Integer id = Integer.parseInt(request.getParameter(ID));
+        Integer sumOfOrder = Integer.parseInt(request.getParameter(SUM_OF_ORDER));
+        Integer userId = Integer.parseInt(request.getParameter(USER_ID));
+        String address = request.getParameter(ADDRESS);
+        String phone = request.getParameter(PHONE);
+        Status status = Status.valueOf(request.getParameter(STATUS));
         try {
             order = orderDao().getById(id);
             order.setSumOfOrder(sumOfOrder);
@@ -45,7 +52,7 @@ public class EditOrderAction implements Action {
         }
         AttributeSetter setter = new AttributeSetter();
         setter.setAttributes(session);
-        return new ActionResult(ActionResult.METHOD.REDIRECT, "orders");
+        return new ActionResult(ActionResult.METHOD.REDIRECT, ORDERS);
     }
 
     private OrderDao orderDao() throws DAOException {
