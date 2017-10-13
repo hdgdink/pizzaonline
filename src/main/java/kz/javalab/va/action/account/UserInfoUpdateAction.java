@@ -13,22 +13,23 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-
-/**
- * Created by HdgDink} on 02.10.2017.
- */
 public class UserInfoUpdateAction implements Action {
     private static final Logger LOGGER = Logger.getLogger(UserInfoUpdateAction.class);
+    private static final String FIRSTNAME = "firstname";
+    private static final String LASTNAME = "lastname";
+    private static final String EMAIL = "email";
+    private static final String USER = "user";
+    private static final String REFERER = "referer";
     private UserDao dao;
 
     @Override
     public ActionResult execute(HttpServletRequest request, HttpServletResponse response) throws ActionException {
         HttpSession session = request.getSession();
-        User userBefore = (User) session.getAttribute("user");
+        User userBefore = (User) session.getAttribute(USER);
         User userAfter = new User();
-        String email = request.getParameter("email");
-        String firstName = request.getParameter("firstname");
-        String lastName = request.getParameter("lastname");
+        String email = request.getParameter(EMAIL);
+        String firstName = request.getParameter(FIRSTNAME);
+        String lastName = request.getParameter(LASTNAME);
         userAfter.setId(userBefore.getId());
         userAfter.setEmail(email);
         userAfter.setFirstname(firstName);
@@ -37,20 +38,19 @@ public class UserInfoUpdateAction implements Action {
         userAfter.setBalance(userBefore.getBalance());
         userAfter.setPassword(userBefore.getPassword());
         userAfter.setRole(userBefore.getRole());
-        LOGGER.debug("Account has been changed.");
+
         try {
             userDao().update(userAfter);
-            System.out.println("infoupdateAction userafter: " + userAfter.getId() + userAfter);
             LOGGER.debug("User " + userAfter.getUsername() + " has been updated.");
         } catch (DAOException e) {
             e.printStackTrace();
         }
         if (userBefore.getId() == userAfter.getId()) {
             LOGGER.debug("User's own account.");
-            session.setAttribute("user", userAfter);
-            System.out.println("infoupdateaction session attribute user:" + session.getAttribute("user.id") + session.getAttribute("user"));
+            session.setAttribute(USER, userAfter);
         }
-        String referer = request.getHeader("referer");
+        LOGGER.debug("Account has been changed.");
+        String referer = request.getHeader(REFERER);
         referer = referer.substring(referer.lastIndexOf("/") + 1, referer.length());
         return new ActionResult(ActionResult.METHOD.REDIRECT, referer);
     }
@@ -60,6 +60,7 @@ public class UserInfoUpdateAction implements Action {
             try {
                 dao = new UserDao();
             } catch (ConnectionPoolException e) {
+                LOGGER.error("Error at createUserDao()", e);
                 e.printStackTrace();
             }
         }

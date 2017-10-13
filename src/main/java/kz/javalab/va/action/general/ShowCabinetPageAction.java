@@ -14,9 +14,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
-/**
- * Created by HdgDink} on 03.10.2017.
- */
 public class ShowCabinetPageAction implements Action {
     private ActionResult result;
 
@@ -30,7 +27,7 @@ public class ShowCabinetPageAction implements Action {
         else if (user.getRole().equals(Role.ADMIN)) {
             try {
                 List<User> userList = new UserDao().getAll();
-                session.setAttribute("user_list",userList);
+                session.setAttribute("user_list", userList);
             } catch (DAOException e) {
                 e.printStackTrace();
             } catch (ConnectionPoolException e) {

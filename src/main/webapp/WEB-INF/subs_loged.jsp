@@ -54,8 +54,10 @@
                                     <span class="span"><fmt:message key="default.currency"/></span>
                                     <br>
                                     <input type="hidden" name="food" value="${sub.id}"/>
-                                    <input class="btn btn-primary" type="submit"
+                                    <input class="add btn btn-primary" type="submit"
                                            value="<fmt:message key="default.addtolist"/>">
+
+
                                 </p>
                             </div>
                         </div>

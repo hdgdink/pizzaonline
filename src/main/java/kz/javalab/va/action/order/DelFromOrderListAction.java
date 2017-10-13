@@ -16,9 +16,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
-/**
- * Created by HdgDink} on 09.10.2017.
- */
 public class DelFromOrderListAction implements Action {
     private static final Logger LOGGER = Logger.getLogger(LoginAction.class);
     private OrderDetailsDao orderDetailsDao = null;
@@ -37,17 +34,15 @@ public class DelFromOrderListAction implements Action {
         }
         Integer id = Integer.parseInt(request.getParameter("order_detail_id"));
         Integer productPrice = Integer.parseInt(request.getParameter("order_detail_final_price"));
-        System.out.println("id for deleting:" + id);
-        System.out.println("price for deleting:" + productPrice);
         order = (Order) session.getAttribute("order");
 
         try {
             orderDetailsDao.delete(id);
-            System.out.println("order.getsumoforder sum of order from session: " + order.getSumOfOrder());
+            LOGGER.info("Order details is deleted");
             finalPrice = order.getSumOfOrder() - productPrice;
-            System.out.println("value of final price for orderDao update" + finalPrice);
             order.setSumOfOrder(finalPrice);
             orderDao.update(order);
+            LOGGER.info("Final price of order was changed");
             List<OrderDetails> orderDetailsList = orderDetailsDao.getAllByOrderId(order.getId());
             session.setAttribute("order", order);
             session.setAttribute("order_details", orderDetailsList);

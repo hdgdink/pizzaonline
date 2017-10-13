@@ -1,6 +1,5 @@
 package kz.javalab.va.entity.order;
 
-
 import kz.javalab.va.entity.Entity;
 
 public class Order extends Entity {
@@ -33,7 +32,6 @@ public class Order extends Entity {
     public void setAddress(String address) {
         this.address = address;
     }
-
 
     public String getPhone() {
         return phone;

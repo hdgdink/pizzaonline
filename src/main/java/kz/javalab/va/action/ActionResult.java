@@ -32,7 +32,6 @@ public class ActionResult {
         return view;
     }
 
-    /*my*/
     public void setView(String view) {
         this.view = view;
     }

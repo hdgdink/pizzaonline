@@ -36,12 +36,10 @@
                             <c:if test="${locale.language=='en'}"><p>${sub.discriptionEn}</p></h3></c:if>
                             <input type="hidden" name="food" value="${sub.id}"/>
                             <p>
-                                <select name="size" class="select"
-                                        onchange="document.getElementById('size').value=value">
+                                <select name="size" class="select">
                                     <c:forEach items="${sizeList}" var="size">
-                                        <option value="${size.size}"><fmt:message key="default.small"/></option>
+                                        <option value="${size.size}"><fmt:message key="${size.name}"/></option>
                                     </c:forEach>
-                                    <input type="hidden" name="size" class="size"/>
                                 </select>
                             <p/>
                             <t:count_group/>

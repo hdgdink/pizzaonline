@@ -10,25 +10,20 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
-/**
- * Created by HdgDink} on 01.10.2017.
- */
 public class ErrorHandler extends HttpServlet {
     private static final Logger LOGGER = Logger.getLogger(ErrorHandler.class);
 
-        protected void doGet(HttpServletRequest request,
+    protected void doGet(HttpServletRequest request,
                          HttpServletResponse response) throws ServletException, IOException {
         handleError(request, response);
         request.getRequestDispatcher("error").forward(request, response);
     }
-
 
     protected void doPost(HttpServletRequest request,
                           HttpServletResponse response) throws ServletException, IOException {
         handleError(request, response);
         response.sendRedirect("error");
     }
-
 
     private void handleError(HttpServletRequest request,
                              HttpServletResponse response) throws ServletException, IOException {

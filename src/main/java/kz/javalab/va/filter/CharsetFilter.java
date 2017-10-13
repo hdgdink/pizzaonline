@@ -6,9 +6,6 @@ import javax.servlet.*;
 import java.io.IOException;
 
 
-/**
- * Created by HdgDink} on 28.09.2017.
- */
 public class CharsetFilter implements javax.servlet.Filter {
     private final static Logger LOGGER = Logger.getLogger(CharsetFilter.class);
 

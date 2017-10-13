@@ -5,7 +5,7 @@ import kz.javalab.va.connection.pool.ConnectionPoolException;
 import kz.javalab.va.dao.AbstractDao;
 import kz.javalab.va.dao.DAOException;
 import kz.javalab.va.entity.Type;
-import kz.javalab.va.entity.user.User;
+
 import org.apache.log4j.Logger;
 
 import java.sql.Connection;
@@ -21,8 +21,10 @@ public class TypeDao extends AbstractDao<Integer, Type> {
     private static final String GET_TYPE_BY_ID = "SELECT * FROM TYPE WHERE ID = ?;";
     private static final String GET_ID_BY_TYPE_NAME = "SELECT ID FROM TYPE WHERE TYPE = ?;";
     private static final String TYPE_FIND_ALL = "SELECT * FROM TYPE ";
-
+    private static final String TYPE_UPDATE = "UPDATE TYPE SET TYPE = ?, ACTIVE = ?  WHERE ID = ?;";
+    private static final String TYPE_CREATE = "INSERT INTO TYPE ( TYPE, ACTIVE) VALUES(?, ?);";
     private final ConnectionPool pool = ConnectionPool.getInstance();
+    private DaoFactory daoFactory = new DaoFactory();
 
     public TypeDao() throws ConnectionPoolException {
     }
@@ -32,14 +34,7 @@ public class TypeDao extends AbstractDao<Integer, Type> {
     public List<Type> getAll() throws DAOException, ConnectionPoolException {
         List<Type> types = null;
         LOGGER.info("TypeDao.getAllTypes()");
-        Connection connection = null;
-        try {
-            connection = pool.getConnection();
-            LOGGER.debug("Connection has been taken.");
-        } catch (ConnectionPoolException e) {
-            LOGGER.warn("Connection cannot be taken.", e);
-            e.printStackTrace();
-        }
+        Connection connection = daoFactory.getConnection();
         try (Statement statement = connection.createStatement()) {
             ResultSet resultSet = statement.executeQuery(TYPE_FIND_ALL);
             while (resultSet.next()) {
@@ -49,6 +44,7 @@ public class TypeDao extends AbstractDao<Integer, Type> {
                 Type type = new Type();
                 type.setId(resultSet.getInt("id"));
                 type.setType(resultSet.getString("TYPE"));
+                type.setActive(resultSet.getBoolean("ACTIVE"));
                 types.add(type);
             }
         } catch (Exception e) {
@@ -64,21 +60,15 @@ public class TypeDao extends AbstractDao<Integer, Type> {
     public Type getById(Integer id) throws DAOException {
         LOGGER.info("TypeDao.getById()");
         Type type = null;
-        Connection connection = null;
-        try {
-            connection = pool.getConnection();
-            LOGGER.debug("Connection has been taken.");
-        } catch (ConnectionPoolException e) {
-            LOGGER.warn("Connection cannot be taken.", e);
-            e.printStackTrace();
-        }
+        Connection connection = daoFactory.getConnection();
         try (PreparedStatement statement = connection.prepareStatement(GET_TYPE_BY_ID)) {
             statement.setInt(1, id);
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.first()) {
-                type=new Type();
+                type = new Type();
                 type.setId(resultSet.getInt("id"));
                 type.setType(resultSet.getString("TYPE"));
+                type.setActive(resultSet.getBoolean("ACTIVE"));
             }
         } catch (Exception e) {
             LOGGER.warn("Statement cannot be created.", e);
@@ -101,25 +91,42 @@ public class TypeDao extends AbstractDao<Integer, Type> {
 
     @Override
     public int create(Type entity) throws DAOException {
-        return 0;
+        LOGGER.info("TypeDao.createType()");
+        Connection connection = daoFactory.getConnection();
+        try (PreparedStatement statement = connection.prepareStatement(TYPE_CREATE)) {
+            statement.setString(1, entity.getType());
+            statement.setBoolean(2, entity.getActive());
+            return statement.executeUpdate();
+        } catch (Exception e) {
+            LOGGER.warn("Statement cannot be created.", e);
+            throw new DAOException(e);
+        } finally {
+            pool.returnConnection(connection);
+        }
     }
 
     @Override
     public int update(Type entity) throws DAOException {
-        return 0;
+        LOGGER.info("typeDao.updateType()");
+        Connection connection = daoFactory.getConnection();
+        try (PreparedStatement statement = connection.prepareStatement(TYPE_UPDATE)) {
+            statement.setString(1, entity.getType());
+            statement.setBoolean(2, entity.getActive());
+            statement.setInt(3, entity.getId());
+            LOGGER.debug("Statement has been created.");
+            return statement.executeUpdate();
+        } catch (Exception e) {
+            LOGGER.warn("Statement cannot be created.", e);
+            throw new DAOException(e);
+        } finally {
+            pool.returnConnection(connection);
+        }
     }
 
     public String getNameById(Integer id) throws DAOException {
         String name = null;
-        LOGGER.info("TypeDao.getTypeByID()");
-        Connection connection = null;
-        try {
-            connection = pool.getConnection();
-            LOGGER.debug("Connection has been taken.");
-        } catch (ConnectionPoolException e) {
-            LOGGER.warn("Connection cannot be taken.", e);
-            e.printStackTrace();
-        }
+        LOGGER.info("TypeDao.getNameByID()");
+        Connection connection = daoFactory.getConnection();
         try (PreparedStatement statement = connection.prepareStatement(GET_TYPE_NAME_BY_ID)) {
             statement.setInt(1, id);
             ResultSet resultSet = statement.executeQuery();
@@ -137,15 +144,8 @@ public class TypeDao extends AbstractDao<Integer, Type> {
 
     public Integer getIdByName(String name) throws DAOException {
         Integer id = null;
-        LOGGER.info("TypeDao.getTypeByID()");
-        Connection connection = null;
-        try {
-            connection = pool.getConnection();
-            LOGGER.debug("Connection has been taken.");
-        } catch (ConnectionPoolException e) {
-            LOGGER.warn("Connection cannot be taken.", e);
-            e.printStackTrace();
-        }
+        LOGGER.info("TypeDao.getIDByName()");
+        Connection connection = daoFactory.getConnection();
         try (PreparedStatement statement = connection.prepareStatement(GET_ID_BY_TYPE_NAME)) {
             statement.setString(1, name);
             ResultSet resultSet = statement.executeQuery();

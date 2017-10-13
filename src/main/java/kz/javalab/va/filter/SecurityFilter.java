@@ -1,8 +1,8 @@
 package kz.javalab.va.filter;
 
-import kz.javalab.va.action.admin.CreateEntityAdmin;
 import kz.javalab.va.entity.user.Role;
 import kz.javalab.va.entity.user.User;
+import org.apache.log4j.Logger;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
@@ -12,10 +12,8 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Created by HdgDink} on 01.10.2017.
- */
 public class SecurityFilter implements Filter {
+    private static final Logger LOGGER = Logger.getLogger(SecurityFilter.class);
     private Map<String, EnumSet<Role>> actions = new HashMap<String, EnumSet<Role>>();
 
     /**
@@ -68,7 +66,7 @@ public class SecurityFilter implements Filter {
         HttpSession session = httpRequest.getSession();
         EnumSet<Role> allowedRoles = actions.get(httpRequest.getMethod()
                 + httpRequest.getPathInfo());
-        System.out.println(httpRequest.getMethod() + httpRequest.getPathInfo());
+        LOGGER.info("Path" + httpRequest.getMethod() + "/" + httpRequest.getPathInfo());
         User currentUser = (User) session.getAttribute("user");
         Role currentUserRole;
         if (currentUser == null) {

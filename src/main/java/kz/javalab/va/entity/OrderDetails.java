@@ -5,7 +5,6 @@ public class OrderDetails extends Entity {
     private Integer foodId;
     private String foodNameRu;
     private String foodNameEn;
-    private Integer sizeId;
     private String sizeName;
     private Integer typeId;
     private String typeName;
@@ -30,28 +29,12 @@ public class OrderDetails extends Entity {
         this.sizeName = sizeName;
     }
 
-    public Integer getPrice() {
-        return price;
-    }
-
-    public void setPrice(Integer price) {
-        this.price = price;
-    }
-
     public Integer getFoodId() {
         return foodId;
     }
 
     public void setFoodId(Integer foodId) {
         this.foodId = foodId;
-    }
-
-    public Integer getSizeId() {
-        return sizeId;
-    }
-
-    public void setSizeId(Integer sizeId) {
-        this.sizeId = sizeId;
     }
 
     public Integer getTypeId() {

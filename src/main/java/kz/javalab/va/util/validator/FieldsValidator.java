@@ -11,10 +11,6 @@ import kz.javalab.va.dao.impl.UserDao;
 import kz.javalab.va.entity.user.User;
 import org.apache.log4j.Logger;
 
-
-/**
- * Created by HdgDink} on 03.10.2017.
- */
 public class FieldsValidator {
     private final static Logger LOGGER = Logger.getLogger(FieldsValidator.class);
     private static final ResourceBundle RB = ResourceBundle.getBundle("validator");

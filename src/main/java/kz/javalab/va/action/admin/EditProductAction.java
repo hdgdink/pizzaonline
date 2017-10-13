@@ -14,9 +14,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-/**
- * Created by HdgDink} on 12.10.2017.
- */
 public class EditProductAction implements Action {
     private static final Logger LOGGER = Logger.getLogger(EditProductAction.class);
     private FoodDao dao;
@@ -29,6 +26,8 @@ public class EditProductAction implements Action {
         req = request;
         session = request.getSession();
         updateProduct();
+        AttributeSetter setter = new AttributeSetter();
+        setter.setAttributes(session);
         String referer = request.getHeader("referer");
         referer = referer.substring(referer.lastIndexOf("/") + 1, referer.length());
         return new ActionResult(ActionResult.METHOD.REDIRECT, referer);
@@ -46,10 +45,8 @@ public class EditProductAction implements Action {
         String img = req.getParameter("imgPath");
         Boolean active = Boolean.parseBoolean(req.getParameter("active"));
 
-        System.out.println("ACTIVE VALUE: " + active);
         try {
             food = foodDao().getById(id);
-            System.out.println("User : " + food.toString());
             food.setPrice(price);
             food.setImg(img);
             food.setDiscriptionEn(dicriptionEn);
@@ -59,7 +56,9 @@ public class EditProductAction implements Action {
             food.setTypeId(typeId);
             food.setActive(active);
             foodDao().update(food);
+            LOGGER.info("Product was update " + food.getId());
         } catch (DAOException e) {
+            LOGGER.error("Error while update", e);
             e.printStackTrace();
         }
     }

@@ -21,9 +21,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
-/**
- * Created by HdgDink} on 05.10.2017.
- */
 public class AddToOrderAction implements Action {
     private static final Logger LOGGER = Logger.getLogger(LoginAction.class);
     private FoodDao foodDao = null;
@@ -44,39 +41,33 @@ public class AddToOrderAction implements Action {
         try {
             foodDao = new FoodDao();
             orderDetailsDao = new OrderDetailsDao();
+            orderDao = new OrderDao();
             sizeDao = new SizeDao();
             typeDao = new TypeDao();
         } catch (ConnectionPoolException e) {
             e.printStackTrace();
         }
-        //берем из сессии ИД еды, выбранное количество, выбранный размер
         Integer id = Integer.parseInt(request.getParameter("food"));
         Integer count = Integer.parseInt(request.getParameter("count"));
         int sizeValue = Integer.parseInt(request.getParameter("size"));
-///создаем текущие детали заказа
         currentOrder = new OrderDetails();
         try {
-            //присваеваем текущей выбранной еде значения из бд выбирая по ИД
             currentFood = foodDao.getById(id);
-            //присваеваем текущему выбранному размеру значения из бд выбирая по значению
+            LOGGER.info("Current product is getted from db with ID:" + currentFood.getId());
             selectedSize = sizeDao.getByValue(sizeValue);
+            LOGGER.info("Selected Size is:" + selectedSize.getName());
         } catch (DAOException e) {
+            LOGGER.error("Error while getting current product", e);
             e.printStackTrace();
         }
-        //устанавливаем конечную цену продукта в зависимости от размера и количества
         currentFood.setPrice((currentFood.getPrice() * sizeValue) * count);
-        //счетчик окончательной цены заказа
+        LOGGER.info("Price of selected product is:" + currentFood.getPrice());
         finalPrice = (Integer) session.getAttribute("finalPrice");
         if (finalPrice == null) finalPrice = 0;
-        System.out.println("final price: " + finalPrice);
-        System.out.println("curent food: " + currentFood);
         finalPrice = finalPrice + currentFood.getPrice();
-
-        System.out.println("final price is :" + finalPrice);
         user = (User) session.getAttribute("user");
         if (user != null) {
             order = (Order) session.getAttribute("order");
-
             if (order == null) {
                 order = new Order();
                 order.setAddress((String) request.getAttribute("address"));
@@ -85,22 +76,20 @@ public class AddToOrderAction implements Action {
                 order.setPhone((String) request.getAttribute("phone"));
                 order.setStatus(Status.UNPAID);
                 try {
-                    orderDao = new OrderDao();
                     orderDao.create(order);
-                    System.out.println("User id=" + user.getId());
+                    LOGGER.info("New order was created");
                     order.setId(orderDao.getByUserId(user.getId()));
                     session.setAttribute("order", order);
-                } catch (ConnectionPoolException e) {
-                    e.printStackTrace();
                 } catch (DAOException e) {
+                    LOGGER.error("Error while order creating", e);
                     e.printStackTrace();
                 }
             } else finalPrice = order.getSumOfOrder() + currentFood.getPrice();
 
             try {
-                //обновляем общую сумму заказа после добавления нового продукта
                 order.setSumOfOrder(finalPrice);
                 orderDao.update(order);
+                LOGGER.info("Order was updated");
                 session.setAttribute("finalPrice", finalPrice);
                 currentOrder.setOrderId(order.getId());
                 currentOrder.setFoodId(currentFood.getId());
@@ -112,11 +101,11 @@ public class AddToOrderAction implements Action {
                 currentOrder.setTypeName(typeDao.getNameById(currentFood.getTypeId()));
                 currentOrder.setQuantity(count);
                 orderDetailsDao.create(currentOrder);
-
+                LOGGER.info("Order details was created");
                 List<OrderDetails> orderDetailsList = orderDetailsDao.getAllByOrderId(order.getId());
-                System.out.println(orderDetailsList.size());
                 session.setAttribute("order_details", orderDetailsList);
             } catch (DAOException e) {
+                LOGGER.error("Error of creating", e);
                 e.printStackTrace();
             } catch (ConnectionPoolException e) {
                 e.printStackTrace();

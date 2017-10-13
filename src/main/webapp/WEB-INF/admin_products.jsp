@@ -46,18 +46,28 @@
                             <tr>
                                 <input type="hidden" value="${product.id}" name="id"/>
                                 <td>${product.id}</td>
-                                <td><input type="text" class="form-control" name="nameRu" value="${product.nameRu}"
-                                           readonly="readonly"/></td>
-                                <td><input type="text" class="form-control" name="nameEn" value="${product.nameEn}"
-                                           readonly="readonly"/></td>
-                                <td><input type="text" class="form-control" name="composRu"
+                                <td>
+                                    <input type="text" class="form-control" name="nameRu" value="${product.nameRu}"
+                                           readonly="readonly"/>
+                                </td>
+                                <td>
+                                    <input type="text" class="form-control" name="nameEn" value="${product.nameEn}"
+                                           readonly="readonly"/>
+                                </td>
+                                <td>
+                                    <input type="text" class="form-control" name="composRu"
                                            value="${product.discriptionRu}"
-                                           required/></td>
-                                <td><input type="text" class="form-control" name="composEn"
+                                           required/>
+                                </td>
+                                <td>
+                                    <input type="text" class="form-control" name="composEn"
                                            value="${product.discriptionEn}"
-                                           required/></td>
-                                <td><input type="text" class="form-control" name="price" value="${product.price}"
-                                           required/></td>
+                                           required/>
+                                </td>
+                                <td>
+                                    <input type="text" class="form-control" name="price" value="${product.price}"
+                                           required min="1"/>
+                                </td>
                                 <td>
                                     <select class="selectpicker show-menu-arrow" data-width="auto" name="type_id">
                                         <c:forEach items="${types}" var="type">
@@ -76,10 +86,10 @@
                                 <td>
                                     <select class="selectpicker show-menu-arrow" data-width="auto" name="active">
                                         <option value="true" <c:if test="${product.active==true}"> selected</c:if>>
-                                            Active
+                                            <fmt:message key="default.active"/>
                                         </option>
                                         <option value="false"<c:if test="${product.active==false}"> selected</c:if>>
-                                            Not Active
+                                            <fmt:message key="default.notActive"/>
                                         </option>
                                     </select>
                                 </td>
@@ -128,7 +138,7 @@
                             <div class="input-group">
                                 <span class="input-group-addon"><fmt:message key="default.price"/></span>
                                 <input type="number" class="form-control" id="price_u" name="price" value=""
-                                       placeholder="..." required>
+                                       placeholder="..." min="1" required>
                             </div>
                         </div>
                         <div class="col-lg-12">

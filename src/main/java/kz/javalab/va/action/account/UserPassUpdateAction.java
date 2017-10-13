@@ -21,98 +21,90 @@ import javax.servlet.http.HttpSession;
 public class UserPassUpdateAction implements Action {
     private static final Logger LOGGER = Logger.getLogger(UserPassUpdateAction.class);
     private UserDao dao;
+    private String view;
+    private ActionResult result = new ActionResult(ActionResult.METHOD.REDIRECT, view);
     private static final String REFERER = "referer";
-
+    private static final String USER = "user";
+    private static final String OLD_PASSWORD = "oldPassword";
+    private static final String NEW_PASSWORD1 = "newPassword1";
+    private static final String NEW_PASSWORD2 = "newPassword2";
+    private static final String ID = "id";
+    private static final String PASSWORD_ERROR = "passwordError";
+    private static final String OLD_PASSWORD_ERROR = "oldPasswordError";
+    private static final String ACOUNT = "account";
+    private static final String ERROR_OLD_PASS_WRONG = ".oldPasswordWrong";
+    private static final String ERROR_PASS_EMPTY = ".passwordEmpty";
+    private static final String ERROR_PASS_NOT_MATCH = ".passwordsDontMatch";
+    private static final String CHANGE_SUCCESS = ".changePasswordSuccess";
+    private static final String SUCCESS = "success";
 
     @Override
     public ActionResult execute(HttpServletRequest request, HttpServletResponse response) throws ActionException {
         HttpSession session = request.getSession();
-        User user = (User) session.getAttribute("user");
-        String oldPassword = request.getParameter("old-password");
-        String newPassword1 = request.getParameter("new-password1");
-        String newPassword2 = request.getParameter("new-password2");
+        User user = (User) session.getAttribute(USER);
+        String oldPassword = request.getParameter(OLD_PASSWORD);
+        String newPassword1 = request.getParameter(NEW_PASSWORD1);
+        String newPassword2 = request.getParameter(NEW_PASSWORD2);
         int id = 0;
         boolean passwordFieldsNull = false;
         boolean newPasswordEmpty = false;
-        boolean newPasswordValid = false;
+        view = request.getHeader(REFERER);
+        view = view.substring(view.lastIndexOf("/") + 1, view.length());
+
         try {
-            id = (int) session.getAttribute("id");
-            System.out.println(id);
+            id = (int) session.getAttribute(ID);
         } catch (IllegalArgumentException e) {
             LOGGER.warn("Id field is not valid.", e);
             throw new ActionException();
         }
-        session.setAttribute("oldPassword", oldPassword);
-        session.setAttribute("newPassword1", newPassword1);
-        session.setAttribute("newPassword2", newPassword2);
+        session.setAttribute(OLD_PASSWORD, oldPassword);
+        session.setAttribute(NEW_PASSWORD1, newPassword1);
+        session.setAttribute(NEW_PASSWORD2, newPassword2);
         LOGGER.debug(oldPassword);
         LOGGER.debug(newPassword1);
         LOGGER.debug(newPassword2);
         LOGGER.debug(user.getPassword());
         if (!user.getPassword().equals(oldPassword)) {
-            session.removeAttribute("passwordError");
-            session.setAttribute("oldPasswordError", "account.oldPasswordWrong");
-            System.out.println("Old password value is wrong. ");
+            session.removeAttribute(PASSWORD_ERROR);
+            session.setAttribute(OLD_PASSWORD_ERROR, ACOUNT + ERROR_OLD_PASS_WRONG);
             LOGGER.debug("Old password value is wrong.");
             return new ActionResult(ActionResult.METHOD.REDIRECT, request.getHeader(REFERER));
         }
-        session.removeAttribute("oldPasswordError");
+        session.removeAttribute(OLD_PASSWORD_ERROR);
         passwordFieldsNull = FieldsValidator.equalNull(newPassword1, newPassword2);
         if (passwordFieldsNull) {
-            System.out.println("Old password field is not valid.");
             LOGGER.warn("Old password field is not valid.");
-            throw new ActionException();
+            return result;
         }
         newPasswordEmpty = FieldsValidator.empty(newPassword1);
         if (newPasswordEmpty) {
-            session.setAttribute("passwordError", "account.passwordEmpty");
+            session.setAttribute(PASSWORD_ERROR, ACOUNT + ERROR_PASS_EMPTY);
             LOGGER.debug("New password value is empty.");
-            System.out.println("New password value is empty.");
-            return new ActionResult(ActionResult.METHOD.REDIRECT, request.getHeader(REFERER));
+            return result;
         }
-       /* try {
-            newPasswordValid = FieldsValidator.passwordValid(newPassword1);
-        } catch (ValidationException e) {
-            System.out.println("Password cannot be validated.");
-            LOGGER.debug("Password cannot be validated.");
-            throw new ActionException();
-        }
-        if (!newPasswordValid) {
-            session.setAttribute("passwordError", "account.passwordNotValid");
-            LOGGER.debug("New password value is not valid.");
-            System.out.println( "New password value is not valid.");
-            return new ActionResult(ActionResult.METHOD.REDIRECT, request.getHeader(REFERER));
-        }*/
         if (!newPassword1.equals(newPassword2)) {
-            session.setAttribute("passwordError", "account.passwordsDontMatch");
+            session.setAttribute(PASSWORD_ERROR, ACOUNT + ERROR_PASS_NOT_MATCH);
             LOGGER.debug("Passwords don't match.");
-            System.out.println("Passwords don't match.");
-            return new ActionResult(ActionResult.METHOD.REDIRECT, request.getHeader(REFERER));
+            return result;
         }
         try {
-            userDao().resetPassword(newPassword1,id);
+            userDao().resetPassword(newPassword1, id);
             LOGGER.debug("Password has been changed.");
-            System.out.println("Password has been changed.");
         } catch (DAOException e) {
             LOGGER.warn("Password cannot be changed.");
-            System.out.println("Password cannot be changed.");
             throw new ActionException(e);
         }
         if (user.getId() == id) {
             user.setPassword(newPassword1);
-            session.setAttribute("user", user);
+            session.setAttribute(USER, user);
         }
-        session.setAttribute("success", "account.changePasswordSuccess");
-        session.removeAttribute("oldPassword");
-        session.removeAttribute("newPassword1");
-        session.removeAttribute("newPassword2");
-        session.removeAttribute("oldPasswordError");
-        session.removeAttribute("emailError");
-        session.removeAttribute("passwordError");
-        session.removeAttribute("error");
-        String referer = request.getHeader("referer");
-        referer = referer.substring(referer.lastIndexOf("/") + 1, referer.length());
-        return new ActionResult(ActionResult.METHOD.REDIRECT, referer);
+        session.setAttribute(SUCCESS, ACOUNT + CHANGE_SUCCESS);
+        session.removeAttribute(OLD_PASSWORD);
+        session.removeAttribute(NEW_PASSWORD1);
+        session.removeAttribute(NEW_PASSWORD2);
+        session.removeAttribute(OLD_PASSWORD_ERROR);
+        session.removeAttribute(PASSWORD_ERROR);
+        return result;
     }
 
     /**

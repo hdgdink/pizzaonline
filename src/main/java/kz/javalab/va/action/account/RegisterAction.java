@@ -15,13 +15,20 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-
 public class RegisterAction implements Action {
     private static final Logger LOGGER = Logger.getLogger(RegisterAction.class);
-    private static final ActionResult REG_SUCCESS = new ActionResult(ActionResult.METHOD.REDIRECT, "pizza_loged");
-    private static final ActionResult REG_FAILED = new ActionResult(ActionResult.METHOD.REDIRECT, "pizza");
     private ActionResult result;
     private UserDao userDAO = null;
+    private static final String FIRSTNAME = "firstname";
+    private static final String LASTNAME = "lastname";
+    private static final String USERNAME = "username";
+    private static final String EMAIL = "email";
+    private static final String PASSWORD = "password";
+    private static final String RE_PASSWORD = "re-password";
+    private static final String USER = "user";
+    private static final String ID = "id";
+    private static final ActionResult REG_SUCCESS = new ActionResult(ActionResult.METHOD.REDIRECT, "pizza_loged");
+    private static final ActionResult REG_FAILED = new ActionResult(ActionResult.METHOD.REDIRECT, "pizza");
     private static final String ERROR_MESSAGE_ATTRIBUTE = "RegisterErrorMessageKey";
     private static final String SUCCESS_MESSAGE_ATTRIBUTE = "RegisterSuccessMessageKey";
     private static final String REGISTRATION_SUCCESS_ATTRIBUTE = "success_registration";
@@ -35,23 +42,25 @@ public class RegisterAction implements Action {
         try {
             userDAO = new UserDao();
         } catch (ConnectionPoolException e) {
+            LOGGER.error("Error at createUserDao()", e);
             e.printStackTrace();
         }
-        String firstname = request.getParameter("firstname");
-        String lastname = request.getParameter("lastname");
-        String username = request.getParameter("username");
-        String email = request.getParameter("email");
-        String password = request.getParameter("password");
-        String password2 = request.getParameter("re-password");
+        String firstname = request.getParameter(FIRSTNAME);
+        String lastname = request.getParameter(LASTNAME);
+        String username = request.getParameter(USERNAME);
+        String email = request.getParameter(EMAIL);
+        String password = request.getParameter(PASSWORD);
+        String password2 = request.getParameter(RE_PASSWORD);
         User user = null;
         try {
             userNameValid = FieldsValidator.userNameCheck(username);
         } catch (ValidationException e) {
+            LOGGER.error("Validation is not succes", e);
             e.printStackTrace();
         }
         if (!userNameValid) {
             session.setAttribute(ERROR_MESSAGE_ATTRIBUTE, USER_EXIST);
-            System.out.println("Username is not valid");
+            LOGGER.error("Username is not valid");
             result = REG_FAILED;
             return result;
         } else {
@@ -64,17 +73,20 @@ public class RegisterAction implements Action {
                 user.setPassword(password);
                 user.setRole(Role.CLIENT);
                 user.setBalance(0);
-                System.out.println(user.toString());
                 try {
                     userDAO.create(user);
+                    user = userDAO.getByUsername(user.getUsername());
                 } catch (DAOException e) {
+                    LOGGER.error("Error while create User", e);
                     e.printStackTrace();
                 }
                 result = REG_SUCCESS;
-                session.setAttribute("user", user);
-                session.setAttribute("id", user.getId());
+                LOGGER.info("User with username: " + user.getUsername() + " registered");
+                session.setAttribute(USER, user);
+                session.setAttribute(ID, user.getId());
                 request.setAttribute(SUCCESS_MESSAGE_ATTRIBUTE, REGISTRATION_SUCCESS_ATTRIBUTE);
             } else {
+                LOGGER.error("Re-password is not valid");
                 session.setAttribute(ERROR_MESSAGE_ATTRIBUTE, PASSWORDS_NOT_MATCH);
                 result = REG_FAILED;
             }

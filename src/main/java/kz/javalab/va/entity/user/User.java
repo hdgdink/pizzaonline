@@ -1,9 +1,6 @@
 package kz.javalab.va.entity.user;
 
 import kz.javalab.va.entity.Entity;
-import kz.javalab.va.entity.order.Order;
-
-import java.util.List;
 
 public class User extends Entity {
     private String firstname;
@@ -13,7 +10,6 @@ public class User extends Entity {
     private String password;
     private Integer balance;
     private Role role;
-    private List<Order> orders;
 
     public String getFirstname() {
         return firstname;
@@ -71,24 +67,4 @@ public class User extends Entity {
         this.role = role;
     }
 
-    public List<Order> getOrders() {
-        return orders;
-    }
-
-    public void setOrders(List<Order> orders) {
-        this.orders = orders;
-    }
-
-    @Override
-    public String toString() {
-        return "User " +
-                "firstname='" + firstname + '\'' +
-                ", lastname='" + lastname + '\'' +
-                ", username='" + username + '\'' +
-                ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
-                ", balance=" + balance +
-                ", role=" + role +
-                ", orders=" + orders + "\n";
-    }
 }

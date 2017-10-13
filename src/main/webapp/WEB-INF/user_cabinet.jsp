@@ -57,15 +57,15 @@
                     <form id="pass_update" method="POST" action="pass_update">
                         <div>
                             <label for="old_pass"><fmt:message key="default.oldPassword"/></label>
-                            <input type="password" id="old_pass" name="old-password" required/>
+                            <input type="password" id="old_pass" name="oldPassword" required/>
                         </div>
                         <div>
                             <label for="new_pass1"><fmt:message key="default.newPassword"/></label>
-                            <input type="password" id="new_pass1" name="new-password1" required/>
+                            <input type="password" id="new_pass1" name="newPassword1" required/>
                         </div>
                         <div>
                             <label for="new_pass2"><fmt:message key="default.newPassword"/></label>
-                            <input type="password" id="new_pass2" name="new-password2" required/>
+                            <input type="password" id="new_pass2" name="newPassword2" required/>
                         </div>
                         <button type="submit" class="btn btn-primary"><fmt:message key="default.update"/></button>
                     </form>

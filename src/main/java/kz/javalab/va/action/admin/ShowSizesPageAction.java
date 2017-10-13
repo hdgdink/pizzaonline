@@ -5,32 +5,30 @@ import kz.javalab.va.action.ActionException;
 import kz.javalab.va.action.ActionResult;
 import kz.javalab.va.connection.pool.ConnectionPoolException;
 import kz.javalab.va.dao.DAOException;
-import kz.javalab.va.dao.impl.FoodDao;
-import kz.javalab.va.dao.impl.TypeDao;
-import kz.javalab.va.entity.Food;
-import kz.javalab.va.entity.Type;
+import kz.javalab.va.dao.impl.SizeDao;
+import kz.javalab.va.entity.Size;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
-public class ShowProductsPageAction implements Action {
+public class ShowSizesPageAction implements Action {
 
     @Override
     public ActionResult execute(HttpServletRequest request, HttpServletResponse response) throws ActionException {
         HttpSession session = request.getSession();
         try {
-            List<Food> productsList = new FoodDao().getAll();
-            List<Type> types = new TypeDao().getAll();
-            session.setAttribute("types", types);
-            session.setAttribute("products_list", productsList);
+            List<Size> sizeList = new SizeDao().getAll();
+            session.setAttribute("allSizes", sizeList);
         } catch (DAOException e) {
             e.printStackTrace();
         } catch (ConnectionPoolException e) {
             e.printStackTrace();
         }
-        return new ActionResult(ActionResult.METHOD.FORWARD, "admin_products");
-    }
-}
+        return new ActionResult(ActionResult.METHOD.FORWARD, "admin_sizes");
 
+    }
+
+
+}

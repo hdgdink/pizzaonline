@@ -10,10 +10,8 @@ import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 
 
-
 public class ConnectionPool {
     private static final Logger LOGGER = Logger.getLogger(ConnectionPool.class);
-
     private static final ResourceBundle RB = ResourceBundle.getBundle("db");
     private static final String DRIVER = RB.getString("db.driver");
     private static final String URL = RB.getString("db.url");

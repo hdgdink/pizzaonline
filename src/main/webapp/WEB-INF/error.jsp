@@ -4,21 +4,23 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="t" tagdir="/WEB-INF/tags" %>
 
-<html>
-<head>
-    <title>Error</title>
-</head>
-<body>
-<div  align="center">
-    <h2>
-        <font color="red"> ERROR ${pageContext.errorData.statusCode}</font>
-    </h2>
+<fmt:setLocale value="${locale}"/>
+<fmt:bundle basename="i18n.text">
+    <html>
+    <head>
+        <title>Error</title>
+    </head>
+    <body>
+    <div align="center">
 
-    <img src="/static/img/error.png"/>
-    <br>
-    <a href="pizza">
-        <fmt:message key="default.mainpage"/>
-    </a>
-</div>
-</body>
-</html>
+        <p align="center"><img src="/static/img/error.png"/></p>
+        <br>
+        <h2>
+            <font color="red"> ERROR ${pageContext.errorData.statusCode}</font>
+        </h2>
+        <br>
+        <a href='<c:url value="/"/>'><fmt:message key="default.mainpage"/> </a>
+    </div>
+    </body>
+    </html>
+</fmt:bundle>

@@ -1,8 +1,5 @@
 package kz.javalab.va.util.validator;
 
-/**
- * Created by HdgDink} on 03.10.2017.
- */
 public class ValidationException extends Exception {
     public ValidationException() {
         super();
