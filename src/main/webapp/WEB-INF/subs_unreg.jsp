@@ -26,7 +26,7 @@
             <h1><span><fmt:message key="default.subs"/></span></h1>
             <hr>
             <c:forEach items="${subList}" var="sub">
-            <div class="col-sm-6 col-md-4">
+                <div class="col-sm-6 col-md-4">
                     <div class="thumbnail">
                         <img src=${sub.img}>
                         <div class="caption">

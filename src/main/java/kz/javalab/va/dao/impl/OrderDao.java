@@ -69,7 +69,7 @@ public class OrderDao extends AbstractDao<Integer, Order> {
         return order;
     }
 
-        @Override
+    @Override
     public int create(Order entity) throws DAOException {
         LOGGER.info("OrderDao.createOrder()");
         Connection connection = daoFactory.getConnection();

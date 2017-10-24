@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 public class LogoutAction implements Action {
-    private ActionResult result = new ActionResult();
+    private ActionResult result = null;
 
     @Override
     public ActionResult execute(HttpServletRequest request, HttpServletResponse response) throws ActionException {
@@ -23,8 +23,7 @@ public class LogoutAction implements Action {
         session.removeAttribute(Constants.ATTRIBUTE_SIZE);
         session.removeAttribute(Constants.ATTRIBUTE_FINALPRICE);
         session.removeAttribute(Constants.ATTRIBUTE_ALL_SIZES_ADMIN);
-        result.setMethod(ActionResult.METHOD.REDIRECT);
-        result.setView(Constants.ACTION_PIZZA);
+        result = new ActionResult(ActionResult.METHOD.REDIRECT, Constants.ACTION_PIZZA);
         return result;
     }
 

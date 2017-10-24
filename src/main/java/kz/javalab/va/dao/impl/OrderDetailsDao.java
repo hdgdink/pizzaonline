@@ -88,8 +88,7 @@ public class OrderDetailsDao extends AbstractDao<Integer, OrderDetails> {
         }
     }
 
-
-       @Override
+    @Override
     public int create(OrderDetails entity) throws DAOException {
         LOGGER.info("OrderDetailsDao.createOrderDetail()");
         Connection connection = daoFactory.getConnection();

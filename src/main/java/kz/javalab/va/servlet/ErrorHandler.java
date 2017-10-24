@@ -15,16 +15,26 @@ import java.io.IOException;
 public class ErrorHandler extends HttpServlet {
     private static final Logger LOGGER = Logger.getLogger(ErrorHandler.class);
 
-    protected void doGet(HttpServletRequest request,
-                         HttpServletResponse response) throws ServletException, IOException {
-        handleError(request, response);
-        request.getRequestDispatcher(Constants.PAGE_ERROR).forward(request, response);
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            handleError(request, response);
+            request.getRequestDispatcher(Constants.PAGE_ERROR).forward(request, response);
+        } catch (ServletException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
-    protected void doPost(HttpServletRequest request,
-                          HttpServletResponse response) throws ServletException, IOException {
-        handleError(request, response);
-        response.sendRedirect(Constants.PAGE_ERROR);
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            handleError(request, response);
+            response.sendRedirect(Constants.PAGE_ERROR);
+        } catch (ServletException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private void handleError(HttpServletRequest request,
@@ -34,7 +44,7 @@ public class ErrorHandler extends HttpServlet {
                 .getAttribute(Constants.JAVAX_ERROR);
         LOGGER.debug("Error Handler...");
         if (exception.getClass().equals(ActionException.class)) {
-            session.setAttribute(Constants.ATTRIBUTE_ERROR,Constants.BAD_REQUEST_ERROR);
+            session.setAttribute(Constants.ATTRIBUTE_ERROR, Constants.BAD_REQUEST_ERROR);
             LOGGER.warn("Bad request.");
         } else if (exception.getClass().equals(DAOException.class)) {
             session.setAttribute(Constants.ATTRIBUTE_ERROR, Constants.ACTION_FAILED_ERROR);

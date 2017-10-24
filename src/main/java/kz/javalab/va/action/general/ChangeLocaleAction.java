@@ -24,8 +24,6 @@ public class ChangeLocaleAction implements Action {
         String referer = request.getHeader(Constants.PAGE_REFERER);
         referer = referer.substring(referer.lastIndexOf("/") + 1, referer.length());
         return new ActionResult(ActionResult.METHOD.REDIRECT, referer);
-
-
     }
 
 

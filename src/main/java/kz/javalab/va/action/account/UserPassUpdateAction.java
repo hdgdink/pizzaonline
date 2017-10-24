@@ -15,15 +15,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-/**
- * Created by HdgDink} on 02.10.2017.
- */
 public class UserPassUpdateAction implements Action {
     private static final Logger LOGGER = Logger.getLogger(UserPassUpdateAction.class);
     private UserDao dao;
     private String view;
     private ActionResult result = new ActionResult(ActionResult.METHOD.REDIRECT, view);
-
 
     @Override
     public ActionResult execute(HttpServletRequest request, HttpServletResponse response) throws ActionException {

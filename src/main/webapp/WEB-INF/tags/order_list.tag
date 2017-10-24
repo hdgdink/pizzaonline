@@ -68,7 +68,7 @@
             <input type="text" name="address" required/><br>
             <hr>
             <h6><fmt:message key="default.yourPhone"/></h6>
-            <input type="tel" pattern="^\(\d{3}\)\d{3}-\d{2}-\d{2}$" name="phone"  required/>
+            <input type="tel" pattern="^\(\d{3}\)\d{3}-\d{2}-\d{2}$" name="phone" required/>
             <br>
             <hr>
             <input type="submit" class="btn btn-primary" value="<fmt:message key="default.checkout"/>"/>

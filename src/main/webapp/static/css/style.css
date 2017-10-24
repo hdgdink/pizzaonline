@@ -108,7 +108,8 @@ nav ul ul ul {
     margin-bottom: 10px;
     border-radius: 10px;
 }
-.caption{
+
+.caption {
     background-image: url("../img/pinkback1.jpg");
 }
 
@@ -287,15 +288,11 @@ nav ul ul ul {
     margin: 0 auto;
 }
 
-
-
 #cabinet {
     background-image: url("../img/pinkback1.jpg");
     width: auto;
     margin: 0 auto;
 }
-
-
 
 .msg-error {
     background-color: red;

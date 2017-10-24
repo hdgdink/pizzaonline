@@ -58,14 +58,12 @@ public class CreateEntityAdmin implements Action {
         String address = req.getParameter(Constants.ATTRIBUTE_ADDRESS);
         String phone = req.getParameter(Constants.ATTRIBUTE_PHONE);
         Status status = Status.valueOf(req.getParameter(Constants.ATTRIBUTE_STATUS));
-
         Order order = new Order();
         order.setSumOfOrder(sumOfOrder);
         order.setUserId(userId);
         order.setAddress(address);
         order.setPhone(phone);
         order.setStatus(status);
-
         try {
             OrderDao orderDao = new OrderDao();
             orderDao.create(order);
@@ -89,7 +87,6 @@ public class CreateEntityAdmin implements Action {
         Integer quantity = Integer.parseInt(req.getParameter(Constants.ATTRIBUTE_COUNT));
         Integer orderId = Integer.parseInt(req.getParameter(Constants.ATTRIBUTE_ORDER_ID));
         Integer price = Integer.parseInt(req.getParameter(Constants.ATTRIBUTE_PRICE));
-
         OrderDetails orderDetails = new OrderDetails();
         orderDetails.setFoodNameRu(foodNameRu);
         orderDetails.setFoodNameEn(foodNameEn);
@@ -137,7 +134,6 @@ public class CreateEntityAdmin implements Action {
         Integer value = Integer.parseInt(req.getParameter(Constants.ATTRIBUTE_VAL));
         String name = req.getParameter(Constants.ATTRIBUTE_NAME);
         Boolean active = Boolean.parseBoolean(req.getParameter(Constants.ATTRIBUTE_ACTIVE));
-
         Size size = new Size();
         size.setSize(value);
         size.setName(name);
@@ -165,7 +161,6 @@ public class CreateEntityAdmin implements Action {
         Integer price = Integer.parseInt(req.getParameter(Constants.ATTRIBUTE_PRICE));
         String img = req.getParameter(Constants.ATTRIBUTE_IMG_PATH);
         Boolean active = Boolean.parseBoolean(req.getParameter(Constants.ATTRIBUTE_ACTIVE));
-
         Food food = new Food();
         food.setPrice(price);
         food.setImg(img);

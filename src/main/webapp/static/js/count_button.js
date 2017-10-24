@@ -14,7 +14,7 @@ jQuery(document).ready(function ($) {
         var val = +$input[0].defaultValue;
         $input.val(parseInt($input.val()) + 1);
         $input.change();
-                return false;
+        return false;
     });
 });
 

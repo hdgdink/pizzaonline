@@ -6,7 +6,7 @@ import kz.javalab.va.dao.impl.TypeDao;
 
 import java.io.Serializable;
 
-public class Food extends Entity implements Serializable{
+public class Food extends Entity implements Serializable {
     private Integer typeId;
     private String nameEn;
     private String nameRu;

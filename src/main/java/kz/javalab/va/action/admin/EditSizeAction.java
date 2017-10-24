@@ -27,7 +27,6 @@ public class EditSizeAction implements Action {
         Integer value = Integer.parseInt(request.getParameter(Constants.ATTRIBUTE_VAL));
         String name = request.getParameter(Constants.ATTRIBUTE_NAME);
         Boolean active = Boolean.parseBoolean(request.getParameter(Constants.ATTRIBUTE_ACTIVE));
-
         try {
             size = sizeDao().getById(id);
             size.setSize(value);

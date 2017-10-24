@@ -28,39 +28,39 @@
             <h1><span><fmt:message key="default.pizzamenu"/></span></h1>
             <hr>
             <c:forEach items="${bevList}" var="bev">
-                    <div class="col-sm-6 col-md-4">
-                        <div class="thumbnail">
-                            <img src=${bev.img}>
-                            <input type="hidden" name="food" value="${bev.id}"/>
-                            <div class="caption">
-                                <c:if test="${locale.language=='ru'}"><h3>${bev.nameRu}</h3></c:if>
-                                <c:if test="${locale.language=='en'}"><h3>${bev.nameEn}</h3></c:if>
-                                <c:if test="${locale.language=='ru'}"><p>${bev.discriptionRu}</p></h3></c:if>
-                                <c:if test="${locale.language=='en'}"><p>${bev.discriptionEn}</p></h3></c:if>
-                                <p>
-                                    <select name="size" class="select">
-                                        <c:forEach items="${sizeList}" var="size">
-                                            <option value="${size.size}"><fmt:message key="${size.name}"/></option>
-                                        </c:forEach>
-                                    </select>
-                                <p/>
-                                <t:count_group/>
-                                <p>
-                                    <input type="text" value="${price}" readonly="readonly" class="input_select"
-                                           id="price1"/>
-                                    <span class="span"><fmt:message key="default.currency"/></span>
-                                    <br>
-                                    <a href="#message_form" title="Add to order" class="add btn btn-primary">
-                                        <fmt:message key="default.addtolist"/></a>
-                                </p>
-                                <a href="#x" class="overlay" id="message_form"></a>
-                                <div class="popup">
-                                    <h2><fmt:message key="default.loginNeed"/></h2>
-                                    <a class="close" href="#close"></a>
-                                </div>
+                <div class="col-sm-6 col-md-4">
+                    <div class="thumbnail">
+                        <img src=${bev.img}>
+                        <input type="hidden" name="food" value="${bev.id}"/>
+                        <div class="caption">
+                            <c:if test="${locale.language=='ru'}"><h3>${bev.nameRu}</h3></c:if>
+                            <c:if test="${locale.language=='en'}"><h3>${bev.nameEn}</h3></c:if>
+                            <c:if test="${locale.language=='ru'}"><p>${bev.discriptionRu}</p></h3></c:if>
+                            <c:if test="${locale.language=='en'}"><p>${bev.discriptionEn}</p></h3></c:if>
+                            <p>
+                                <select name="size" class="select">
+                                    <c:forEach items="${sizeList}" var="size">
+                                        <option value="${size.size}"><fmt:message key="${size.name}"/></option>
+                                    </c:forEach>
+                                </select>
+                            <p/>
+                            <t:count_group/>
+                            <p>
+                                <input type="text" value="${price}" readonly="readonly" class="input_select"
+                                       id="price1"/>
+                                <span class="span"><fmt:message key="default.currency"/></span>
+                                <br>
+                                <a href="#message_form" title="Add to order" class="add btn btn-primary">
+                                    <fmt:message key="default.addtolist"/></a>
+                            </p>
+                            <a href="#x" class="overlay" id="message_form"></a>
+                            <div class="popup">
+                                <h2><fmt:message key="default.loginNeed"/></h2>
+                                <a class="close" href="#close"></a>
                             </div>
                         </div>
                     </div>
+                </div>
             </c:forEach>
         </div>
 

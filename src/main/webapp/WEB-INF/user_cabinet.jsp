@@ -75,10 +75,10 @@
             <div class="col-sm-6 col-md-4">
                 <div class="thumbnail">
 
-                        <div>
-                            <label for="balance"><fmt:message key="default.balance"/></label>
-                            <input type="text" id="balance" name="old_password" value="${user.balance}" readonly/>
-                        </div>
+                    <div>
+                        <label for="balance"><fmt:message key="default.balance"/></label>
+                        <input type="text" id="balance" name="old_password" value="${user.balance}" readonly/>
+                    </div>
                     <a href="#reup_form" title="Re-up balance" class="btn btn-primary">
                         <fmt:message key="default.reup"/></a>
 

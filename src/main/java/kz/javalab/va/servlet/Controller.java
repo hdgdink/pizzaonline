@@ -32,15 +32,22 @@ public class Controller extends HttpServlet {
         method = result.getMethod();
         view = result.getView();
         LOGGER.debug(method + "/" + view);
-        switch (method) {
+        if (method.equals(ActionResult.METHOD.FORWARD)) {
+            request.getRequestDispatcher(Constants.WEB_INF_STRING + view + Constants.JSP_STRING)
+                    .forward(request, response);
+        }
+        if (method.equals(ActionResult.METHOD.REDIRECT)) {
+            response.sendRedirect(request.getContextPath() + Constants.DO_STRING + result.getView());
+        }
+
+        /*switch (method) {
             case FORWARD:
-                request.getRequestDispatcher(Constants.WEB_INF_STRING + view + Constants.JSP_STRING)
-                        .forward(request, response);
+
                 break;
             case REDIRECT:
-                response.sendRedirect(request.getContextPath() + Constants.DO_STRING + result.getView());
+
                 break;
-        }
+        }*/
 
     }
 }

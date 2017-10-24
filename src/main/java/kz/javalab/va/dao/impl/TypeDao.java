@@ -71,7 +71,7 @@ public class TypeDao extends AbstractDao<Integer, Type> {
         return type;
     }
 
-       @Override
+    @Override
     public int create(Type entity) throws DAOException {
         LOGGER.info("TypeDao.createType()");
         Connection connection = daoFactory.getConnection();

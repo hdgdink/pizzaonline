@@ -142,7 +142,6 @@ public class UserDao extends AbstractDao<Integer, User> {
         }
     }
 
-
     public List<User> getUsersListByUsername(String username) throws DAOException {
         LOGGER.info("UserDao.getUsersListbyUserName()");
         List<User> users = null;

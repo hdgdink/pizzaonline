@@ -2,7 +2,6 @@ package kz.javalab.va.dao.impl;
 
 import kz.javalab.va.connection.pool.ConnectionPool;
 import kz.javalab.va.connection.pool.ConnectionPoolException;
-import kz.javalab.va.filter.SecurityFilter;
 import org.apache.log4j.Logger;
 
 import java.sql.Connection;

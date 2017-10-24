@@ -12,7 +12,6 @@ import java.util.concurrent.BlockingQueue;
 
 public class ConnectionPool {
     private static final Logger LOGGER = Logger.getLogger(ConnectionPool.class);
-
     private static ConnectionPool instance;
     private static BlockingQueue<Connection> pool = null;
 
@@ -58,7 +57,6 @@ public class ConnectionPool {
         Connection connection = null;
         try {
             connection = pool.take();
-
         } catch (InterruptedException e) {
             LOGGER.warn("Interrupted while waiting");
             throw new ConnectionPoolException();

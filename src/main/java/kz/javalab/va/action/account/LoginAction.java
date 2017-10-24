@@ -87,7 +87,6 @@ public class LoginAction implements Action {
 
             result = new ActionResult(ActionResult.METHOD.REDIRECT, Constants.PAGE_PIZZA_LOGGED);
         }
-
         session.setAttribute(Constants.ATTRIBUTE_USER, user);
         session.setAttribute(Constants.ATTRIBUTE_ID, user.getId());
         session.setAttribute(Constants.ATTRIBUTE_FINALPRICE, finalPrice);

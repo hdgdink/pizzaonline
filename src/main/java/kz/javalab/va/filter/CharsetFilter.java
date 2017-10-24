@@ -7,7 +7,7 @@ import javax.servlet.*;
 import java.io.IOException;
 
 
-public class CharsetFilter implements javax.servlet.Filter {
+public class CharsetFilter implements Filter {
     private final static Logger LOGGER = Logger.getLogger(CharsetFilter.class);
 
     @Override

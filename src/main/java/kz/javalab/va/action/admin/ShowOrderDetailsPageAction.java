@@ -19,7 +19,6 @@ public class ShowOrderDetailsPageAction implements Action {
     @Override
     public ActionResult execute(HttpServletRequest request, HttpServletResponse response) throws ActionException {
         HttpSession session = request.getSession();
-
         try {
             List<OrderDetails> detailsList = new OrderDetailsDao().getAll();
             session.setAttribute(Constants.ATTRIBUTE_ALL_ORDER_DETAILS_LIST, detailsList);
@@ -28,8 +27,6 @@ public class ShowOrderDetailsPageAction implements Action {
         } catch (ConnectionPoolException e) {
             e.printStackTrace();
         }
-
-        return new ActionResult(ActionResult.METHOD.FORWARD,Constants.ACTION_ADMIN_ORDER_DETAILS);
-
+        return new ActionResult(ActionResult.METHOD.FORWARD, Constants.ACTION_ADMIN_ORDER_DETAILS);
     }
 }

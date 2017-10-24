@@ -80,70 +80,70 @@
 
                 <hr>
 
-                        <h3><fmt:message key="default.creatUser"/></h3>
-                    <form id="create_user" method="POST" action="create_user">
-                        <div class="input-group">
-                            <div class="col-lg-12">
-                                <div class="input-group">
-                                    <span class="input-group-addon"><fmt:message key="default.firstname"/></span>
-                                    <input type="text" class="form-control" id="firstname_u" name="firstname"
-                                           value="" placeholder="..." required>
-                                </div>
-                            </div>
-                            <div class="col-lg-12">
-                                <div class="input-group">
-                                    <span class="input-group-addon"><fmt:message key="default.lastname"/></span>
-                                    <input type="text" class="form-control" id="lastname_u" name="lastname"
-                                           value="" placeholder="..." required>
-                                </div>
-                            </div>
-                            <div class="col-lg-12">
-                                <div class="input-group">
-                                    <span class="input-group-addon"><fmt:message key="default.username"/></span>
-                                    <input type="text" class="form-control" id="username_u" name="username"
-                                           value="" placeholder="..." required>
-                                </div>
-                            </div>
-                            <div class="col-lg-12">
-                                <div class="input-group">
-                                    <span class="input-group-addon"><fmt:message key="default.password"/></span>
-                                    <input type="password" class="form-control" name="password" required value="">
-                                </div>
-                            </div>
-                            <div class="col-lg-12">
-                                <div class="input-group">
-                                    <span class="input-group-addon"><fmt:message key="default.email"/></span>
-                                    <input type="email" class="form-control" id="email_u" name="email" value=""
-                                           placeholder="..." required>
-                                </div>
-                            </div>
-                            <div class="col-lg-12">
-                                <div class="input-group">
-                                    <span class="input-group-addon"><fmt:message key="default.role"/></span>
-                                    <select class="selectpicker show-menu-arrow" data-width="auto" name="role">
-                                        <c:forEach items="${roles}" var="role1">
-                                            <option value="${role1}" <c:if test="${role1==role}">selected</c:if>>
-                                                    ${role1}
-                                            </option>
-                                        </c:forEach>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-lg-12">
-                                <div class="input-group">
-                                    <span class="input-group-addon"><fmt:message key="default.balanceAdmin"/></span>
-                                    <input type="number" class="form-control" name="balance"
-                                           value="" placeholder="...">
-                                </div>
-                            </div>
-                            <hr>
-                            <br>
-                            <div class="col-lg-12">
-                                <button type="submit" class="btn btn-success"><fmt:message
-                                        key="default.create"/></button>
+                <h3><fmt:message key="default.creatUser"/></h3>
+                <form id="create_user" method="POST" action="create_user">
+                    <div class="input-group">
+                        <div class="col-lg-12">
+                            <div class="input-group">
+                                <span class="input-group-addon"><fmt:message key="default.firstname"/></span>
+                                <input type="text" class="form-control" id="firstname_u" name="firstname"
+                                       value="" placeholder="..." required>
                             </div>
                         </div>
-                    </form>
+                        <div class="col-lg-12">
+                            <div class="input-group">
+                                <span class="input-group-addon"><fmt:message key="default.lastname"/></span>
+                                <input type="text" class="form-control" id="lastname_u" name="lastname"
+                                       value="" placeholder="..." required>
+                            </div>
+                        </div>
+                        <div class="col-lg-12">
+                            <div class="input-group">
+                                <span class="input-group-addon"><fmt:message key="default.username"/></span>
+                                <input type="text" class="form-control" id="username_u" name="username"
+                                       value="" placeholder="..." required>
+                            </div>
+                        </div>
+                        <div class="col-lg-12">
+                            <div class="input-group">
+                                <span class="input-group-addon"><fmt:message key="default.password"/></span>
+                                <input type="password" class="form-control" name="password" required value="">
+                            </div>
+                        </div>
+                        <div class="col-lg-12">
+                            <div class="input-group">
+                                <span class="input-group-addon"><fmt:message key="default.email"/></span>
+                                <input type="email" class="form-control" id="email_u" name="email" value=""
+                                       placeholder="..." required>
+                            </div>
+                        </div>
+                        <div class="col-lg-12">
+                            <div class="input-group">
+                                <span class="input-group-addon"><fmt:message key="default.role"/></span>
+                                <select class="selectpicker show-menu-arrow" data-width="auto" name="role">
+                                    <c:forEach items="${roles}" var="role1">
+                                        <option value="${role1}" <c:if test="${role1==role}">selected</c:if>>
+                                                ${role1}
+                                        </option>
+                                    </c:forEach>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-lg-12">
+                            <div class="input-group">
+                                <span class="input-group-addon"><fmt:message key="default.balanceAdmin"/></span>
+                                <input type="number" class="form-control" name="balance"
+                                       value="" placeholder="...">
+                            </div>
+                        </div>
+                        <hr>
+                        <br>
+                        <div class="col-lg-12">
+                            <button type="submit" class="btn btn-success"><fmt:message
+                                    key="default.create"/></button>
+                        </div>
+                    </div>
+                </form>
 
             </div>
         </div>

@@ -18,7 +18,6 @@ import java.util.List;
 public class ShowCabinetPageAction implements Action {
     private ActionResult result;
 
-
     @Override
     public ActionResult execute(HttpServletRequest request, HttpServletResponse response) throws ActionException {
         HttpSession session = request.getSession();

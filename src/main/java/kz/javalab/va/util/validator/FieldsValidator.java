@@ -14,7 +14,6 @@ import java.util.regex.PatternSyntaxException;
 public class FieldsValidator {
     private final static Logger LOGGER = Logger.getLogger(FieldsValidator.class);
 
-
     /**
      * Is used to check whether values are null or not.
      *
@@ -112,7 +111,7 @@ public class FieldsValidator {
             e.printStackTrace();
         }
         if (user != null) {
-            LOGGER.debug("Username alredy busy");
+            LOGGER.debug("Username already busy");
             return false;
         }
         return true;

@@ -71,7 +71,7 @@ public class SizeDao extends AbstractDao<Integer, Size> {
         return size;
     }
 
-       @Override
+    @Override
     public int create(Size entity) throws DAOException {
         LOGGER.info("SizeDao.createSize()");
         Connection connection = daoFactory.getConnection();

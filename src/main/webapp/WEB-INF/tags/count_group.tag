@@ -10,7 +10,7 @@
             <span class="quont-minus btn btn-primary" id="minus">-</span>
             <input type="text" class="form-control" id="input" value="${count}" name="count"
                    readonly="readonly">
-            <span class="quont-plus btn btn-primary" id="plus" >+</span>
+            <span class="quont-plus btn btn-primary" id="plus">+</span>
         </div>
     </div>
 </form>
