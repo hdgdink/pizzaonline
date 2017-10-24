@@ -165,7 +165,7 @@
                         <div class="col-lg-12">
                             <div class="input-group">
                                 <span class="input-group-addon"><fmt:message key="default.orderId"/></span>
-                                <input type="number" class="form-control" id="orderId_u" name="order_Id"
+                                <input type="number" class="form-control" id="orderId_u" name="orderId"
                                        value="" placeholder="..." readonly="readonly" required>
                             </div>
                         </div>

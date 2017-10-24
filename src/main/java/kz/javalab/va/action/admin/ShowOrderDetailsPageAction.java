@@ -7,6 +7,7 @@ import kz.javalab.va.connection.pool.ConnectionPoolException;
 import kz.javalab.va.dao.DAOException;
 import kz.javalab.va.dao.impl.OrderDetailsDao;
 import kz.javalab.va.entity.OrderDetails;
+import kz.javalab.va.util.Constants;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -14,8 +15,6 @@ import javax.servlet.http.HttpSession;
 import java.util.List;
 
 public class ShowOrderDetailsPageAction implements Action {
-    private static final String ADMIN_ORDER_DETAILS = "admin_order_details";
-    private static final String ORDER_DETAILS_LIST = "allOrderDetails";
 
     @Override
     public ActionResult execute(HttpServletRequest request, HttpServletResponse response) throws ActionException {
@@ -23,14 +22,14 @@ public class ShowOrderDetailsPageAction implements Action {
 
         try {
             List<OrderDetails> detailsList = new OrderDetailsDao().getAll();
-            session.setAttribute(ORDER_DETAILS_LIST, detailsList);
+            session.setAttribute(Constants.ATTRIBUTE_ALL_ORDER_DETAILS_LIST, detailsList);
         } catch (DAOException e) {
             e.printStackTrace();
         } catch (ConnectionPoolException e) {
             e.printStackTrace();
         }
 
-        return new ActionResult(ActionResult.METHOD.FORWARD, ADMIN_ORDER_DETAILS);
+        return new ActionResult(ActionResult.METHOD.FORWARD,Constants.ACTION_ADMIN_ORDER_DETAILS);
 
     }
 }

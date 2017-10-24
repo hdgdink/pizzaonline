@@ -100,7 +100,7 @@
                             <div class="col-lg-12">
                                 <div class="input-group">
                                     <span class="input-group-addon"><fmt:message key="default.username"/></span>
-                                    <input type="text" class="form-control" id="username_u" name="user_name"
+                                    <input type="text" class="form-control" id="username_u" name="username"
                                            value="" placeholder="..." required>
                                 </div>
                             </div>

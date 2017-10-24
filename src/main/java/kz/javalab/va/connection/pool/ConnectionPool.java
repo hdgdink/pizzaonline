@@ -1,23 +1,18 @@
 package kz.javalab.va.connection.pool;
 
+import kz.javalab.va.util.Constants;
 import org.apache.log4j.Logger;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.ResourceBundle;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 
 
 public class ConnectionPool {
     private static final Logger LOGGER = Logger.getLogger(ConnectionPool.class);
-    private static final ResourceBundle RB = ResourceBundle.getBundle("db");
-    private static final String DRIVER = RB.getString("db.driver");
-    private static final String URL = RB.getString("db.url");
-    private static final String USER = RB.getString("db.user");
-    private static final String PASSWORD = RB.getString("db.password");
-    private static final int POOL_SIZE = Integer.parseInt(RB.getString("db.pool_size"));
+
     private static ConnectionPool instance;
     private static BlockingQueue<Connection> pool = null;
 
@@ -40,18 +35,18 @@ public class ConnectionPool {
     }
 
     private static void createPool() throws ConnectionPoolException {
-        pool = new ArrayBlockingQueue<>(POOL_SIZE, true);
+        pool = new ArrayBlockingQueue<>(Constants.POOL_SIZE_RB, true);
         try {
-            Class.forName(DRIVER);
+            Class.forName(Constants.DRIVER_RB);
             LOGGER.debug("Database driver was initialized.");
         } catch (ClassNotFoundException e) {
             LOGGER.error("Data base driver was not found.");
             throw new ConnectionPoolException();
         }
-        for (int i = 0; i < POOL_SIZE; i++) {
+        for (int i = 0; i < Constants.POOL_SIZE_RB; i++) {
             Connection connection = null;
             try {
-                connection = DriverManager.getConnection(URL, USER, PASSWORD);
+                connection = DriverManager.getConnection(Constants.URL_RB, Constants.USER_RB, Constants.PASSWORD_RB);
             } catch (SQLException e) {
                 throw new ConnectionPoolException("There are no connection to the database", e);
             }

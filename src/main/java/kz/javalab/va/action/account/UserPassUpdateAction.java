@@ -7,6 +7,7 @@ import kz.javalab.va.connection.pool.ConnectionPoolException;
 import kz.javalab.va.dao.DAOException;
 import kz.javalab.va.dao.impl.UserDao;
 import kz.javalab.va.entity.user.User;
+import kz.javalab.va.util.Constants;
 import kz.javalab.va.util.validator.FieldsValidator;
 import org.apache.log4j.Logger;
 
@@ -22,54 +23,40 @@ public class UserPassUpdateAction implements Action {
     private UserDao dao;
     private String view;
     private ActionResult result = new ActionResult(ActionResult.METHOD.REDIRECT, view);
-    private static final String REFERER = "referer";
-    private static final String USER = "user";
-    private static final String OLD_PASSWORD = "oldPassword";
-    private static final String NEW_PASSWORD1 = "newPassword1";
-    private static final String NEW_PASSWORD2 = "newPassword2";
-    private static final String ID = "id";
-    private static final String PASSWORD_ERROR = "passwordError";
-    private static final String OLD_PASSWORD_ERROR = "oldPasswordError";
-    private static final String ACOUNT = "account";
-    private static final String ERROR_OLD_PASS_WRONG = ".oldPasswordWrong";
-    private static final String ERROR_PASS_EMPTY = ".passwordEmpty";
-    private static final String ERROR_PASS_NOT_MATCH = ".passwordsDontMatch";
-    private static final String CHANGE_SUCCESS = ".changePasswordSuccess";
-    private static final String SUCCESS = "success";
+
 
     @Override
     public ActionResult execute(HttpServletRequest request, HttpServletResponse response) throws ActionException {
         HttpSession session = request.getSession();
-        User user = (User) session.getAttribute(USER);
-        String oldPassword = request.getParameter(OLD_PASSWORD);
-        String newPassword1 = request.getParameter(NEW_PASSWORD1);
-        String newPassword2 = request.getParameter(NEW_PASSWORD2);
+        User user = (User) session.getAttribute(Constants.ATTRIBUTE_USER);
+        String oldPassword = request.getParameter(Constants.ATTRIBUTE_OLD_PASSWORD);
+        String newPassword1 = request.getParameter(Constants.ATTRIBUTE_NEW_PASSWORD1);
+        String newPassword2 = request.getParameter(Constants.ATTRIBUTE_NEW_PASSWORD2);
         int id = 0;
         boolean passwordFieldsNull = false;
         boolean newPasswordEmpty = false;
-        view = request.getHeader(REFERER);
+        view = request.getHeader(Constants.PAGE_REFERER);
         view = view.substring(view.lastIndexOf("/") + 1, view.length());
-
         try {
-            id = (int) session.getAttribute(ID);
+            id = (int) session.getAttribute(Constants.ATTRIBUTE_ID);
         } catch (IllegalArgumentException e) {
             LOGGER.warn("Id field is not valid.", e);
             throw new ActionException();
         }
-        session.setAttribute(OLD_PASSWORD, oldPassword);
-        session.setAttribute(NEW_PASSWORD1, newPassword1);
-        session.setAttribute(NEW_PASSWORD2, newPassword2);
+        session.setAttribute(Constants.ATTRIBUTE_OLD_PASSWORD, oldPassword);
+        session.setAttribute(Constants.ATTRIBUTE_NEW_PASSWORD1, newPassword1);
+        session.setAttribute(Constants.ATTRIBUTE_NEW_PASSWORD2, newPassword2);
         LOGGER.debug(oldPassword);
         LOGGER.debug(newPassword1);
         LOGGER.debug(newPassword2);
         LOGGER.debug(user.getPassword());
         if (!user.getPassword().equals(oldPassword)) {
-            session.removeAttribute(PASSWORD_ERROR);
-            session.setAttribute(OLD_PASSWORD_ERROR, ACOUNT + ERROR_OLD_PASS_WRONG);
+            session.removeAttribute(Constants.ATTRIBUTE_PASSWORD_ERROR);
+            session.setAttribute(Constants.ATTRIBUTE_OLD_PASSWORD_ERROR, Constants.OLD_PASS_WRONG_ERROR);
             LOGGER.debug("Old password value is wrong.");
-            return new ActionResult(ActionResult.METHOD.REDIRECT, request.getHeader(REFERER));
+            return new ActionResult(ActionResult.METHOD.REDIRECT, request.getHeader(Constants.PAGE_REFERER));
         }
-        session.removeAttribute(OLD_PASSWORD_ERROR);
+        session.removeAttribute(Constants.ATTRIBUTE_OLD_PASSWORD_ERROR);
         passwordFieldsNull = FieldsValidator.equalNull(newPassword1, newPassword2);
         if (passwordFieldsNull) {
             LOGGER.warn("Old password field is not valid.");
@@ -77,12 +64,12 @@ public class UserPassUpdateAction implements Action {
         }
         newPasswordEmpty = FieldsValidator.empty(newPassword1);
         if (newPasswordEmpty) {
-            session.setAttribute(PASSWORD_ERROR, ACOUNT + ERROR_PASS_EMPTY);
+            session.setAttribute(Constants.ATTRIBUTE_PASSWORD_ERROR, Constants.PASS_EMPTY_ERROR);
             LOGGER.debug("New password value is empty.");
             return result;
         }
         if (!newPassword1.equals(newPassword2)) {
-            session.setAttribute(PASSWORD_ERROR, ACOUNT + ERROR_PASS_NOT_MATCH);
+            session.setAttribute(Constants.ATTRIBUTE_PASSWORD_ERROR, Constants.PASSWORDS_NOT_MATCH_ERROR);
             LOGGER.debug("Passwords don't match.");
             return result;
         }
@@ -95,14 +82,14 @@ public class UserPassUpdateAction implements Action {
         }
         if (user.getId() == id) {
             user.setPassword(newPassword1);
-            session.setAttribute(USER, user);
+            session.setAttribute(Constants.ATTRIBUTE_USER, user);
         }
-        session.setAttribute(SUCCESS, ACOUNT + CHANGE_SUCCESS);
-        session.removeAttribute(OLD_PASSWORD);
-        session.removeAttribute(NEW_PASSWORD1);
-        session.removeAttribute(NEW_PASSWORD2);
-        session.removeAttribute(OLD_PASSWORD_ERROR);
-        session.removeAttribute(PASSWORD_ERROR);
+        session.setAttribute(Constants.ATTRIBUTE_CHANGE_PASS_SUCCESS, Constants.ATTRIBUTE_CHANGE_SUCCESS_MESSAGE);
+        session.removeAttribute(Constants.ATTRIBUTE_OLD_PASSWORD);
+        session.removeAttribute(Constants.ATTRIBUTE_NEW_PASSWORD1);
+        session.removeAttribute(Constants.ATTRIBUTE_NEW_PASSWORD2);
+        session.removeAttribute(Constants.ATTRIBUTE_OLD_PASSWORD_ERROR);
+        session.removeAttribute(Constants.ATTRIBUTE_PASSWORD_ERROR);
         return result;
     }
 

@@ -17,29 +17,21 @@ import java.util.List;
 
 public class AttributeSetter {
 
-    private static final String ROLES = "roles";
-    private static final String STATUS_LIST = "statusList";
-    private static final String TYPE_LIST = "typeList";
-    private static final String SIZE_LIST = "sizeList";
-    private static final String PIZZA_LIST = "pizzaList";
-    private static final String BEV_LIST = "bevList";
-    private static final String SUBS_LIST = "subList";
-
     public void setAttributes(HttpSession session) {
         ServletContext context = session.getServletContext();
-        context.setAttribute(ROLES, Role.values());
-        context.setAttribute(STATUS_LIST, Status.values());
+        context.setAttribute(Constants.ATTRIBUTE_ROLES_LIST, Role.values());
+        context.setAttribute(Constants.ATTRIBUTE_STATUS_LIST, Status.values());
         try {
             List<Food> pizzaList = new FoodDao().getAllByTypeId(0);
             List<Food> subList = new FoodDao().getAllByTypeId(1);
             List<Food> bevList = new FoodDao().getAllByTypeId(2);
             List<Size> sizeList = new SizeDao().getAllByActive(true);
             List<Type> typeList = new TypeDao().getAll();
-            context.setAttribute(TYPE_LIST, typeList);
-            context.setAttribute(SIZE_LIST, sizeList);
-            context.setAttribute(PIZZA_LIST, pizzaList);
-            context.setAttribute(SUBS_LIST, subList);
-            context.setAttribute(BEV_LIST, bevList);
+            context.setAttribute(Constants.ATTRIBUTE_TYPE_LIST, typeList);
+            context.setAttribute(Constants.ATTRIBUTE_SIZE_LIST, sizeList);
+            context.setAttribute(Constants.ATTRIBUTE_PIZZA_LIST, pizzaList);
+            context.setAttribute(Constants.ATTRIBUTE_SUBS_LIST, subList);
+            context.setAttribute(Constants.ATTRIBUTE_BEV_LIST, bevList);
         } catch (DAOException e) {
             e.printStackTrace();
         } catch (ConnectionPoolException e) {

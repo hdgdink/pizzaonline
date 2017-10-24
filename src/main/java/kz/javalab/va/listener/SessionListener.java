@@ -1,6 +1,7 @@
 package kz.javalab.va.listener;
 
 import kz.javalab.va.util.AttributeSetter;
+import kz.javalab.va.util.Constants;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
@@ -9,14 +10,12 @@ import javax.servlet.http.HttpSessionListener;
 import java.util.Locale;
 
 public class SessionListener implements HttpSessionListener {
-    private static final String ATTR_LOCALE = "locale";
-    private static final Locale DEFAULT_LOCALE = Locale.getDefault();
 
     @Override
     public void sessionCreated(HttpSessionEvent se) {
         HttpSession session = se.getSession();
         ServletContext context = session.getServletContext();
-        context.setAttribute(ATTR_LOCALE, DEFAULT_LOCALE);
+        context.setAttribute(Constants.ATTRIBUTE_LOCALE, Constants.DEFAULT_LOCALE);
         AttributeSetter setter = new AttributeSetter();
         setter.setAttributes(session);
 

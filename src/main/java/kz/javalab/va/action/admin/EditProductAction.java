@@ -8,6 +8,7 @@ import kz.javalab.va.dao.DAOException;
 import kz.javalab.va.dao.impl.FoodDao;
 import kz.javalab.va.entity.Food;
 import kz.javalab.va.util.AttributeSetter;
+import kz.javalab.va.util.Constants;
 import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
@@ -16,16 +17,6 @@ import javax.servlet.http.HttpSession;
 
 public class EditProductAction implements Action {
     private static final Logger LOGGER = Logger.getLogger(EditProductAction.class);
-    private static final String TYPE_ID = "type_Id";
-    private static final String PRICE = "price";
-    private static final String ACTIVE = "active";
-    private static final String COMPOS_RU = "composRu";
-    private static final String COMPOS_EN = "composEn";
-    private static final String IMG_PATH = "imgPath";
-    private static final String REFERER = "referer";
-    private static final String ID = "id";
-    private static final String NAME_EN = "nameEn";
-    private static final String NAME_RU = "nameRu";
     private FoodDao dao;
     private Food food = null;
     private HttpServletRequest req;
@@ -38,22 +29,21 @@ public class EditProductAction implements Action {
         updateProduct();
         AttributeSetter setter = new AttributeSetter();
         setter.setAttributes(session);
-        String referer = request.getHeader(REFERER);
+        String referer = request.getHeader(Constants.PAGE_REFERER);
         referer = referer.substring(referer.lastIndexOf("/") + 1, referer.length());
         return new ActionResult(ActionResult.METHOD.REDIRECT, referer);
     }
 
     private void updateProduct() {
-        Integer id = Integer.parseInt(req.getParameter(ID));
-        Integer typeId = Integer.parseInt(req.getParameter(TYPE_ID));
-        String nameRu = req.getParameter(NAME_RU);
-        String nameEn = req.getParameter(NAME_EN);
-        String discriptionRu = req.getParameter(COMPOS_RU);
-        String dicriptionEn = req.getParameter(COMPOS_EN);
-        Integer price = Integer.parseInt(req.getParameter(PRICE));
-        String img = req.getParameter(IMG_PATH);
-        Boolean active = Boolean.parseBoolean(req.getParameter(ACTIVE));
-
+        Integer id = Integer.parseInt(req.getParameter(Constants.ATTRIBUTE_ID));
+        Integer typeId = Integer.parseInt(req.getParameter(Constants.ATTRIBUTE_TYPE_ID));
+        String nameRu = req.getParameter(Constants.ATTRIBUTE_NAME_RU);
+        String nameEn = req.getParameter(Constants.ATTRIBUTE_NAME_EN);
+        String discriptionRu = req.getParameter(Constants.ATTRIBUTE_COMPOS_RU);
+        String dicriptionEn = req.getParameter(Constants.ATTRIBUTE_COMPOS_EN);
+        Integer price = Integer.parseInt(req.getParameter(Constants.ATTRIBUTE_PRICE));
+        String img = req.getParameter(Constants.ATTRIBUTE_IMG_PATH);
+        Boolean active = Boolean.parseBoolean(req.getParameter(Constants.ATTRIBUTE_ACTIVE));
         try {
             food = foodDao().getById(id);
             food.setPrice(price);

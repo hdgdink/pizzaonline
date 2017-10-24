@@ -9,6 +9,7 @@ import kz.javalab.va.dao.impl.FoodDao;
 import kz.javalab.va.dao.impl.TypeDao;
 import kz.javalab.va.entity.Food;
 import kz.javalab.va.entity.Type;
+import kz.javalab.va.util.Constants;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -16,9 +17,6 @@ import javax.servlet.http.HttpSession;
 import java.util.List;
 
 public class ShowProductsPageAction implements Action {
-    private static final String TYPES = "types";
-    private static final String PRODUCT_LIST = "products_list";
-    private static final String ADMIN_PRODUCTS = "admin_products";
 
     @Override
     public ActionResult execute(HttpServletRequest request, HttpServletResponse response) throws ActionException {
@@ -26,14 +24,14 @@ public class ShowProductsPageAction implements Action {
         try {
             List<Food> productsList = new FoodDao().getAll();
             List<Type> types = new TypeDao().getAll();
-            session.setAttribute(TYPES, types);
-            session.setAttribute(PRODUCT_LIST, productsList);
+            session.setAttribute(Constants.ATTRIBUTE_TYPE_LIST, types);
+            session.setAttribute(Constants.ATTRIBUTE_PRODUCT_LIST, productsList);
         } catch (DAOException e) {
             e.printStackTrace();
         } catch (ConnectionPoolException e) {
             e.printStackTrace();
         }
-        return new ActionResult(ActionResult.METHOD.FORWARD, ADMIN_PRODUCTS);
+        return new ActionResult(ActionResult.METHOD.FORWARD, Constants.ACTION_ADMIN_PRODUCTS);
     }
 }
 

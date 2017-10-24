@@ -69,8 +69,8 @@
                                            required min="1"/>
                                 </td>
                                 <td>
-                                    <select class="selectpicker show-menu-arrow" data-width="auto" name="type_id">
-                                        <c:forEach items="${types}" var="type">
+                                    <select class="selectpicker show-menu-arrow" data-width="auto" name="typeId">
+                                        <c:forEach items="${typeList}" var="type">
                                             <option
                                                     <c:if test="${product.typeId==type.id}">selected</c:if>
                                                     value="${type.id}">
@@ -144,8 +144,8 @@
                         <div class="col-lg-12">
                             <div class="input-group">
                                 <span class="input-group-addon"><fmt:message key="default.typeId"/></span>
-                                <select class="selectpicker show-menu-arrow" data-width="auto" name="type_id">
-                                    <c:forEach items="${types}" var="type">
+                                <select class="selectpicker show-menu-arrow" data-width="auto" name="typeId">
+                                    <c:forEach items="${typeList}" var="type">
                                         <option value="${type.id}">
                                             <fmt:message key="${type.type}"/>
                                         </option>

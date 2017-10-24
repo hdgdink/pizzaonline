@@ -5,6 +5,7 @@ import kz.javalab.va.connection.pool.ConnectionPoolException;
 import kz.javalab.va.dao.AbstractDao;
 import kz.javalab.va.dao.DAOException;
 import kz.javalab.va.entity.Size;
+import kz.javalab.va.util.Constants;
 import org.apache.log4j.Logger;
 
 import java.sql.Connection;
@@ -16,15 +17,11 @@ import java.util.List;
 
 public class SizeDao extends AbstractDao<Integer, Size> {
     private static final Logger LOGGER = Logger.getLogger(SizeDao.class);
-    private static final String ID = "ID";
-    private static final String SIZE = "SIZE";
-    private static final String NAME = "NAME";
-    private static final String ACTIVE = "ACTIVE";
     private final ConnectionPool pool = ConnectionPool.getInstance();
     private DaoFactory daoFactory = new DaoFactory();
-    private static final String SIZE_UPDATE = "UPDATE SIZE SET SIZE = ?, NAME = ?, ACTIVE = ?  WHERE ID = ?;";
-    private static final String SIZE_CREATE = "INSERT INTO SIZE ( SIZE, NAME, ACTIVE) VALUES(?, ?, ?);";
-    private static final String SIZE_FIND_ALL = "SELECT * FROM SIZE ";
+    private static final String UPDATE_SIZE = "UPDATE SIZE SET SIZE = ?, NAME = ?, ACTIVE = ?  WHERE ID = ?;";
+    private static final String CREATE_SIZE = "INSERT INTO SIZE ( SIZE, NAME, ACTIVE) VALUES(?, ?, ?);";
+    private static final String FIND_ALL_SIZES = "SELECT * FROM SIZE ";
     private static final String GET_SIZE_BY_ID = "SELECT * FROM SIZE WHERE ID = ?;";
     private static final String GET_SIZE_BY_VALUE = "SELECT * FROM SIZE WHERE SIZE = ?;";
     private static final String GET_ALL_SIZES_BY_ACTIVE = "SELECT * FROM SIZE WHERE ACTIVE = ?;";
@@ -32,26 +29,21 @@ public class SizeDao extends AbstractDao<Integer, Size> {
     public SizeDao() throws ConnectionPoolException {
     }
 
-
     @Override
     public List<Size> getAll() throws DAOException, ConnectionPoolException {
         List<Size> sizes = null;
         Connection connection = daoFactory.getConnection();
         try (Statement statement = connection.createStatement()) {
-            ResultSet resultSet = statement.executeQuery(SIZE_FIND_ALL);
+            ResultSet resultSet = statement.executeQuery(FIND_ALL_SIZES);
             while (resultSet.next()) {
                 if (sizes == null) {
                     sizes = new ArrayList<>();
                 }
-                Size size = new Size();
-                size.setId(resultSet.getInt(ID));
-                size.setSize(resultSet.getInt(SIZE));
-                size.setName(resultSet.getString(NAME));
-                size.setActive(resultSet.getBoolean(ACTIVE));
+                Size size = parseResultSet(resultSet);
                 sizes.add(size);
             }
         } catch (Exception e) {
-            LOGGER.warn("Statement cannot be created.", e);
+            LOGGER.warn(Constants.STATEMENT_CREATE_ERROR, e);
             throw new DAOException(e);
         } finally {
             pool.returnConnection(connection);
@@ -68,14 +60,10 @@ public class SizeDao extends AbstractDao<Integer, Size> {
             statement.setInt(1, id);
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
-                size = new Size();
-                size.setId(resultSet.getInt(ID));
-                size.setName(resultSet.getString(NAME));
-                size.setSize(resultSet.getInt(SIZE));
-                size.setActive(resultSet.getBoolean(ACTIVE));
+                size = parseResultSet(resultSet);
             }
         } catch (Exception e) {
-            LOGGER.warn("Statement cannot be created.", e);
+            LOGGER.warn(Constants.STATEMENT_CREATE_ERROR, e);
             throw new DAOException(e);
         } finally {
             pool.returnConnection(connection);
@@ -83,27 +71,15 @@ public class SizeDao extends AbstractDao<Integer, Size> {
         return size;
     }
 
-    @Override
-    public void delete(Integer id) throws DAOException {
-        throw new DAOException("Unsupported operation.");
-    }
-
-    @Override
-    public void delete(Size entity) throws DAOException {
-        throw new DAOException("Unsupported operation.");
-    }
-
-    @Override
+       @Override
     public int create(Size entity) throws DAOException {
         LOGGER.info("SizeDao.createSize()");
         Connection connection = daoFactory.getConnection();
-        try (PreparedStatement statement = connection.prepareStatement(SIZE_CREATE)) {
-            statement.setInt(1, entity.getSize());
-            statement.setString(2, entity.getName());
-            statement.setBoolean(3, entity.getActive());
+        try (PreparedStatement statement = connection.prepareStatement(CREATE_SIZE)) {
+            statementForCreate(statement, entity);
             return statement.executeUpdate();
         } catch (Exception e) {
-            LOGGER.warn("Statement cannot be created.", e);
+            LOGGER.warn(Constants.STATEMENT_CREATE_ERROR, e);
             throw new DAOException(e);
         } finally {
             pool.returnConnection(connection);
@@ -114,15 +90,12 @@ public class SizeDao extends AbstractDao<Integer, Size> {
     public int update(Size entity) throws DAOException {
         LOGGER.info("SizeDao.updateSize()");
         Connection connection = daoFactory.getConnection();
-        try (PreparedStatement statement = connection.prepareStatement(SIZE_UPDATE)) {
-            statement.setInt(1, entity.getSize());
-            statement.setString(2, entity.getName());
-            statement.setBoolean(3, entity.getActive());
+        try (PreparedStatement statement = connection.prepareStatement(UPDATE_SIZE)) {
+            statementForCreate(statement, entity);
             statement.setInt(4, entity.getId());
-            LOGGER.debug("Statement has been created.");
             return statement.executeUpdate();
         } catch (Exception e) {
-            LOGGER.warn("Statement cannot be created.", e);
+            LOGGER.warn(Constants.STATEMENT_CREATE_ERROR, e);
             throw new DAOException(e);
         } finally {
             pool.returnConnection(connection);
@@ -137,14 +110,10 @@ public class SizeDao extends AbstractDao<Integer, Size> {
             statement.setInt(1, value);
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
-                size = new Size();
-                size.setId(resultSet.getInt(ID));
-                size.setName(resultSet.getString(NAME));
-                size.setSize(resultSet.getInt(SIZE));
-                size.setActive(resultSet.getBoolean(ACTIVE));
+                size = parseResultSet(resultSet);
             }
         } catch (Exception e) {
-            LOGGER.warn("Statement cannot be created.", e);
+            LOGGER.warn(Constants.STATEMENT_CREATE_ERROR, e);
             throw new DAOException(e);
         } finally {
             pool.returnConnection(connection);
@@ -162,21 +131,42 @@ public class SizeDao extends AbstractDao<Integer, Size> {
                 if (sizeList == null) {
                     sizeList = new ArrayList<>();
                 }
-                Size size = new Size();
-                size.setId(resultSet.getInt(ID));
-                size.setSize(resultSet.getInt(SIZE));
-                size.setName(resultSet.getString(NAME));
-                size.setActive(resultSet.getBoolean(ACTIVE));
+                Size size = parseResultSet(resultSet);
                 if (size.getActive())
                     sizeList.add(size);
             }
         } catch (Exception e) {
-            LOGGER.warn("Statement cannot be created.", e);
+            LOGGER.warn(Constants.STATEMENT_CREATE_ERROR, e);
             throw new DAOException(e);
         } finally {
             pool.returnConnection(connection);
         }
         return sizeList;
+    }
+
+    private void statementForCreate(PreparedStatement statement, Size entity) throws DAOException {
+        try {
+            statement.setInt(1, entity.getSize());
+            statement.setString(2, entity.getName());
+            statement.setBoolean(3, entity.getActive());
+        } catch (Exception e) {
+            LOGGER.error("Preparing statement for Size error", e);
+            throw new DAOException(e);
+        }
+    }
+
+    private Size parseResultSet(ResultSet resultSet) throws DAOException {
+        Size size = new Size();
+        try {
+            size.setId(resultSet.getInt(Constants.ID_COL));
+            size.setSize(resultSet.getInt(Constants.SIZE_COL));
+            size.setName(resultSet.getString(Constants.NAME_COL));
+            size.setActive(resultSet.getBoolean(Constants.ACTIVE_COL));
+        } catch (Exception e) {
+            LOGGER.error("Parsing resultSet to Size error", e);
+            throw new DAOException(e);
+        }
+        return size;
     }
 
 }

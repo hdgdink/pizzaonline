@@ -10,6 +10,7 @@ import kz.javalab.va.dao.impl.OrderDao;
 import kz.javalab.va.dao.impl.OrderDetailsDao;
 import kz.javalab.va.entity.OrderDetails;
 import kz.javalab.va.entity.order.Order;
+import kz.javalab.va.util.Constants;
 import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
@@ -19,11 +20,6 @@ import java.util.List;
 
 public class DelFromOrderListAction implements Action {
     private static final Logger LOGGER = Logger.getLogger(LoginAction.class);
-    private static final String ORDER_DETAILS_ID = "order_detail_id";
-    private static final String ORDER_DETAILS_FINAL_PRICE = "order_detail_final_price";
-    private static final String ORDER = "order";
-    private static final String ORDER_DETAILS = "order_details";
-    private static final String REFERER = "referer";
     private OrderDetailsDao orderDetailsDao = null;
     private OrderDao orderDao = null;
     private Order order;
@@ -38,9 +34,9 @@ public class DelFromOrderListAction implements Action {
         } catch (ConnectionPoolException e) {
             e.printStackTrace();
         }
-        Integer id = Integer.parseInt(request.getParameter(ORDER_DETAILS_ID));
-        Integer productPrice = Integer.parseInt(request.getParameter(ORDER_DETAILS_FINAL_PRICE));
-        order = (Order) session.getAttribute("order");
+        Integer id = Integer.parseInt(request.getParameter(Constants.ATTRIBUTE_ORDER_DETAILS_ID));
+        Integer productPrice = Integer.parseInt(request.getParameter(Constants.ATTRIBUTE_ORDER_DETAILS_FINAL_PRICE));
+        order = (Order) session.getAttribute(Constants.ATTRIBUTE_ORDER);
 
         try {
             orderDetailsDao.delete(id);
@@ -50,15 +46,15 @@ public class DelFromOrderListAction implements Action {
             orderDao.update(order);
             LOGGER.info("Final price of order was changed");
             List<OrderDetails> orderDetailsList = orderDetailsDao.getAllByOrderId(order.getId());
-            session.setAttribute(ORDER, order);
-            session.setAttribute(ORDER_DETAILS, orderDetailsList);
+            session.setAttribute(Constants.ATTRIBUTE_ORDER, order);
+            session.setAttribute(Constants.ATTRIBUTE_ORDER_DETAILS, orderDetailsList);
         } catch (DAOException e) {
             e.printStackTrace();
         } catch (ConnectionPoolException e) {
             e.printStackTrace();
         }
 
-        String referer = request.getHeader(REFERER);
+        String referer = request.getHeader(Constants.PAGE_REFERER);
         referer = referer.substring(referer.lastIndexOf("/") + 1, referer.length());
         return new ActionResult(ActionResult.METHOD.REDIRECT, referer);
     }

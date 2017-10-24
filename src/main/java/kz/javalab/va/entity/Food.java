@@ -4,7 +4,9 @@ import kz.javalab.va.connection.pool.ConnectionPoolException;
 import kz.javalab.va.dao.DAOException;
 import kz.javalab.va.dao.impl.TypeDao;
 
-public class Food extends Entity {
+import java.io.Serializable;
+
+public class Food extends Entity implements Serializable{
     private Integer typeId;
     private String nameEn;
     private String nameRu;

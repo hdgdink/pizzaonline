@@ -36,7 +36,7 @@
                         <td><fmt:message key="default.sizeCaption"/></td>
                         <td><fmt:message key="default.active"/></td>
                     </tr>
-                    <c:forEach items="${allSizes}" var="size">
+                    <c:forEach items="${allSizesAdmin}" var="size">
                         <form id="edit_sizes" method="POST" action="edit_sizes">
                             <tr>
                                 <input type="hidden" value="${size.id}" name="id"/>

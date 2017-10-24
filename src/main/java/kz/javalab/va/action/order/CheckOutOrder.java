@@ -11,6 +11,7 @@ import kz.javalab.va.dao.impl.UserDao;
 import kz.javalab.va.entity.order.Order;
 import kz.javalab.va.entity.order.Status;
 import kz.javalab.va.entity.user.User;
+import kz.javalab.va.util.Constants;
 import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
@@ -19,19 +20,6 @@ import javax.servlet.http.HttpSession;
 
 public class CheckOutOrder implements Action {
     private static final Logger LOGGER = Logger.getLogger(LoginAction.class);
-    private static final String ADDRESS = "address";
-    private static final String PHONE = "phone";
-    private static final String ORDER = "order";
-    private static final String USER = "user";
-    private static final String ORDER_DETAILS = "order_details";
-    private static final String QNT = "quantity";
-    private static final String SIZE = "size";
-    private static final String FINAL_PRICE = "finalPrice";
-    private static final String USER_ERROR = "UserError";
-    private static final String ACCOUNT = "account";
-    private static final String USER_NOT_FOUND = ".UserNotFound";
-    private static final String BALANCE_IS_LOW = ".BalanceIslow";
-    private static final String REFERER = "referer";
     private OrderDao orderDao = null;
     private UserDao userDao = null;
     private User user;
@@ -40,10 +28,11 @@ public class CheckOutOrder implements Action {
     @Override
     public ActionResult execute(HttpServletRequest request, HttpServletResponse response) throws ActionException {
         HttpSession session = request.getSession();
-        String address = request.getParameter(ADDRESS);
-        String phone = request.getParameter(PHONE);
-        order = (Order) session.getAttribute(ORDER);
-        user = (User) session.getAttribute(USER);
+        String address = request.getParameter(Constants.ATTRIBUTE_ADDRESS);
+        String phone = request.getParameter(Constants.ATTRIBUTE_PHONE);
+        order = (Order) session.getAttribute(Constants.ATTRIBUTE_ORDER);
+        user = (User) session.getAttribute(Constants.ATTRIBUTE_USER);
+
         if (user != null) {
             int balance = user.getBalance();
             int sumOrder = order.getSumOfOrder();
@@ -60,21 +49,20 @@ public class CheckOutOrder implements Action {
                     LOGGER.info("Order is success");
                     userDao.update(user);
                     LOGGER.info("Balance of user is changed");
-                    session.removeAttribute(ORDER_DETAILS);
-                    session.removeAttribute(ORDER);
-                    session.removeAttribute(QNT);
-                    session.removeAttribute(SIZE);
-                    session.removeAttribute(FINAL_PRICE);
+                    session.removeAttribute(Constants.ATTRIBUTE_ORDER_DETAILS);
+                    session.removeAttribute(Constants.ATTRIBUTE_ORDER);
+                    session.removeAttribute(Constants.ATTRIBUTE_QNT);
+                    session.removeAttribute(Constants.ATTRIBUTE_SIZE);
+                    session.removeAttribute(Constants.ATTRIBUTE_FINALPRICE);
                 } catch (DAOException e) {
                     e.printStackTrace();
                 } catch (ConnectionPoolException e) {
                     e.printStackTrace();
                 }
-            } else session.setAttribute(USER_ERROR, ACCOUNT + BALANCE_IS_LOW);
-        } else session.setAttribute(USER_ERROR, ACCOUNT + USER_NOT_FOUND);
+            } else session.setAttribute(Constants.ATTRIBUTE_ERROR, Constants.BALANCE_IS_LOW_ERROR);
+        } else session.setAttribute(Constants.ATTRIBUTE_ERROR, Constants.ACCOUNT_NOT_FOUND_ERROR);
 
-
-        String referer = request.getHeader(REFERER);
+        String referer = request.getHeader(Constants.PAGE_REFERER);
         referer = referer.substring(referer.lastIndexOf("/") + 1, referer.length());
         return new ActionResult(ActionResult.METHOD.REDIRECT, referer);
     }

@@ -1,6 +1,5 @@
 package kz.javalab.va.action.admin;
 
-
 import kz.javalab.va.action.Action;
 import kz.javalab.va.action.ActionException;
 import kz.javalab.va.action.ActionResult;
@@ -14,6 +13,7 @@ import kz.javalab.va.entity.order.Status;
 import kz.javalab.va.entity.user.Role;
 import kz.javalab.va.entity.user.User;
 import kz.javalab.va.util.AttributeSetter;
+import kz.javalab.va.util.Constants;
 import kz.javalab.va.util.validator.FieldsValidator;
 import kz.javalab.va.util.validator.ValidationException;
 import org.apache.log4j.Logger;
@@ -24,49 +24,12 @@ import javax.servlet.http.HttpSession;
 
 public class CreateEntityAdmin implements Action {
     private static final Logger LOGGER = Logger.getLogger(CreateEntityAdmin.class);
-    private static final ActionResult USER_ADMIN_PAGE = new ActionResult(ActionResult.METHOD.REDIRECT, "cabinet");
-    private static final ActionResult PRODUCTS_ADMIN_PAGE = new ActionResult(ActionResult.METHOD.REDIRECT, "products");
-    private static final ActionResult SIZES_ADMIN_PAGE = new ActionResult(ActionResult.METHOD.REDIRECT, "sizes");
-    private static final ActionResult TYPES_ADMIN_PAGE = new ActionResult(ActionResult.METHOD.REDIRECT, "types");
-    private static final ActionResult ORDER_DETAILS_ADMIN_PAGE = new ActionResult(ActionResult.METHOD.REDIRECT, "order_details");
-    private static final ActionResult ORDER_ADMIN_PAGE = new ActionResult(ActionResult.METHOD.REDIRECT, "orders");
-    private static final String ERROR_MESSAGE_ATTRIBUTE = "RegisterErrorMessageKey";
-    private static final String USER_EXIST = "user_exist";
-    private static final String USER = "user";
-    private static final String PRODUCT = "product";
-    private static final String SIZE = "size";
-    private static final String TYPE = "type";
-    private static final String ORDER_DETAILS = "orderDetails";
-    private static final String ORDER = "order";
-    private static final String ORDER_SUM = "sumOfOrder";
-    private static final String USER_ID = "userId";
-    private static final String ADDRESS = "address";
-    private static final String PHONE = "phone";
-    private static final String STATUS = "status";
-    private static final String PRODUCT_ID = "productId";
-    private static final String NAME_RU = "nameRu";
-    private static final String NAME_EN = "nameEn";
-    private static final String SIZE_NAME = "sizeName";
-    private static final String TYPE_ID = "type_Id";
-    private static final String TYPE_NAME = "typeName";
-    private static final String COUNT = "count";
-    private static final String ORDER_ID = "order_Id";
-    private static final String PRICE = "price";
-    private static final String NAME = "name";
-    private static final String ACTIVE = "active";
-    private static final String COMPOS_RU = "composRu";
-    private static final String COMPOS_EN = "composEn";
-    private static final String IMG_PATH = "imgPath";
-    private static final String USERNAME = "user_name";
-    private static final String EMAIL = "email";
-    private static final String FIRSTNAME = "firstname";
-    private static final String LASTNAME = "lastname";
-    private static final String BALANCE = "balance";
-    private static final String PASSWORD = "password";
-    private static final String ROLE = "role";
-    private static final String VAL = "value";
-
-
+    private static final ActionResult USER_ADMIN_PAGE = new ActionResult(ActionResult.METHOD.REDIRECT, Constants.ACTION_CABINET);
+    private static final ActionResult PRODUCTS_ADMIN_PAGE = new ActionResult(ActionResult.METHOD.REDIRECT, Constants.ACTION_PRODUCTS);
+    private static final ActionResult SIZES_ADMIN_PAGE = new ActionResult(ActionResult.METHOD.REDIRECT, Constants.ACTION_SIZES);
+    private static final ActionResult TYPES_ADMIN_PAGE = new ActionResult(ActionResult.METHOD.REDIRECT, Constants.ACTION_TYPES);
+    private static final ActionResult ORDER_DETAILS_ADMIN_PAGE = new ActionResult(ActionResult.METHOD.REDIRECT, Constants.ATTRIBUTE_ORDER_DETAILS);
+    private static final ActionResult ORDER_ADMIN_PAGE = new ActionResult(ActionResult.METHOD.REDIRECT, Constants.ACTION_ORDERS);
     private HttpSession session;
     private String entityName;
     private ActionResult result;
@@ -80,21 +43,21 @@ public class CreateEntityAdmin implements Action {
     public ActionResult execute(HttpServletRequest request, HttpServletResponse response) throws ActionException {
         req = request;
         session = request.getSession();
-        if (entityName.equals(USER)) createUser();
-        if (entityName.equals(PRODUCT)) createProduct();
-        if (entityName.equals(SIZE)) createSize();
-        if (entityName.equals(TYPE)) createType();
-        if (entityName.equals(ORDER_DETAILS)) createOrderDetails();
-        if (entityName.equals(ORDER)) createOrder();
+        if (entityName.equals(Constants.CREATE_STRING_USER)) createUser();
+        if (entityName.equals(Constants.CREATE_STRING_PRODUCT)) createProduct();
+        if (entityName.equals(Constants.CREATE_STRING_SIZE)) createSize();
+        if (entityName.equals(Constants.CREATE_STRING_TYPE)) createType();
+        if (entityName.equals(Constants.CREATE_STRING_ORDER_DETAILS)) createOrderDetails();
+        if (entityName.equals(Constants.CREATE_STRING_ORDER)) createOrder();
         return result;
     }
 
     private void createOrder() throws ActionException {
-        Integer sumOfOrder = Integer.parseInt(req.getParameter(ORDER_SUM));
-        Integer userId = Integer.parseInt(req.getParameter(USER_ID));
-        String address = req.getParameter(ADDRESS);
-        String phone = req.getParameter(PHONE);
-        Status status = Status.valueOf(req.getParameter(STATUS));
+        Integer sumOfOrder = Integer.parseInt(req.getParameter(Constants.ATTRIBUTE_ORDER_SUM));
+        Integer userId = Integer.parseInt(req.getParameter(Constants.ATTRIBUTE_USER_ID));
+        String address = req.getParameter(Constants.ATTRIBUTE_ADDRESS);
+        String phone = req.getParameter(Constants.ATTRIBUTE_PHONE);
+        Status status = Status.valueOf(req.getParameter(Constants.ATTRIBUTE_STATUS));
 
         Order order = new Order();
         order.setSumOfOrder(sumOfOrder);
@@ -117,15 +80,15 @@ public class CreateEntityAdmin implements Action {
     }
 
     private void createOrderDetails() throws ActionException {
-        Integer foodId = Integer.parseInt(req.getParameter(PRODUCT_ID));
-        String foodNameRu = req.getParameter(NAME_RU);
-        String foodNameEn = req.getParameter(NAME_EN);
-        String sizeName = req.getParameter(SIZE_NAME);
-        Integer typeId = Integer.parseInt(req.getParameter(TYPE_ID));
-        String typeName = req.getParameter(TYPE_NAME);
-        Integer quantity = Integer.parseInt(req.getParameter(COUNT));
-        Integer orderId = Integer.parseInt(req.getParameter(ORDER_ID));
-        Integer price = Integer.parseInt(req.getParameter(PRICE));
+        Integer foodId = Integer.parseInt(req.getParameter(Constants.ATTRIBUTE_PRODUCT_ID));
+        String foodNameRu = req.getParameter(Constants.ATTRIBUTE_NAME_RU);
+        String foodNameEn = req.getParameter(Constants.ATTRIBUTE_NAME_EN);
+        String sizeName = req.getParameter(Constants.ATTRIBUTE_SIZE_NAME);
+        Integer typeId = Integer.parseInt(req.getParameter(Constants.ATTRIBUTE_TYPE_ID));
+        String typeName = req.getParameter(Constants.ATTRIBUTE_TYPE_NAME);
+        Integer quantity = Integer.parseInt(req.getParameter(Constants.ATTRIBUTE_COUNT));
+        Integer orderId = Integer.parseInt(req.getParameter(Constants.ATTRIBUTE_ORDER_ID));
+        Integer price = Integer.parseInt(req.getParameter(Constants.ATTRIBUTE_PRICE));
 
         OrderDetails orderDetails = new OrderDetails();
         orderDetails.setFoodNameRu(foodNameRu);
@@ -151,9 +114,8 @@ public class CreateEntityAdmin implements Action {
     }
 
     private void createType() throws ActionException {
-        String value = req.getParameter(TYPE);
-        Boolean active = Boolean.parseBoolean(req.getParameter("active"));
-
+        String value = req.getParameter(Constants.ATTRIBUTE_TYPE);
+        Boolean active = Boolean.parseBoolean(req.getParameter(Constants.ATTRIBUTE_ACTIVE));
         Type type = new Type();
         type.setType(value);
         type.setActive(active);
@@ -172,9 +134,9 @@ public class CreateEntityAdmin implements Action {
     }
 
     private void createSize() throws ActionException {
-        Integer value = Integer.parseInt(req.getParameter(VAL));
-        String name = req.getParameter(NAME);
-        Boolean active = Boolean.parseBoolean(req.getParameter(ACTIVE));
+        Integer value = Integer.parseInt(req.getParameter(Constants.ATTRIBUTE_VAL));
+        String name = req.getParameter(Constants.ATTRIBUTE_NAME);
+        Boolean active = Boolean.parseBoolean(req.getParameter(Constants.ATTRIBUTE_ACTIVE));
 
         Size size = new Size();
         size.setSize(value);
@@ -195,14 +157,14 @@ public class CreateEntityAdmin implements Action {
     }
 
     private void createProduct() throws ActionException {
-        Integer type = Integer.parseInt(req.getParameter(TYPE_ID));
-        String nameRu = req.getParameter(NAME_RU);
-        String nameEn = req.getParameter(NAME_EN);
-        String discriptionRu = req.getParameter(COMPOS_RU);
-        String dicriptionEn = req.getParameter(COMPOS_EN);
-        Integer price = Integer.parseInt(req.getParameter(PRICE));
-        String img = req.getParameter(IMG_PATH);
-        Boolean active = Boolean.parseBoolean(req.getParameter(ACTIVE));
+        Integer type = Integer.parseInt(req.getParameter(Constants.ATTRIBUTE_TYPE_ID));
+        String nameRu = req.getParameter(Constants.ATTRIBUTE_NAME_RU);
+        String nameEn = req.getParameter(Constants.ATTRIBUTE_NAME_EN);
+        String discriptionRu = req.getParameter(Constants.ATTRIBUTE_COMPOS_RU);
+        String dicriptionEn = req.getParameter(Constants.ATTRIBUTE_COMPOS_EN);
+        Integer price = Integer.parseInt(req.getParameter(Constants.ATTRIBUTE_PRICE));
+        String img = req.getParameter(Constants.ATTRIBUTE_IMG_PATH);
+        Boolean active = Boolean.parseBoolean(req.getParameter(Constants.ATTRIBUTE_ACTIVE));
 
         Food food = new Food();
         food.setPrice(price);
@@ -228,13 +190,13 @@ public class CreateEntityAdmin implements Action {
     }
 
     private void createUser() throws ActionException {
-        String userName = req.getParameter(USERNAME);
-        String email = req.getParameter(EMAIL);
-        String firstName = req.getParameter(FIRSTNAME);
-        String lastName = req.getParameter(LASTNAME);
-        Integer balance = Integer.parseInt(req.getParameter(BALANCE));
-        String password = req.getParameter(PASSWORD);
-        Role role = Role.valueOf(req.getParameter(ROLE));
+        String userName = req.getParameter(Constants.ATTRIBUTE_USERNAME);
+        String email = req.getParameter(Constants.ATTRIBUTE_EMAIL);
+        String firstName = req.getParameter(Constants.ATTRIBUTE_FIRSTNAME);
+        String lastName = req.getParameter(Constants.ATTRIBUTE_LASTNAME);
+        Integer balance = Integer.parseInt(req.getParameter(Constants.ATTRIBUTE_BALANCE));
+        String password = req.getParameter(Constants.ATTRIBUTE_PASSWORD);
+        Role role = Role.valueOf(req.getParameter(Constants.ATTRIBUTE_ROLE));
         boolean userNameValid = false;
 
         try {
@@ -244,7 +206,7 @@ public class CreateEntityAdmin implements Action {
             e.printStackTrace();
         }
         if (!userNameValid) {
-            session.setAttribute(ERROR_MESSAGE_ATTRIBUTE, USER_EXIST);
+            session.setAttribute(Constants.ATTRIBUTE_REGISTER_ERROR, Constants.USER_EXIST_ERROR);
             LOGGER.error("Username already busy");
             result = USER_ADMIN_PAGE;
         } else {

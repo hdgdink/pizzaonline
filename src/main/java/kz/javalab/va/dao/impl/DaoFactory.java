@@ -9,7 +9,7 @@ import java.sql.Connection;
 
 public class DaoFactory {
     private final ConnectionPool pool = ConnectionPool.getInstance();
-    private static final Logger LOGGER = Logger.getLogger(SecurityFilter.class);
+    private static final Logger LOGGER = Logger.getLogger(DaoFactory.class);
 
     public DaoFactory() throws ConnectionPoolException {
     }
@@ -20,7 +20,7 @@ public class DaoFactory {
             connection = pool.getConnection();
             LOGGER.debug("Connection has been taken.");
         } catch (ConnectionPoolException e) {
-            LOGGER.warn("Connection cannot be taken.", e);
+            LOGGER.warn("Connection can not be taken.", e);
             e.printStackTrace();
         }
         return connection;

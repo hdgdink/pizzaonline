@@ -5,28 +5,15 @@ import kz.javalab.va.connection.pool.ConnectionPoolException;
 import kz.javalab.va.dao.AbstractDao;
 import kz.javalab.va.dao.DAOException;
 import kz.javalab.va.entity.OrderDetails;
+import kz.javalab.va.util.Constants;
 import org.apache.log4j.Logger;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class OrderDetailsDao extends AbstractDao<Integer, OrderDetails> {
     private static final Logger LOGGER = Logger.getLogger(OrderDetailsDao.class);
-    private static final String ID = "ID";
-    private static final String FOOD_ID = "FOOD_ID";
-    private static final String FOOD_NAME_RU = "FOOD_NAME_RU";
-    private static final String FOOD_NAME_EN = "FOOD_NAME_EN";
-    private static final String ORDER_ID = "ORDER_ID";
-    private static final String TYPE_ID = "TYPE_ID";
-    private static final String TYPE_NAME = "TYPE_NAME";
-    private static final String SIZE_NAME = "SIZE_NAME";
-    private static final String QNT = "QUANTITY";
-    private static final String PRICE = "PRICE";
-
     private final ConnectionPool pool = ConnectionPool.getInstance();
     private DaoFactory daoFactory = new DaoFactory();
     private static final String UPDATE_ORDER_DETAILS = "UPDATE ORDER_DETAILS SET ORDER_ID = ?, FOOD_ID = ?," +
@@ -55,21 +42,11 @@ public class OrderDetailsDao extends AbstractDao<Integer, OrderDetails> {
                 if (details == null) {
                     details = new ArrayList<>();
                 }
-                OrderDetails orderDetails = new OrderDetails();
-                orderDetails.setId(resultSet.getInt(ID));
-                orderDetails.setFoodId(resultSet.getInt(FOOD_ID));
-                orderDetails.setFoodNameRu(resultSet.getString(FOOD_NAME_RU));
-                orderDetails.setFoodNameEn(resultSet.getString(FOOD_NAME_EN));
-                orderDetails.setOrderId(resultSet.getInt(ORDER_ID));
-                orderDetails.setTypeId(resultSet.getInt(TYPE_ID));
-                orderDetails.setTypeName(resultSet.getString(TYPE_NAME));
-                orderDetails.setSizeName(resultSet.getString(SIZE_NAME));
-                orderDetails.setQuantity(resultSet.getInt(QNT));
-                orderDetails.setFinalPrice(resultSet.getInt(PRICE));
+                OrderDetails orderDetails = parseResultSet(resultSet);
                 details.add(orderDetails);
             }
         } catch (Exception e) {
-            LOGGER.warn("Statement cannot be created.", e);
+            LOGGER.warn(Constants.STATEMENT_CREATE_ERROR, e);
             throw new DAOException(e);
         } finally {
             pool.returnConnection(connection);
@@ -86,20 +63,10 @@ public class OrderDetailsDao extends AbstractDao<Integer, OrderDetails> {
             statement.setInt(1, id);
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
-                orderDetails = new OrderDetails();
-                orderDetails.setId(resultSet.getInt(ID));
-                orderDetails.setFoodId(resultSet.getInt(FOOD_ID));
-                orderDetails.setFoodNameRu(resultSet.getString(FOOD_NAME_RU));
-                orderDetails.setFoodNameEn(resultSet.getString(FOOD_NAME_EN));
-                orderDetails.setOrderId(resultSet.getInt(ORDER_ID));
-                orderDetails.setTypeId(resultSet.getInt(TYPE_ID));
-                orderDetails.setTypeName(resultSet.getString(TYPE_NAME));
-                orderDetails.setSizeName(resultSet.getString(SIZE_NAME));
-                orderDetails.setQuantity(resultSet.getInt(QNT));
-                orderDetails.setFinalPrice(resultSet.getInt(PRICE));
+                orderDetails = parseResultSet(resultSet);
             }
         } catch (Exception e) {
-            LOGGER.warn("Statement cannot be created.", e);
+            LOGGER.warn(Constants.STATEMENT_CREATE_ERROR, e);
             throw new DAOException(e);
         } finally {
             pool.returnConnection(connection);
@@ -107,7 +74,6 @@ public class OrderDetailsDao extends AbstractDao<Integer, OrderDetails> {
         return orderDetails;
     }
 
-    @Override
     public void delete(Integer id) throws DAOException {
         LOGGER.info("OrderDetailsDao.createOrderDetail()");
         Connection connection = daoFactory.getConnection();
@@ -115,7 +81,7 @@ public class OrderDetailsDao extends AbstractDao<Integer, OrderDetails> {
             statement.setInt(1, id);
             statement.executeUpdate();
         } catch (Exception e) {
-            LOGGER.warn("Statement cannot be created.", e);
+            LOGGER.warn(Constants.STATEMENT_CREATE_ERROR, e);
             throw new DAOException(e);
         } finally {
             pool.returnConnection(connection);
@@ -123,28 +89,15 @@ public class OrderDetailsDao extends AbstractDao<Integer, OrderDetails> {
     }
 
 
-    @Override
-    public void delete(OrderDetails entity) throws DAOException {
-        throw new DAOException("Unsupported operation.");
-    }
-
-    @Override
+       @Override
     public int create(OrderDetails entity) throws DAOException {
         LOGGER.info("OrderDetailsDao.createOrderDetail()");
         Connection connection = daoFactory.getConnection();
         try (PreparedStatement statement = connection.prepareStatement(ORDER_DETAILS_CREATE)) {
-            statement.setInt(1, entity.getOrderId());
-            statement.setInt(2, entity.getFoodId());
-            statement.setString(3, entity.getFoodNameRu());
-            statement.setString(4, entity.getFoodNameEn());
-            statement.setInt(5, entity.getTypeId());
-            statement.setString(6, entity.getTypeName());
-            statement.setInt(7, entity.getQuantity());
-            statement.setInt(8, entity.getFinalPrice());
-            statement.setString(9, entity.getSizeName());
+            statementForCreate(statement, entity);
             return statement.executeUpdate();
         } catch (Exception e) {
-            LOGGER.warn("Statement cannot be created.", e);
+            LOGGER.warn(Constants.STATEMENT_CREATE_ERROR, e);
             throw new DAOException(e);
         } finally {
             pool.returnConnection(connection);
@@ -156,20 +109,11 @@ public class OrderDetailsDao extends AbstractDao<Integer, OrderDetails> {
         LOGGER.info("OrderDetailsDao.updateDetails()");
         Connection connection = daoFactory.getConnection();
         try (PreparedStatement statement = connection.prepareStatement(UPDATE_ORDER_DETAILS)) {
-            statement.setInt(1, entity.getOrderId());
-            statement.setInt(2, entity.getFoodId());
-            statement.setString(3, entity.getFoodNameRu());
-            statement.setString(4, entity.getFoodNameEn());
-            statement.setInt(5, entity.getTypeId());
-            statement.setString(6, entity.getTypeName());
-            statement.setInt(7, entity.getQuantity());
-            statement.setInt(8, entity.getFinalPrice());
-            statement.setString(9, entity.getSizeName());
+            statementForCreate(statement, entity);
             statement.setInt(10, entity.getId());
-            LOGGER.debug("Statement has been created.");
             return statement.executeUpdate();
         } catch (Exception e) {
-            LOGGER.warn("Statement cannot be created.", e);
+            LOGGER.warn(Constants.STATEMENT_CREATE_ERROR, e);
             throw new DAOException(e);
         } finally {
             pool.returnConnection(connection);
@@ -187,26 +131,53 @@ public class OrderDetailsDao extends AbstractDao<Integer, OrderDetails> {
                 if (details == null) {
                     details = new ArrayList<>();
                 }
-                OrderDetails orderDetails = new OrderDetails();
-                orderDetails.setId(resultSet.getInt(ID));
-                orderDetails.setFoodId(resultSet.getInt(FOOD_ID));
-                orderDetails.setFoodNameRu(resultSet.getString(FOOD_NAME_RU));
-                orderDetails.setFoodNameEn(resultSet.getString(FOOD_NAME_EN));
-                orderDetails.setOrderId(resultSet.getInt(ORDER_ID));
-                orderDetails.setTypeId(resultSet.getInt(TYPE_ID));
-                orderDetails.setQuantity(resultSet.getInt(QNT));
-                orderDetails.setTypeName(resultSet.getString(TYPE_NAME));
-                orderDetails.setSizeName(resultSet.getString(SIZE_NAME));
-                orderDetails.setFinalPrice(resultSet.getInt(PRICE));
+                OrderDetails orderDetails = parseResultSet(resultSet);
                 details.add(orderDetails);
             }
         } catch (Exception e) {
-            LOGGER.warn("Statement cannot be created.", e);
+            LOGGER.warn(Constants.STATEMENT_CREATE_ERROR, e);
             throw new DAOException(e);
         } finally {
             pool.returnConnection(connection);
         }
         return details;
+    }
+
+    private void statementForCreate(PreparedStatement statement, OrderDetails entity) throws DAOException {
+        try {
+            statement.setInt(1, entity.getOrderId());
+            statement.setInt(2, entity.getFoodId());
+            statement.setString(3, entity.getFoodNameRu());
+            statement.setString(4, entity.getFoodNameEn());
+            statement.setInt(5, entity.getTypeId());
+            statement.setString(6, entity.getTypeName());
+            statement.setInt(7, entity.getQuantity());
+            statement.setInt(8, entity.getFinalPrice());
+            statement.setString(9, entity.getSizeName());
+        } catch (Exception e) {
+            LOGGER.error("Preparing statement for order error", e);
+            throw new DAOException(e);
+        }
+    }
+
+    private OrderDetails parseResultSet(ResultSet resultSet) throws DAOException {
+        OrderDetails orderDetails = new OrderDetails();
+        try {
+            orderDetails.setId(resultSet.getInt(Constants.ID_COL));
+            orderDetails.setFoodId(resultSet.getInt(Constants.FOOD_ID_COL));
+            orderDetails.setFoodNameRu(resultSet.getString(Constants.FOOD_NAME_RU_COL));
+            orderDetails.setFoodNameEn(resultSet.getString(Constants.FOOD_NAME_EN_COL));
+            orderDetails.setOrderId(resultSet.getInt(Constants.ORDER_ID_COL));
+            orderDetails.setTypeId(resultSet.getInt(Constants.TYPE_ID_COL));
+            orderDetails.setQuantity(resultSet.getInt(Constants.QNT_COL));
+            orderDetails.setTypeName(resultSet.getString(Constants.TYPE_NAME_COL));
+            orderDetails.setSizeName(resultSet.getString(Constants.SIZE_NAME_COL));
+            orderDetails.setFinalPrice(resultSet.getInt(Constants.PRICE_COL));
+        } catch (SQLException e) {
+            LOGGER.error("Parsing resultSet to order error", e);
+            throw new DAOException(e);
+        }
+        return orderDetails;
     }
 
 }

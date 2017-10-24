@@ -3,7 +3,6 @@ package kz.javalab.va.action.order;
 import kz.javalab.va.action.Action;
 import kz.javalab.va.action.ActionException;
 import kz.javalab.va.action.ActionResult;
-import kz.javalab.va.action.account.LoginAction;
 import kz.javalab.va.connection.pool.ConnectionPoolException;
 import kz.javalab.va.dao.DAOException;
 import kz.javalab.va.dao.impl.*;
@@ -13,6 +12,7 @@ import kz.javalab.va.entity.Size;
 import kz.javalab.va.entity.order.Order;
 import kz.javalab.va.entity.order.Status;
 import kz.javalab.va.entity.user.User;
+import kz.javalab.va.util.Constants;
 import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
@@ -21,19 +21,7 @@ import javax.servlet.http.HttpSession;
 import java.util.List;
 
 public class AddToOrderAction implements Action {
-    private static final Logger LOGGER = Logger.getLogger(LoginAction.class);
-    private static final String FOOD = "food";
-    private static final String COUNT = "count";
-    private static final String SIZE = "size";
-    private static final String USER = "user";
-    private static final String ORDER = "order";
-    private static final String ADDRESS = "address";
-    private static final String PHONE = "phone";
-    private static final String FINAL_PRICE = "finalPrice";
-    private static final String USER_ERROR = "UserError";
-    private static final String ERROR_NOT_LOGED = "account.UserIsNotLoged";
-    private static final String REFERER = "referer";
-    private static final String ORDER_DETAILS = "order_details";
+    private static final Logger LOGGER = Logger.getLogger(AddToOrderAction.class);
     private FoodDao foodDao = null;
     private OrderDetailsDao orderDetailsDao = null;
     private SizeDao sizeDao = null;
@@ -58,9 +46,9 @@ public class AddToOrderAction implements Action {
         } catch (ConnectionPoolException e) {
             e.printStackTrace();
         }
-        Integer id = Integer.parseInt(request.getParameter(FOOD));
-        Integer count = Integer.parseInt(request.getParameter(COUNT));
-        int sizeValue = Integer.parseInt(request.getParameter(SIZE));
+        Integer id = Integer.parseInt(request.getParameter(Constants.ATTRIBUTE_FOOD));
+        Integer count = Integer.parseInt(request.getParameter(Constants.ATTRIBUTE_COUNT));
+        int sizeValue = Integer.parseInt(request.getParameter(Constants.ATTRIBUTE_SIZE));
         currentOrder = new OrderDetails();
         try {
             currentFood = foodDao.getById(id);
@@ -73,24 +61,24 @@ public class AddToOrderAction implements Action {
         }
         currentFood.setPrice((currentFood.getPrice() * sizeValue) * count);
         LOGGER.info("Price of selected product is:" + currentFood.getPrice());
-        finalPrice = (Integer) session.getAttribute(FINAL_PRICE);
+        finalPrice = (Integer) session.getAttribute(Constants.ATTRIBUTE_FINALPRICE);
         if (finalPrice == null) finalPrice = 0;
         finalPrice = finalPrice + currentFood.getPrice();
-        user = (User) session.getAttribute(USER);
+        user = (User) session.getAttribute(Constants.ATTRIBUTE_USER);
         if (user != null) {
-            order = (Order) session.getAttribute(ORDER);
+            order = (Order) session.getAttribute(Constants.ATTRIBUTE_ORDER);
             if (order == null) {
                 order = new Order();
-                order.setAddress((String) request.getAttribute(ADDRESS));
+                order.setAddress((String) request.getAttribute(Constants.ATTRIBUTE_ADDRESS));
                 order.setUserId(user.getId());
                 order.setSumOfOrder(finalPrice);
-                order.setPhone((String) request.getAttribute(PHONE));
+                order.setPhone((String) request.getAttribute(Constants.ATTRIBUTE_PHONE));
                 order.setStatus(Status.UNPAID);
                 try {
                     orderDao.create(order);
                     LOGGER.info("New order was created");
                     order.setId(orderDao.getByUserId(user.getId()));
-                    session.setAttribute("order", order);
+                    session.setAttribute(Constants.ATTRIBUTE_ORDER, order);
                 } catch (DAOException e) {
                     LOGGER.error("Error while order creating", e);
                     e.printStackTrace();
@@ -101,7 +89,7 @@ public class AddToOrderAction implements Action {
                 order.setSumOfOrder(finalPrice);
                 orderDao.update(order);
                 LOGGER.info("Order was updated");
-                session.setAttribute(FINAL_PRICE, finalPrice);
+                session.setAttribute(Constants.ATTRIBUTE_FINALPRICE, finalPrice);
                 currentOrder.setOrderId(order.getId());
                 currentOrder.setFoodId(currentFood.getId());
                 currentOrder.setFoodNameRu(currentFood.getNameRu());
@@ -114,7 +102,7 @@ public class AddToOrderAction implements Action {
                 orderDetailsDao.create(currentOrder);
                 LOGGER.info("Order details was created");
                 List<OrderDetails> orderDetailsList = orderDetailsDao.getAllByOrderId(order.getId());
-                session.setAttribute(ORDER_DETAILS, orderDetailsList);
+                session.setAttribute(Constants.ATTRIBUTE_ORDER_DETAILS, orderDetailsList);
             } catch (DAOException e) {
                 LOGGER.error("Error of creating", e);
                 e.printStackTrace();
@@ -122,9 +110,9 @@ public class AddToOrderAction implements Action {
                 e.printStackTrace();
             }
         } else {
-            session.setAttribute(USER_ERROR, ERROR_NOT_LOGED);
+            session.setAttribute(Constants.ATTRIBUTE_LOGIN_ERROR, Constants.USER_NOT_LOGGED_ERROR);
         }
-        String referer = request.getHeader(REFERER);
+        String referer = request.getHeader(Constants.PAGE_REFERER);
         referer = referer.substring(referer.lastIndexOf("/") + 1, referer.length());
         return new ActionResult(ActionResult.METHOD.REDIRECT, referer);
     }

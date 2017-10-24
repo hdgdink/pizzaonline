@@ -4,8 +4,8 @@
 
 <nav role='navigation'>
     <ul>
-        <li><a href="pizza_loged"><fmt:message key="default.pizza"/></a></li>
-        <li><a href="subs_loged"><fmt:message key="default.subs"/></a></li>
-        <li><a href="beverage_loged"><fmt:message key="default.beverages"/></a></li>
+        <li><a href="pizza_logged"><fmt:message key="default.pizza"/></a></li>
+        <li><a href="subs_logged"><fmt:message key="default.subs"/></a></li>
+        <li><a href="beverage_logged"><fmt:message key="default.beverages"/></a></li>
     </ul>
 </nav>
