@@ -22,21 +22,16 @@ import java.util.List;
 
 public class AddToOrderAction implements Action {
     private static final Logger LOGGER = Logger.getLogger(AddToOrderAction.class);
-    private FoodDao foodDao = null;
-    private OrderDetailsDao orderDetailsDao = null;
-    private SizeDao sizeDao = null;
-    private OrderDao orderDao = null;
-    private OrderDetails currentOrder = null;
-    private TypeDao typeDao = null;
-    private User user;
-    private Order order = null;
-    private Size selectedSize = null;
-    private Food currentFood = null;
-    private Integer finalPrice = 0;
 
     @Override
     public ActionResult execute(HttpServletRequest request, HttpServletResponse response) throws ActionException {
         HttpSession session = request.getSession();
+        FoodDao foodDao;
+        Integer finalPrice;
+        OrderDetailsDao orderDetailsDao;
+        SizeDao sizeDao;
+        OrderDao orderDao;
+        TypeDao typeDao;
         try {
             foodDao = new FoodDao();
             orderDetailsDao = new OrderDetailsDao();
@@ -44,29 +39,32 @@ public class AddToOrderAction implements Action {
             sizeDao = new SizeDao();
             typeDao = new TypeDao();
         } catch (ConnectionPoolException e) {
-            e.printStackTrace();
+            LOGGER.error(Constants.DAO_INIT_ERROR, e);
+            throw new ActionException(e);
         }
         Integer id = Integer.parseInt(request.getParameter(Constants.ATTRIBUTE_FOOD));
         Integer count = Integer.parseInt(request.getParameter(Constants.ATTRIBUTE_COUNT));
         int sizeValue = Integer.parseInt(request.getParameter(Constants.ATTRIBUTE_SIZE));
-        currentOrder = new OrderDetails();
+        OrderDetails currentOrder = new OrderDetails();
+        Size selectedSize;
+        Food currentFood;
         try {
             currentFood = foodDao.getById(id);
-            LOGGER.info("Current product is getted from db with ID:" + currentFood.getId());
+            LOGGER.info("Current product is taked from db with ID:" + currentFood.getId());
             selectedSize = sizeDao.getByValue(sizeValue);
             LOGGER.info("Selected Size is:" + selectedSize.getName());
         } catch (DAOException e) {
             LOGGER.error("Error while getting current product", e);
-            e.printStackTrace();
+            throw new ActionException(e);
         }
         currentFood.setPrice((currentFood.getPrice() * sizeValue) * count);
         LOGGER.info("Price of selected product is:" + currentFood.getPrice());
         finalPrice = (Integer) session.getAttribute(Constants.ATTRIBUTE_FINALPRICE);
         if (finalPrice == null) finalPrice = 0;
         finalPrice = finalPrice + currentFood.getPrice();
-        user = (User) session.getAttribute(Constants.ATTRIBUTE_USER);
+        User user = (User) session.getAttribute(Constants.ATTRIBUTE_USER);
         if (user != null) {
-            order = (Order) session.getAttribute(Constants.ATTRIBUTE_ORDER);
+            Order order = (Order) session.getAttribute(Constants.ATTRIBUTE_ORDER);
             if (order == null) {
                 order = new Order();
                 order.setAddress((String) request.getAttribute(Constants.ATTRIBUTE_ADDRESS));
@@ -81,7 +79,7 @@ public class AddToOrderAction implements Action {
                     session.setAttribute(Constants.ATTRIBUTE_ORDER, order);
                 } catch (DAOException e) {
                     LOGGER.error("Error while order creating", e);
-                    e.printStackTrace();
+                    throw new ActionException(e);
                 }
             } else finalPrice = order.getSumOfOrder() + currentFood.getPrice();
 
@@ -101,13 +99,17 @@ public class AddToOrderAction implements Action {
                 currentOrder.setQuantity(count);
                 orderDetailsDao.create(currentOrder);
                 LOGGER.info("Order details was created");
-                List<OrderDetails> orderDetailsList = orderDetailsDao.getAllByOrderId(order.getId());
+                List<OrderDetails> orderDetailsList;
+                try {
+                    orderDetailsList = orderDetailsDao.getAllByOrderId(order.getId());
+                } catch (ConnectionPoolException e) {
+                    LOGGER.error("Error of initialization OrderDetailsDao", e);
+                    throw new ActionException(e);
+                }
                 session.setAttribute(Constants.ATTRIBUTE_ORDER_DETAILS, orderDetailsList);
             } catch (DAOException e) {
-                LOGGER.error("Error of creating", e);
-                e.printStackTrace();
-            } catch (ConnectionPoolException e) {
-                e.printStackTrace();
+                LOGGER.error("Error of creating Order", e);
+                throw new ActionException(e);
             }
         } else {
             session.setAttribute(Constants.ATTRIBUTE_LOGIN_ERROR, Constants.USER_NOT_LOGGED_ERROR);

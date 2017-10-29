@@ -6,13 +6,7 @@ import java.util.ResourceBundle;
 public class Constants {
 
     /* Attributes*/
-    public static final String ATTRIBUTE_ROLES_LIST = "roles";
-    public static final String ATTRIBUTE_STATUS_LIST = "statusList";
     public static final String ATTRIBUTE_TYPE_LIST = "typeList";
-    public static final String ATTRIBUTE_SIZE_LIST = "sizeList";
-    public static final String ATTRIBUTE_PIZZA_LIST = "pizzaList";
-    public static final String ATTRIBUTE_BEV_LIST = "bevList";
-    public static final String ATTRIBUTE_SUBS_LIST = "subList";
     public static final String ATTRIBUTE_ERROR = "error";
     public static final String ATTRIBUTE_LOGIN_ERROR = "logInError";
     public static final String ATTRIBUTE_PASSWORD_ERROR = "passwordError";
@@ -72,6 +66,12 @@ public class Constants {
     public static final String ATTRIBUTE_FOOD = "food";
     public static final String ATTRIBUTE_ORDER_DETAILS_ID = "order_detail_id";
     public static final String ATTRIBUTE_ORDER_DETAILS_FINAL_PRICE = "order_detail_final_price";
+    static final String ATTRIBUTE_ROLES_LIST = "roles";
+    static final String ATTRIBUTE_STATUS_LIST = "statusList";
+    static final String ATTRIBUTE_SIZE_LIST = "sizeList";
+    static final String ATTRIBUTE_PIZZA_LIST = "pizzaList";
+    static final String ATTRIBUTE_BEV_LIST = "bevList";
+    static final String ATTRIBUTE_SUBS_LIST = "subList";
 
     /*Parameters*/
     public static final String PAR_TOPIC = "topic";
@@ -153,9 +153,8 @@ public class Constants {
 
     /* Messages fo logger*/
     public static final String STATEMENT_CREATE_ERROR = "Statement cannot be created.";
-    public static final String USER_DAO_INIT_ERROR = "Error at createUserDao";
-
-
+    public static final String USER_DAO_INIT_ERROR = "Error of initialization UserDao";
+    public static final String DAO_INIT_ERROR = "Error of initialization DAO";
 
     /*Pages*/
     public static final String PAGE_REFERER = "referer";

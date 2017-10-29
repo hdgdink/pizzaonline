@@ -25,7 +25,7 @@ public class EditUserAction implements Action {
         try {
             userDao = new UserDao();
         } catch (ConnectionPoolException e) {
-            LOGGER.error("Error of initialization UserDao", e);
+            LOGGER.error(Constants.USER_DAO_INIT_ERROR, e);
             throw new ActionException(e);
         }
         HttpSession session = request.getSession();
@@ -56,7 +56,7 @@ public class EditUserAction implements Action {
             }
         } catch (DAOException e) {
             LOGGER.error("Error of SizeDao", e);
-            throw new  ActionException(e);
+            throw new ActionException(e);
         }
         String referer = request.getHeader(Constants.PAGE_REFERER);
         referer = referer.substring(referer.lastIndexOf("/") + 1, referer.length());

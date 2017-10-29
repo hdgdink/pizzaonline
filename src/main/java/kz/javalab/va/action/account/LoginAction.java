@@ -25,7 +25,6 @@ import java.util.List;
 
 public class LoginAction implements Action {
     private static final Logger LOGGER = Logger.getLogger(LoginAction.class);
-    private Order order = null;
 
     @Override
     public ActionResult execute(HttpServletRequest request, HttpServletResponse response) throws ActionException {
@@ -33,6 +32,7 @@ public class LoginAction implements Action {
         HttpSession session = request.getSession();
         UserDao userDao;
         OrderDao orderDao;
+        Order order = null;
         OrderDetailsDao orderDetailsDao;
         List<OrderDetails> orderDetails;
         try {
@@ -44,7 +44,7 @@ public class LoginAction implements Action {
             LOGGER.error("Error of connect to database.", e);
             throw new ActionException(e);
         }
-        Integer finalPrice = 0;
+
         String username = request.getParameter(Constants.ATTRIBUTE_USERNAME);
         String password = request.getParameter(Constants.ATTRIBUTE_PASSWORD);
         User user;
@@ -72,12 +72,12 @@ public class LoginAction implements Action {
             result = new ActionResult(ActionResult.METHOD.FORWARD, Constants.PAGE_PIZZA_UNLOG);
         else {
             try {
-                int orderId = orderDao.getByUserId(user.getId());
+                Integer orderId = orderDao.getByUserId(user.getId());
                 if (orderId != 0) {
                     order = orderDao.getById(orderId);
                     orderDetails = orderDetailsDao.getAllByOrderId(order.getId());
                 }
-                if (order.getStatus().equals(Status.UNPAID)) {
+                if (order != null && order.getStatus().equals(Status.UNPAID)) {
                     session.setAttribute(Constants.ATTRIBUTE_ORDER_DETAILS, orderDetails);
                     session.setAttribute(Constants.ATTRIBUTE_ORDER, order);
                 }
@@ -89,7 +89,6 @@ public class LoginAction implements Action {
         }
         session.setAttribute(Constants.ATTRIBUTE_USER, user);
         session.setAttribute(Constants.ATTRIBUTE_ID, user.getId());
-        session.setAttribute(Constants.ATTRIBUTE_FINALPRICE, finalPrice);
         session.removeAttribute(Constants.ATTRIBUTE_EMAIL);
         session.removeAttribute(Constants.ATTRIBUTE_LOGIN_ERROR);
         LOGGER.debug("User " + user.getEmail() + " has been logged.");

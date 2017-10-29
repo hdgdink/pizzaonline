@@ -21,7 +21,7 @@ public class EditTypeAction implements Action {
     @Override
     public ActionResult execute(HttpServletRequest request, HttpServletResponse response) throws ActionException {
         HttpSession session = request.getSession();
-        TypeDao typeDao ;
+        TypeDao typeDao;
         try {
             typeDao = new TypeDao();
         } catch (ConnectionPoolException e) {

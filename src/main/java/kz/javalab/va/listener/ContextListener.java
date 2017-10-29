@@ -23,7 +23,7 @@ public class ContextListener implements ServletContextListener {
             connectionPool.closeConnections();
             LOGGER.debug("Connections have been closed.");
         } catch (ConnectionPoolException e) {
-            LOGGER.error("Somethng fails with connection pool.");
+            LOGGER.error("Something fails with connection pool.", e);
         }
     }
 }

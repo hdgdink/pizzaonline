@@ -28,7 +28,7 @@ public class UserInfoUpdateAction implements Action {
         String lastName = request.getParameter(Constants.ATTRIBUTE_LASTNAME);
         UserDao userDao;
         try {
-            userDao =new UserDao();
+            userDao = new UserDao();
         } catch (ConnectionPoolException e) {
             LOGGER.error(Constants.USER_DAO_INIT_ERROR, e);
             throw new ActionException(e);
@@ -57,4 +57,4 @@ public class UserInfoUpdateAction implements Action {
         referer = referer.substring(referer.lastIndexOf("/") + 1, referer.length());
         return new ActionResult(ActionResult.METHOD.REDIRECT, referer);
     }
-    }
+}

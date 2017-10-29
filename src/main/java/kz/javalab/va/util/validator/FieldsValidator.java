@@ -14,16 +14,10 @@ import java.util.regex.PatternSyntaxException;
 public class FieldsValidator {
     private final static Logger LOGGER = Logger.getLogger(FieldsValidator.class);
 
-    /**
-     * Is used to check whether values are null or not.
-     *
-     * @param values The values to check.
-     * @return true if there is at least one null value, false otherwise.
-     */
     public static boolean equalNull(String... values) {
         boolean result = false;
-        for (int i = 0; i < values.length; i++) {
-            if (values[i] == null) {
+        for (String value : values) {
+            if (value == null) {
                 result = true;
                 break;
             }
@@ -31,16 +25,10 @@ public class FieldsValidator {
         return result;
     }
 
-    /**
-     * Is used to check whether values are null or not.
-     *
-     * @param values The values to check.
-     * @return true if there is at least one empty value, false otherwise.
-     */
     public static boolean empty(String... values) {
         boolean result = false;
-        for (int i = 0; i < values.length; i++) {
-            if (values[i].isEmpty()) {
+        for (String value : values) {
+            if (value.isEmpty()) {
                 result = true;
                 break;
             }
@@ -48,14 +36,6 @@ public class FieldsValidator {
         return result;
     }
 
-    /**
-     * Is used to check whether email value is valid.
-     *
-     * @param email The user email.
-     * @return True if email is valid, false otherwise.
-     * @throws ValidationException If property manager cannot be taken or email
-     *                             pattern is not valid
-     */
     public static boolean emailValid(String email) throws ValidationException {
         Pattern pattern;
         Matcher matcher;
@@ -73,14 +53,6 @@ public class FieldsValidator {
         return true;
     }
 
-    /**
-     * Is used to check whether password value is valid.
-     *
-     * @param password The user password to validate.
-     * @return True if password is valid, false otherwise.
-     * @throws ValidationException If property manager cannot be taken or email
-     *                             pattern is not valid
-     */
     public static boolean passwordValid(String password)
             throws ValidationException {
         Pattern pattern;
@@ -99,15 +71,13 @@ public class FieldsValidator {
         return true;
     }
 
-    public static boolean userNameCheck(String username)  throws ValidationException {
+    public static boolean userNameCheck(String username) throws ValidationException {
         User user = null;
         try {
             UserDao userDao = new UserDao();
             user = userDao.getByUsername(username);
-        } catch (ConnectionPoolException e) {
-            e.printStackTrace();
-        } catch (DAOException e) {
-            e.printStackTrace();
+        } catch (ConnectionPoolException | DAOException e) {
+            LOGGER.error(Constants.USER_DAO_INIT_ERROR);
         }
         if (user != null) {
             LOGGER.debug("Username already busy");

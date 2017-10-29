@@ -15,7 +15,7 @@ import java.util.Map;
 
 public class SecurityFilter implements Filter {
     private static final Logger LOGGER = Logger.getLogger(SecurityFilter.class);
-    private Map<String, EnumSet<Role>> actions = new HashMap<String, EnumSet<Role>>();
+    private Map<String, EnumSet<Role>> actions = new HashMap<>();
 
     /**
      * Creates a map of URLs and users who have rights to access it.

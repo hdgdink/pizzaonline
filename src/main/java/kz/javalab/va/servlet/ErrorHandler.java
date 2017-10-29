@@ -16,13 +16,12 @@ public class ErrorHandler extends HttpServlet {
     private static final Logger LOGGER = Logger.getLogger(ErrorHandler.class);
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) {
+
         try {
             handleError(request, response);
             request.getRequestDispatcher(Constants.PAGE_ERROR).forward(request, response);
-        } catch (ServletException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (ServletException | IOException e) {
+            LOGGER.error("Error of HandleError", e);
         }
     }
 
@@ -30,15 +29,12 @@ public class ErrorHandler extends HttpServlet {
         try {
             handleError(request, response);
             response.sendRedirect(Constants.PAGE_ERROR);
-        } catch (ServletException e) {
-            e.printStackTrace();
         } catch (IOException e) {
-            e.printStackTrace();
+            LOGGER.error("Error redirect of response", e);
         }
     }
 
-    private void handleError(HttpServletRequest request,
-                             HttpServletResponse response) throws ServletException, IOException {
+    private void handleError(HttpServletRequest request, HttpServletResponse response) {
         HttpSession session = request.getSession();
         Throwable exception = (Throwable) request
                 .getAttribute(Constants.JAVAX_ERROR);

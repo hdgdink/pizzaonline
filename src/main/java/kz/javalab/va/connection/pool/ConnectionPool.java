@@ -9,7 +9,6 @@ import java.sql.SQLException;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 
-
 public class ConnectionPool {
     private static final Logger LOGGER = Logger.getLogger(ConnectionPool.class);
     private static ConnectionPool instance;
@@ -22,15 +21,11 @@ public class ConnectionPool {
                 localInstance = instance;
                 if (localInstance == null) {
                     instance = localInstance = new ConnectionPool();
-                    instance.createPool();
+                    createPool();
                 }
             }
         }
         return localInstance;
-    }
-
-    private ConnectionPool() throws ConnectionPoolException {
-        createPool();
     }
 
     private static void createPool() throws ConnectionPoolException {
@@ -43,7 +38,7 @@ public class ConnectionPool {
             throw new ConnectionPoolException();
         }
         for (int i = 0; i < Constants.POOL_SIZE_RB; i++) {
-            Connection connection = null;
+            Connection connection;
             try {
                 connection = DriverManager.getConnection(Constants.URL_RB, Constants.USER_RB, Constants.PASSWORD_RB);
             } catch (SQLException e) {
@@ -54,7 +49,7 @@ public class ConnectionPool {
     }
 
     public synchronized Connection getConnection() throws ConnectionPoolException {
-        Connection connection = null;
+        Connection connection;
         try {
             connection = pool.take();
         } catch (InterruptedException e) {

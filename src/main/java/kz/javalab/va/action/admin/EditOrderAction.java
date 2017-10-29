@@ -22,7 +22,7 @@ public class EditOrderAction implements Action {
 
     @Override
     public ActionResult execute(HttpServletRequest request, HttpServletResponse response) throws ActionException {
-        OrderDao orderDao= null;
+        OrderDao orderDao;
         try {
             orderDao = new OrderDao();
         } catch (ConnectionPoolException e) {
@@ -53,5 +53,5 @@ public class EditOrderAction implements Action {
         setter.setAttributes(session);
         return new ActionResult(ActionResult.METHOD.REDIRECT, Constants.ACTION_ORDERS);
     }
-    }
+}
 

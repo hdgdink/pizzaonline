@@ -10,12 +10,14 @@ import kz.javalab.va.entity.Size;
 import kz.javalab.va.entity.Type;
 import kz.javalab.va.entity.order.Status;
 import kz.javalab.va.entity.user.Role;
+import org.apache.log4j.Logger;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
 public class AttributeSetter {
+    private static final Logger LOGGER = Logger.getLogger(AttributeSetter.class);
 
     public void setAttributes(HttpSession session) {
         ServletContext context = session.getServletContext();
@@ -32,10 +34,8 @@ public class AttributeSetter {
             context.setAttribute(Constants.ATTRIBUTE_PIZZA_LIST, pizzaList);
             context.setAttribute(Constants.ATTRIBUTE_SUBS_LIST, subList);
             context.setAttribute(Constants.ATTRIBUTE_BEV_LIST, bevList);
-        } catch (DAOException e) {
-            e.printStackTrace();
-        } catch (ConnectionPoolException e) {
-            e.printStackTrace();
+        } catch (DAOException | ConnectionPoolException e) {
+            LOGGER.error(Constants.DAO_INIT_ERROR, e);
         }
     }
 

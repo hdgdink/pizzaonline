@@ -16,7 +16,6 @@ import java.io.IOException;
 public class Controller extends HttpServlet {
     private static final Logger LOGGER = Logger.getLogger(Controller.class);
 
-
     @Override
     protected void service(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         Action action;
@@ -27,6 +26,7 @@ public class Controller extends HttpServlet {
         try {
             result = action.execute(request, response);
         } catch (ActionException e) {
+            LOGGER.error("Can't execute action", e);
             throw new ServletException(e);
         }
         method = result.getMethod();
@@ -39,15 +39,5 @@ public class Controller extends HttpServlet {
         if (method.equals(ActionResult.METHOD.REDIRECT)) {
             response.sendRedirect(request.getContextPath() + Constants.DO_STRING + result.getView());
         }
-
-        /*switch (method) {
-            case FORWARD:
-
-                break;
-            case REDIRECT:
-
-                break;
-        }*/
-
     }
 }

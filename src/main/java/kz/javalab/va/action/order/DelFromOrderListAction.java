@@ -20,24 +20,24 @@ import java.util.List;
 
 public class DelFromOrderListAction implements Action {
     private static final Logger LOGGER = Logger.getLogger(LoginAction.class);
-    private OrderDetailsDao orderDetailsDao = null;
-    private OrderDao orderDao = null;
-    private Order order;
-    private Integer finalPrice = 0;
+
 
     @Override
     public ActionResult execute(HttpServletRequest request, HttpServletResponse response) throws ActionException {
         HttpSession session = request.getSession();
+        Integer finalPrice;
+        OrderDetailsDao orderDetailsDao;
+        OrderDao orderDao;
         try {
             orderDao = new OrderDao();
             orderDetailsDao = new OrderDetailsDao();
         } catch (ConnectionPoolException e) {
-            e.printStackTrace();
+            LOGGER.error(Constants.DAO_INIT_ERROR, e);
+            throw new ActionException(e);
         }
         Integer id = Integer.parseInt(request.getParameter(Constants.ATTRIBUTE_ORDER_DETAILS_ID));
         Integer productPrice = Integer.parseInt(request.getParameter(Constants.ATTRIBUTE_ORDER_DETAILS_FINAL_PRICE));
-        order = (Order) session.getAttribute(Constants.ATTRIBUTE_ORDER);
-
+        Order order = (Order) session.getAttribute(Constants.ATTRIBUTE_ORDER);
         try {
             orderDetailsDao.delete(id);
             LOGGER.info("Order details is deleted");
@@ -48,12 +48,10 @@ public class DelFromOrderListAction implements Action {
             List<OrderDetails> orderDetailsList = orderDetailsDao.getAllByOrderId(order.getId());
             session.setAttribute(Constants.ATTRIBUTE_ORDER, order);
             session.setAttribute(Constants.ATTRIBUTE_ORDER_DETAILS, orderDetailsList);
-        } catch (DAOException e) {
-            e.printStackTrace();
-        } catch (ConnectionPoolException e) {
-            e.printStackTrace();
+        } catch (DAOException | ConnectionPoolException e) {
+            LOGGER.error("Error of updating Order", e);
+            throw new ActionException(e);
         }
-
         String referer = request.getHeader(Constants.PAGE_REFERER);
         referer = referer.substring(referer.lastIndexOf("/") + 1, referer.length());
         return new ActionResult(ActionResult.METHOD.REDIRECT, referer);

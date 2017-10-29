@@ -15,22 +15,22 @@
             </tr>
         </table>
 
-        <c:forEach items="${order_details}" var="order">
+        <c:forEach items="${order_details}" var="product">
             <form action="del_from_orderlist" method="get">
                 <div class="caption">
                     <table class="table">
                         <tr>
                             <c:if test="${locale.language=='ru'}">
-                                <td>${order.foodNameRu}</td>
+                                <td>${product.foodNameRu}</td>
                             </c:if>
                             <c:if test="${locale.language=='en'}">
-                                <td>${order.foodNameEn}</td>
+                                <td>${product.foodNameEn}</td>
                             </c:if>
-                            <td><fmt:message key="${order.sizeName}"/></td>
-                            <td>${order.quantity}</td>
-                            <td>${order.finalPrice}</td>
-                            <input type="hidden" name="order_detail_id" value="${order.id}"/>
-                            <input type="hidden" name="order_detail_final_price" value="${order.finalPrice}"/>
+                            <td><fmt:message key="${product.sizeName}"/></td>
+                            <td>${product.quantity}</td>
+                            <td>${product.finalPrice}</td>
+                            <input type="hidden" name="order_detail_id" value="${product.id}"/>
+                            <input type="hidden" name="order_detail_final_price" value="${product.finalPrice}"/>
                             <td><input type="submit" class="btn btn-primary" value="✖"/></td>
                         </tr>
                     </table>

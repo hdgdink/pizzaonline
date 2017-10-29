@@ -13,14 +13,14 @@ public class DaoFactory {
     public DaoFactory() throws ConnectionPoolException {
     }
 
-    public Connection getConnection() {
-        Connection connection = null;
+    public Connection getConnection() throws DAOException {
+        Connection connection;
         try {
             connection = pool.getConnection();
             LOGGER.debug("Connection has been taken.");
         } catch (ConnectionPoolException e) {
             LOGGER.warn("Connection can not be taken.", e);
-            e.printStackTrace();
+            throw new DAOException(e);
         }
         return connection;
     }

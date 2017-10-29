@@ -20,31 +20,26 @@ import javax.servlet.http.HttpSession;
 
 public class CheckOutOrder implements Action {
     private static final Logger LOGGER = Logger.getLogger(LoginAction.class);
-    private OrderDao orderDao = null;
-    private UserDao userDao = null;
-    private User user;
-    private Order order = null;
 
     @Override
     public ActionResult execute(HttpServletRequest request, HttpServletResponse response) throws ActionException {
         HttpSession session = request.getSession();
         String address = request.getParameter(Constants.ATTRIBUTE_ADDRESS);
         String phone = request.getParameter(Constants.ATTRIBUTE_PHONE);
-        order = (Order) session.getAttribute(Constants.ATTRIBUTE_ORDER);
-        user = (User) session.getAttribute(Constants.ATTRIBUTE_USER);
-
+        Order order = (Order) session.getAttribute(Constants.ATTRIBUTE_ORDER);
+        User user = (User) session.getAttribute(Constants.ATTRIBUTE_USER);
         if (user != null) {
             int balance = user.getBalance();
             int sumOrder = order.getSumOfOrder();
-            if (balance > sumOrder) {
+            if (balance >= sumOrder) {
                 balance = balance - sumOrder;
                 user.setBalance(balance);
                 order.setPhone(phone);
                 order.setStatus(Status.PAID_FOR);
                 order.setAddress(address);
                 try {
-                    orderDao = new OrderDao();
-                    userDao = new UserDao();
+                    OrderDao orderDao = new OrderDao();
+                    UserDao userDao = new UserDao();
                     orderDao.update(order);
                     LOGGER.info("Order is success");
                     userDao.update(user);
@@ -54,14 +49,12 @@ public class CheckOutOrder implements Action {
                     session.removeAttribute(Constants.ATTRIBUTE_QNT);
                     session.removeAttribute(Constants.ATTRIBUTE_SIZE);
                     session.removeAttribute(Constants.ATTRIBUTE_FINALPRICE);
-                } catch (DAOException e) {
-                    e.printStackTrace();
-                } catch (ConnectionPoolException e) {
-                    e.printStackTrace();
+                } catch (DAOException | ConnectionPoolException e) {
+                    LOGGER.error("Ordering Error", e);
+                    throw new ActionException(e);
                 }
             } else session.setAttribute(Constants.ATTRIBUTE_ERROR, Constants.BALANCE_IS_LOW_ERROR);
         } else session.setAttribute(Constants.ATTRIBUTE_ERROR, Constants.ACCOUNT_NOT_FOUND_ERROR);
-
         String referer = request.getHeader(Constants.PAGE_REFERER);
         referer = referer.substring(referer.lastIndexOf("/") + 1, referer.length());
         return new ActionResult(ActionResult.METHOD.REDIRECT, referer);

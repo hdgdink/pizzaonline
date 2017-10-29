@@ -65,7 +65,8 @@ public class EditProductAction implements Action {
             try {
                 dao = new FoodDao();
             } catch (ConnectionPoolException e) {
-                LOGGER.error("Error of initialization OrderDao", e);            }
+                LOGGER.error("Error of initialization OrderDao", e);
+            }
         }
         return dao;
     }
