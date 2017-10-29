@@ -4,6 +4,7 @@ import kz.javalab.va.connection.pool.ConnectionPool;
 import kz.javalab.va.connection.pool.ConnectionPoolException;
 import kz.javalab.va.dao.AbstractDao;
 import kz.javalab.va.dao.DAOException;
+import kz.javalab.va.dao.DaoFactory;
 import kz.javalab.va.entity.user.Role;
 import kz.javalab.va.entity.user.User;
 import kz.javalab.va.util.Constants;

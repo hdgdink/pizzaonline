@@ -1,4 +1,4 @@
-package kz.javalab.va.dao.impl;
+package kz.javalab.va.dao;
 
 import kz.javalab.va.connection.pool.ConnectionPool;
 import kz.javalab.va.connection.pool.ConnectionPoolException;

@@ -17,27 +17,32 @@ import javax.servlet.http.HttpSession;
 
 public class UserPassUpdateAction implements Action {
     private static final Logger LOGGER = Logger.getLogger(UserPassUpdateAction.class);
-    private UserDao dao;
-    private String view;
-    private ActionResult result = new ActionResult(ActionResult.METHOD.REDIRECT, view);
 
     @Override
     public ActionResult execute(HttpServletRequest request, HttpServletResponse response) throws ActionException {
+        String referer = request.getHeader(Constants.PAGE_REFERER);
+        referer = referer.substring(referer.lastIndexOf("/") + 1, referer.length());
+        ActionResult result = new ActionResult(ActionResult.METHOD.REDIRECT, referer);
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute(Constants.ATTRIBUTE_USER);
         String oldPassword = request.getParameter(Constants.ATTRIBUTE_OLD_PASSWORD);
         String newPassword1 = request.getParameter(Constants.ATTRIBUTE_NEW_PASSWORD1);
         String newPassword2 = request.getParameter(Constants.ATTRIBUTE_NEW_PASSWORD2);
-        int id = 0;
-        boolean passwordFieldsNull = false;
-        boolean newPasswordEmpty = false;
-        view = request.getHeader(Constants.PAGE_REFERER);
-        view = view.substring(view.lastIndexOf("/") + 1, view.length());
+        int id;
+        boolean passwordFieldsNull;
+        boolean newPasswordEmpty;
+        UserDao userDao;
+        try {
+            userDao = new UserDao();
+        } catch (ConnectionPoolException e) {
+            LOGGER.error(Constants.USER_DAO_INIT_ERROR, e);
+            throw new ActionException(e);
+        }
         try {
             id = (int) session.getAttribute(Constants.ATTRIBUTE_ID);
         } catch (IllegalArgumentException e) {
             LOGGER.warn("Id field is not valid.", e);
-            throw new ActionException();
+            throw new ActionException(e);
         }
         session.setAttribute(Constants.ATTRIBUTE_OLD_PASSWORD, oldPassword);
         session.setAttribute(Constants.ATTRIBUTE_NEW_PASSWORD1, newPassword1);
@@ -50,7 +55,7 @@ public class UserPassUpdateAction implements Action {
             session.removeAttribute(Constants.ATTRIBUTE_PASSWORD_ERROR);
             session.setAttribute(Constants.ATTRIBUTE_OLD_PASSWORD_ERROR, Constants.OLD_PASS_WRONG_ERROR);
             LOGGER.debug("Old password value is wrong.");
-            return new ActionResult(ActionResult.METHOD.REDIRECT, request.getHeader(Constants.PAGE_REFERER));
+            return result;
         }
         session.removeAttribute(Constants.ATTRIBUTE_OLD_PASSWORD_ERROR);
         passwordFieldsNull = FieldsValidator.equalNull(newPassword1, newPassword2);
@@ -70,10 +75,10 @@ public class UserPassUpdateAction implements Action {
             return result;
         }
         try {
-            userDao().resetPassword(newPassword1, id);
+            userDao.resetPassword(newPassword1, id);
             LOGGER.debug("Password has been changed.");
         } catch (DAOException e) {
-            LOGGER.warn("Password cannot be changed.");
+            LOGGER.warn("Password can't be changed.");
             throw new ActionException(e);
         }
         if (user.getId() == id) {
@@ -87,22 +92,5 @@ public class UserPassUpdateAction implements Action {
         session.removeAttribute(Constants.ATTRIBUTE_OLD_PASSWORD_ERROR);
         session.removeAttribute(Constants.ATTRIBUTE_PASSWORD_ERROR);
         return result;
-    }
-
-    /**
-     * Is used to get user dao. It initializes dao during the first use.
-     *
-     * @return The user.
-     * @throws DAOException If something fails.
-     */
-    private UserDao userDao() throws DAOException {
-        if (dao == null) {
-            try {
-                dao = new UserDao();
-            } catch (ConnectionPoolException e) {
-                e.printStackTrace();
-            }
-        }
-        return dao;
     }
 }

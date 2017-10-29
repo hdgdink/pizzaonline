@@ -18,14 +18,12 @@ import javax.servlet.http.HttpSession;
 public class EditProductAction implements Action {
     private static final Logger LOGGER = Logger.getLogger(EditProductAction.class);
     private FoodDao dao;
-    private Food food = null;
     private HttpServletRequest req;
-    private HttpSession session;
 
     @Override
     public ActionResult execute(HttpServletRequest request, HttpServletResponse response) throws ActionException {
         req = request;
-        session = request.getSession();
+        HttpSession session = request.getSession();
         updateProduct();
         AttributeSetter setter = new AttributeSetter();
         setter.setAttributes(session);
@@ -45,7 +43,7 @@ public class EditProductAction implements Action {
         String img = req.getParameter(Constants.ATTRIBUTE_IMG_PATH);
         Boolean active = Boolean.parseBoolean(req.getParameter(Constants.ATTRIBUTE_ACTIVE));
         try {
-            food = foodDao().getById(id);
+            Food food = foodDao().getById(id);
             food.setPrice(price);
             food.setImg(img);
             food.setDiscriptionEn(dicriptionEn);
@@ -67,8 +65,7 @@ public class EditProductAction implements Action {
             try {
                 dao = new FoodDao();
             } catch (ConnectionPoolException e) {
-                e.printStackTrace();
-            }
+                LOGGER.error("Error of initialization OrderDao", e);            }
         }
         return dao;
     }

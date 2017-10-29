@@ -10,6 +10,7 @@ import kz.javalab.va.dao.impl.TypeDao;
 import kz.javalab.va.entity.Food;
 import kz.javalab.va.entity.Type;
 import kz.javalab.va.util.Constants;
+import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -17,6 +18,7 @@ import javax.servlet.http.HttpSession;
 import java.util.List;
 
 public class ShowProductsPageAction implements Action {
+    private static final Logger LOGGER = Logger.getLogger(ShowProductsPageAction.class);
 
     @Override
     public ActionResult execute(HttpServletRequest request, HttpServletResponse response) throws ActionException {
@@ -26,10 +28,9 @@ public class ShowProductsPageAction implements Action {
             List<Type> types = new TypeDao().getAll();
             session.setAttribute(Constants.ATTRIBUTE_TYPE_LIST, types);
             session.setAttribute(Constants.ATTRIBUTE_PRODUCT_LIST, productsList);
-        } catch (DAOException e) {
-            e.printStackTrace();
-        } catch (ConnectionPoolException e) {
-            e.printStackTrace();
+        } catch (DAOException | ConnectionPoolException e) {
+            LOGGER.error("Error of creating ProductList", e);
+            throw new ActionException(e);
         }
         return new ActionResult(ActionResult.METHOD.FORWARD, Constants.ACTION_ADMIN_PRODUCTS);
     }

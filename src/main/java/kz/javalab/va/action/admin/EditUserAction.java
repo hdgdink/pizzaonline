@@ -18,11 +18,16 @@ import javax.servlet.http.HttpSession;
 
 public class EditUserAction implements Action {
     private static final Logger LOGGER = Logger.getLogger(EditUserAction.class);
-    private UserDao dao;
-    private User user = null;
 
     @Override
     public ActionResult execute(HttpServletRequest request, HttpServletResponse response) throws ActionException {
+        UserDao userDao;
+        try {
+            userDao = new UserDao();
+        } catch (ConnectionPoolException e) {
+            LOGGER.error("Error of initialization UserDao", e);
+            throw new ActionException(e);
+        }
         HttpSession session = request.getSession();
         Integer id = Integer.parseInt(request.getParameter(Constants.ATTRIBUTE_ID));
         String username = request.getParameter(Constants.ATTRIBUTE_USERNAME);
@@ -32,10 +37,9 @@ public class EditUserAction implements Action {
         Integer balance = Integer.parseInt(request.getParameter(Constants.ATTRIBUTE_BALANCE));
         String password = request.getParameter(Constants.ATTRIBUTE_PASSWORD);
         Role role = Role.valueOf(request.getParameter(Constants.ATTRIBUTE_ROLE));
-
         try {
-            user = userDao().getById(id);
-            if ((!user.getUsername().equals(username)) && (userDao().getUsersListByUsername(username) != null)) {
+            User user = userDao.getById(id);
+            if ((!user.getUsername().equals(username)) && (userDao.getUsersListByUsername(username) != null)) {
                 LOGGER.info("Username is busy, select another");
                 session.setAttribute(Constants.ATTRIBUTE_ERROR, Constants.USER_EXIST_ERROR);
             } else {
@@ -47,26 +51,16 @@ public class EditUserAction implements Action {
                 user.setBalance(balance);
                 user.setPassword(password);
                 user.setRole(role);
-                userDao().update(user);
+                userDao.update(user);
                 LOGGER.debug("User" + user.getId() + "updated");
             }
         } catch (DAOException e) {
             LOGGER.error("Error of SizeDao", e);
-            e.printStackTrace();
+            throw new  ActionException(e);
         }
         String referer = request.getHeader(Constants.PAGE_REFERER);
         referer = referer.substring(referer.lastIndexOf("/") + 1, referer.length());
         return new ActionResult(ActionResult.METHOD.REDIRECT, referer);
     }
 
-    private UserDao userDao() throws DAOException {
-        if (dao == null) {
-            try {
-                dao = new UserDao();
-            } catch (ConnectionPoolException e) {
-                e.printStackTrace();
-            }
-        }
-        return dao;
-    }
 }

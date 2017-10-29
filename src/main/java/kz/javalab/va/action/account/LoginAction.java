@@ -25,31 +25,33 @@ import java.util.List;
 
 public class LoginAction implements Action {
     private static final Logger LOGGER = Logger.getLogger(LoginAction.class);
-    private ActionResult result;
-    private UserDao dao;
-    private OrderDao orderDao;
-    OrderDetailsDao orderDetailsDao;
     private Order order = null;
-    private List<OrderDetails> orderDetails = null;
 
     @Override
     public ActionResult execute(HttpServletRequest request, HttpServletResponse response) throws ActionException {
+        ActionResult result;
         HttpSession session = request.getSession();
+        UserDao userDao;
+        OrderDao orderDao;
+        OrderDetailsDao orderDetailsDao;
+        List<OrderDetails> orderDetails;
         try {
             orderDao = new OrderDao();
+            userDao = new UserDao();
             orderDetailsDao = new OrderDetailsDao();
             orderDetails = new ArrayList<>();
         } catch (ConnectionPoolException e) {
-            e.printStackTrace();
+            LOGGER.error("Error of connect to database.", e);
+            throw new ActionException(e);
         }
         Integer finalPrice = 0;
         String username = request.getParameter(Constants.ATTRIBUTE_USERNAME);
         String password = request.getParameter(Constants.ATTRIBUTE_PASSWORD);
         User user;
         try {
-            user = userDao().getByUsername(username);
+            user = userDao.getByUsername(username);
         } catch (DAOException e) {
-            LOGGER.warn("Request cannot be executed.");
+            LOGGER.warn("Request cannot be executed.", e);
             throw new ActionException(e);
         }
         if (user == null) {
@@ -74,17 +76,15 @@ public class LoginAction implements Action {
                 if (orderId != 0) {
                     order = orderDao.getById(orderId);
                     orderDetails = orderDetailsDao.getAllByOrderId(order.getId());
-                    if (order.getStatus().equals(Status.UNPAID)) {
-                        session.setAttribute(Constants.ATTRIBUTE_ORDER_DETAILS, orderDetails);
-                        session.setAttribute(Constants.ATTRIBUTE_ORDER, order);
-                    }
                 }
-            } catch (DAOException e) {
-                e.printStackTrace();
-            } catch (ConnectionPoolException e) {
-                e.printStackTrace();
+                if (order.getStatus().equals(Status.UNPAID)) {
+                    session.setAttribute(Constants.ATTRIBUTE_ORDER_DETAILS, orderDetails);
+                    session.setAttribute(Constants.ATTRIBUTE_ORDER, order);
+                }
+            } catch (Exception e) {
+                LOGGER.error("Error at LoginAction while performing last unpaid order", e);
+                throw new ActionException(e);
             }
-
             result = new ActionResult(ActionResult.METHOD.REDIRECT, Constants.PAGE_PIZZA_LOGGED);
         }
         session.setAttribute(Constants.ATTRIBUTE_USER, user);
@@ -94,22 +94,5 @@ public class LoginAction implements Action {
         session.removeAttribute(Constants.ATTRIBUTE_LOGIN_ERROR);
         LOGGER.debug("User " + user.getEmail() + " has been logged.");
         return result;
-    }
-
-    /**
-     * Is used to get user dao. It initializes dao during the first use.
-     *
-     * @return The user.
-     * @throws DAOException If something fails.
-     */
-    private UserDao userDao() throws DAOException {
-        if (dao == null) {
-            try {
-                dao = new UserDao();
-            } catch (ConnectionPoolException e) {
-                e.printStackTrace();
-            }
-        }
-        return dao;
     }
 }

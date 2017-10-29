@@ -67,7 +67,6 @@ public class CreateEntityAdmin implements Action {
         try {
             OrderDao orderDao = new OrderDao();
             orderDao.create(order);
-            LOGGER.info("New order was created");
             AttributeSetter setter = new AttributeSetter();
             setter.setAttributes(session);
         } catch (Exception e) {
@@ -98,14 +97,12 @@ public class CreateEntityAdmin implements Action {
         orderDetails.setTypeName(typeName);
         orderDetails.setQuantity(quantity);
         orderDetails.setOrderId(orderId);
-
         try {
             OrderDetailsDao orderDetailsDao = new OrderDetailsDao();
             orderDetailsDao.create(orderDetails);
-            LOGGER.info("New Order Details was created");
         } catch (Exception e) {
-            LOGGER.error("Error at create Order Details()", e);
-            throw new ActionException("Error at createOrderDetails()", e);
+            LOGGER.error("Error at create OrderDetailsDAO", e);
+            throw new ActionException(e);
         }
         result = ORDER_DETAILS_ADMIN_PAGE;
     }
@@ -116,16 +113,14 @@ public class CreateEntityAdmin implements Action {
         Type type = new Type();
         type.setType(value);
         type.setActive(active);
-
         try {
             TypeDao typeDao = new TypeDao();
             typeDao.create(type);
-            LOGGER.info("New Type was created");
             AttributeSetter setter = new AttributeSetter();
             setter.setAttributes(session);
         } catch (Exception e) {
-            LOGGER.error("Error at create Type()", e);
-            throw new ActionException("Error at createType()", e);
+            LOGGER.error("Error at create TypeDAO", e);
+            throw new ActionException(e);
         }
         result = TYPES_ADMIN_PAGE;
     }
@@ -138,16 +133,14 @@ public class CreateEntityAdmin implements Action {
         size.setSize(value);
         size.setName(name);
         size.setActive(active);
-
         try {
             SizeDao sizeDao = new SizeDao();
             sizeDao.create(size);
-            LOGGER.info("New Size was created");
             AttributeSetter setter = new AttributeSetter();
             setter.setAttributes(session);
         } catch (Exception e) {
-            LOGGER.error("Error at create Size()", e);
-            throw new ActionException("Error at createSize()", e);
+            LOGGER.error("Error at create SizeDAO", e);
+            throw new ActionException(e);
         }
         result = SIZES_ADMIN_PAGE;
     }
@@ -170,16 +163,14 @@ public class CreateEntityAdmin implements Action {
         food.setNameRu(nameRu);
         food.setTypeId(type);
         food.setActive(active);
-
         try {
             FoodDao foodDao = new FoodDao();
             foodDao.create(food);
-            LOGGER.info("New Product was created");
             AttributeSetter setter = new AttributeSetter();
             setter.setAttributes(session);
         } catch (Exception e) {
-            LOGGER.error("Error at create Food()", e);
-            throw new ActionException("Error at createFood()", e);
+            LOGGER.error("Error at create FoodDAO", e);
+            throw new ActionException(e);
         }
         result = PRODUCTS_ADMIN_PAGE;
     }
@@ -193,12 +184,10 @@ public class CreateEntityAdmin implements Action {
         String password = req.getParameter(Constants.ATTRIBUTE_PASSWORD);
         Role role = Role.valueOf(req.getParameter(Constants.ATTRIBUTE_ROLE));
         boolean userNameValid = false;
-
         try {
             userNameValid = FieldsValidator.userNameCheck(userName);
         } catch (ValidationException e) {
-            LOGGER.error("Error in validation");
-            e.printStackTrace();
+            LOGGER.error("Error in validation", e);
         }
         if (!userNameValid) {
             session.setAttribute(Constants.ATTRIBUTE_REGISTER_ERROR, Constants.USER_EXIST_ERROR);
@@ -217,8 +206,8 @@ public class CreateEntityAdmin implements Action {
                 UserDao userDao = new UserDao();
                 userDao.create(user);
             } catch (Exception e) {
-                LOGGER.error("Error at createUser()", e);
-                throw new ActionException("Error at createUser()", e);
+                LOGGER.error("Error at create UserDAO", e);
+                throw new ActionException(e);
             }
             result = USER_ADMIN_PAGE;
         }

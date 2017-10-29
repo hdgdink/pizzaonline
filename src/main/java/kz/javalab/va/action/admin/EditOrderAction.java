@@ -19,11 +19,16 @@ import javax.servlet.http.HttpSession;
 
 public class EditOrderAction implements Action {
     private static final Logger LOGGER = Logger.getLogger(EditTypeAction.class);
-    private OrderDao dao;
-    private Order order = null;
 
     @Override
     public ActionResult execute(HttpServletRequest request, HttpServletResponse response) throws ActionException {
+        OrderDao orderDao= null;
+        try {
+            orderDao = new OrderDao();
+        } catch (ConnectionPoolException e) {
+            LOGGER.error("Error of initialization OrderDao", e);
+            throw new ActionException(e);
+        }
         HttpSession session = request.getSession();
         Integer id = Integer.parseInt(request.getParameter(Constants.ATTRIBUTE_ID));
         Integer sumOfOrder = Integer.parseInt(request.getParameter(Constants.ATTRIBUTE_ORDER_SUM));
@@ -32,32 +37,21 @@ public class EditOrderAction implements Action {
         String phone = request.getParameter(Constants.ATTRIBUTE_PHONE);
         Status status = Status.valueOf(request.getParameter(Constants.ATTRIBUTE_STATUS));
         try {
-            order = orderDao().getById(id);
+            Order order = orderDao.getById(id);
             order.setSumOfOrder(sumOfOrder);
             order.setUserId(userId);
             order.setAddress(address);
             order.setPhone(phone);
             order.setStatus(status);
-            orderDao().update(order);
+            orderDao.update(order);
             LOGGER.info("Order with Id:" + order.getId() + "was updated");
         } catch (DAOException e) {
             LOGGER.error("Order error", e);
-            e.printStackTrace();
+            throw new ActionException(e);
         }
         AttributeSetter setter = new AttributeSetter();
         setter.setAttributes(session);
         return new ActionResult(ActionResult.METHOD.REDIRECT, Constants.ACTION_ORDERS);
     }
-
-    private OrderDao orderDao() throws DAOException {
-        if (dao == null) {
-            try {
-                dao = new OrderDao();
-            } catch (ConnectionPoolException e) {
-                e.printStackTrace();
-            }
-        }
-        return dao;
     }
-}
 

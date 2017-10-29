@@ -99,8 +99,7 @@ public class FieldsValidator {
         return true;
     }
 
-    public static boolean userNameCheck(String username)
-            throws ValidationException {
+    public static boolean userNameCheck(String username)  throws ValidationException {
         User user = null;
         try {
             UserDao userDao = new UserDao();

@@ -153,6 +153,9 @@ public class Constants {
 
     /* Messages fo logger*/
     public static final String STATEMENT_CREATE_ERROR = "Statement cannot be created.";
+    public static final String USER_DAO_INIT_ERROR = "Error at createUserDao";
+
+
 
     /*Pages*/
     public static final String PAGE_REFERER = "referer";

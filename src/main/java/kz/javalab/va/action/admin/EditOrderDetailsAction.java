@@ -1,5 +1,6 @@
 package kz.javalab.va.action.admin;
 
+import kz.javalab.va.action.Action;
 import kz.javalab.va.action.ActionException;
 import kz.javalab.va.action.ActionResult;
 import kz.javalab.va.connection.pool.ConnectionPoolException;
@@ -13,10 +14,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 
-public class EditOrderDetailsAction implements kz.javalab.va.action.Action {
+public class EditOrderDetailsAction implements Action {
     private static final Logger LOGGER = Logger.getLogger(EditProductAction.class);
     private OrderDetailsDao dao;
-    private OrderDetails orderDetails = null;
     private HttpServletRequest req;
 
     @Override
@@ -36,12 +36,12 @@ public class EditOrderDetailsAction implements kz.javalab.va.action.Action {
         try {
             orderDetailsDao().delete(id);
         } catch (DAOException e) {
-            LOGGER.error("Error at delete OrderDetails()");
-            throw new ActionException("Error at delete OrderDetails()", e);
+            LOGGER.error("Error at delete OrderDetails", e);
+            throw new ActionException(e);
         }
     }
 
-    private void updateOrderDetails() {
+    private void updateOrderDetails() throws ActionException {
         Integer id = Integer.parseInt(req.getParameter(Constants.ATTRIBUTE_ID));
         Integer foodId = Integer.parseInt(req.getParameter(Constants.ATTRIBUTE_PRODUCT_ID));
         String foodNameRu = req.getParameter(Constants.ATTRIBUTE_NAME_RU);
@@ -53,7 +53,7 @@ public class EditOrderDetailsAction implements kz.javalab.va.action.Action {
         Integer orderId = Integer.parseInt(req.getParameter(Constants.ATTRIBUTE_ORDER_ID));
         Integer price = Integer.parseInt(req.getParameter(Constants.ATTRIBUTE_PRICE));
         try {
-            orderDetails = orderDetailsDao().getById(id);
+            OrderDetails orderDetails = orderDetailsDao().getById(id);
             orderDetails.setFoodNameRu(foodNameRu);
             orderDetails.setFoodNameEn(foodNameEn);
             orderDetails.setFoodId(foodId);
@@ -66,7 +66,8 @@ public class EditOrderDetailsAction implements kz.javalab.va.action.Action {
             orderDetails.setOrderId(orderId);
             orderDetailsDao().update(orderDetails);
         } catch (DAOException e) {
-            e.printStackTrace();
+            LOGGER.error("Error at update OrderDetails", e);
+            throw new ActionException(e);
         }
     }
 
@@ -75,7 +76,7 @@ public class EditOrderDetailsAction implements kz.javalab.va.action.Action {
             try {
                 dao = new OrderDetailsDao();
             } catch (ConnectionPoolException e) {
-                e.printStackTrace();
+                LOGGER.error("Error of initialization OrderDetailsDao", e);
             }
         }
         return dao;
