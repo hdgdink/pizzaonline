@@ -45,6 +45,7 @@ public class SecurityFilter implements Filter {
         actions.put("GET/order_details", admin);
         actions.put("GET/sizes", admin);
         actions.put("GET/types", admin);
+        actions.put("GET/delete_error",all);
 
         actions.put("POST/register", unreg);
         actions.put("POST/login", unreg);

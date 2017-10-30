@@ -32,7 +32,7 @@ public class EditProductAction implements Action {
         return new ActionResult(ActionResult.METHOD.REDIRECT, referer);
     }
 
-    private void updateProduct() {
+    private void updateProduct() throws ActionException {
         Integer id = Integer.parseInt(req.getParameter(Constants.ATTRIBUTE_ID));
         Integer typeId = Integer.parseInt(req.getParameter(Constants.ATTRIBUTE_TYPE_ID));
         String nameRu = req.getParameter(Constants.ATTRIBUTE_NAME_RU);
@@ -55,8 +55,8 @@ public class EditProductAction implements Action {
             foodDao().update(food);
             LOGGER.info("Product was update " + food.getId());
         } catch (DAOException e) {
-            LOGGER.error("Error while update", e);
-            e.printStackTrace();
+            LOGGER.error("Error while update product", e);
+            throw new ActionException(e);
         }
     }
 

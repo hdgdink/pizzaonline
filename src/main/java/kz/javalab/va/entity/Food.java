@@ -3,10 +3,12 @@ package kz.javalab.va.entity;
 import kz.javalab.va.connection.pool.ConnectionPoolException;
 import kz.javalab.va.dao.DAOException;
 import kz.javalab.va.dao.impl.TypeDao;
+import org.apache.log4j.Logger;
 
 import java.io.Serializable;
 
 public class Food extends Entity implements Serializable {
+    private static final Logger LOGGER = Logger.getLogger(Food.class);
     private Integer typeId;
     private String nameEn;
     private String nameRu;
@@ -74,15 +76,13 @@ public class Food extends Entity implements Serializable {
         this.price = price;
     }
 
-    public Type getType() {
+    public Type getType() throws ConnectionPoolException {
         try {
             TypeDao typeDao = new TypeDao();
             type = typeDao.getById(typeId);
-        } catch (ConnectionPoolException e) {
-            e.printStackTrace();
         } catch (DAOException e) {
-            e.printStackTrace();
-            throw new RuntimeException("Error getting vehicle model from database", e);
+            LOGGER.error("Error of initialization TypeDao", e);
+            throw new RuntimeException("Error getting Type of product from database", e);
         }
         return type;
     }

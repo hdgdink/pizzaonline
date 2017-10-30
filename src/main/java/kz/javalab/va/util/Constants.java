@@ -7,10 +7,13 @@ public class Constants {
 
     /* Attributes*/
     public static final String ATTRIBUTE_TYPE_LIST = "typeList";
+
     public static final String ATTRIBUTE_ERROR = "error";
     public static final String ATTRIBUTE_LOGIN_ERROR = "logInError";
     public static final String ATTRIBUTE_PASSWORD_ERROR = "passwordError";
     public static final String ATTRIBUTE_OLD_PASSWORD_ERROR = "oldPasswordError";
+    public static final String ATTRIBUTE_REGISTER_ERROR = "registerError";
+
     public static final String ATTRIBUTE_LOCALE = "locale";
     public static final String ATTRIBUTE_USER = "user";
     public static final String ATTRIBUTE_ORDER_DETAILS = "order_details";
@@ -26,7 +29,6 @@ public class Constants {
     public static final String ATTRIBUTE_FIRSTNAME = "firstname";
     public static final String ATTRIBUTE_LASTNAME = "lastname";
     public static final String ATTRIBUTE_RE_PASSWORD = "re-password";
-    public static final String ATTRIBUTE_REGISTER_ERROR = "registerError";
     public static final String ATTRIBUTE_REGISTER_SUCCESS_KEY = "registerSuccess";
     public static final String ATTRIBUTE_REGISTRATION_SUCCESS_MESSAGE = "success_registration";
     public static final String ATTRIBUTE_OLD_PASSWORD = "oldPassword";

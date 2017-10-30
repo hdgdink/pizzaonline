@@ -3,6 +3,7 @@ package kz.javalab.va.action;
 import kz.javalab.va.action.account.*;
 import kz.javalab.va.action.admin.*;
 import kz.javalab.va.action.general.ChangeLocaleAction;
+import kz.javalab.va.action.general.DeleteErrorAction;
 import kz.javalab.va.action.general.ShowCabinetPageAction;
 import kz.javalab.va.action.general.ShowPageAction;
 import kz.javalab.va.action.order.AddToOrderAction;
@@ -37,6 +38,7 @@ public class ActionFactory {
         ACTIONS.put("GET/types", new ShowPageAction(Constants.PAGE_ADMIN_TYPES));
 
         ACTIONS.put("GET/error", new ShowPageAction(Constants.PAGE_ERROR));
+        ACTIONS.put("GET/delete_error", new DeleteErrorAction());
         ACTIONS.put("GET/locale", new ChangeLocaleAction());
         ACTIONS.put("GET/logout", new LogoutAction());
 
