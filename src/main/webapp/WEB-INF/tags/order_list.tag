@@ -6,6 +6,7 @@
 <div id="order" class="section">
     <h1><fmt:message key="default.order"/></h1>
     <hr>
+    <t:info info="${succesfullyOrdered}"/>
     <div>
         <table class="table">
             <tr>
@@ -73,7 +74,6 @@
             <br>
             <hr>
             <t:error-info error="${error}"/>
-            <t:info info="${succesfullyOrdered}"/>
             <input type="submit" class="btn btn-primary" value="<fmt:message key="default.checkout"/>"/>
             <a class="close" href="#close"></a>
         </form>

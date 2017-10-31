@@ -23,7 +23,7 @@
         <t:header/>
         <t:navigation_user/>
         <div id="menu" class="section">
-            <h1><span><fmt:message key="default.pizzamenu"/></span></h1>
+            <h1><span><fmt:message key="default.beverages"/></span></h1>
             <hr>
             <c:forEach items="${bevList}" var="bev">
                 <form action="add_to_orderlist" method="get">

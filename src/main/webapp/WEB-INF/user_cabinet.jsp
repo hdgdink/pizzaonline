@@ -20,12 +20,8 @@
 
 
     <div id="main">
-
         <t:header/>
-
         <t:navigation_user/>
-
-        <div id="cabinet" class="section">
 
             <div class="col-sm-6 col-md-4">
                 <div class="thumbnail">
@@ -89,7 +85,6 @@
                     </div>
                 </div>
             </div>
-        </div>
 
         <div id="rasporka"></div>
     </div>

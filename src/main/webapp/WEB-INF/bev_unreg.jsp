@@ -25,7 +25,7 @@
         <t:navigation/>
 
         <div id="menu" class="section">
-            <h1><span><fmt:message key="default.pizzamenu"/></span></h1>
+            <h1><span><fmt:message key="default.beverages"/></span></h1>
             <hr>
             <c:forEach items="${bevList}" var="bev">
                 <div class="col-sm-6 col-md-4">
