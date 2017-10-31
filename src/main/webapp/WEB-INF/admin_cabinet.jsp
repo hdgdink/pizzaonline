@@ -17,18 +17,14 @@
         <script type='text/javascript' src='<c:url value="/webjars/bootstrap/3.2.0/js/bootstrap.js"/>'></script>
     </head>
     <body>
-
     <div id="main">
-
         <t:header/>
         <t:navigation_user/>
         <t:navigation_admin/>
-
         <div class="section">
-
             <div class="caption">
                 <h2><fmt:message key="default.editUser"/></h2>
-                <div class="msg-error">${user_change_error}</div>
+                <t:error-info error="${error}"/>
                 <table class="table">
                     <tr>
                         <td><fmt:message key="default.ID"/></td>
@@ -77,9 +73,7 @@
                         </form>
                     </c:forEach>
                 </table>
-
                 <hr>
-
                 <h3><fmt:message key="default.creatUser"/></h3>
                 <form id="create_user" method="POST" action="create_user">
                     <div class="input-group">
@@ -136,6 +130,7 @@
                                        value="" placeholder="...">
                             </div>
                         </div>
+                        <t:error-info error="${error}"/>
                         <hr>
                         <br>
                         <div class="col-lg-12">

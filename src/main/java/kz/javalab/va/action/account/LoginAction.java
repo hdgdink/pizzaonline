@@ -55,13 +55,13 @@ public class LoginAction implements Action {
             throw new ActionException(e);
         }
         if (user == null) {
-            session.setAttribute(Constants.ATTRIBUTE_LOGIN_ERROR, Constants.ACCOUNT_NOT_FOUND_ERROR);
+            session.setAttribute(Constants.ATTRIBUTE_ERROR, Constants.ACCOUNT_NOT_FOUND_ERROR);
             LOGGER.debug("Wrong username.");
             result = new ActionResult(ActionResult.METHOD.FORWARD, Constants.PAGE_PIZZA_UNLOG);
             return result;
         }
         if (!password.equals(user.getPassword())) {
-            session.setAttribute(Constants.ATTRIBUTE_LOGIN_ERROR, Constants.ACCOUNT_IS_BAD_ERROR);
+            session.setAttribute(Constants.ATTRIBUTE_ERROR, Constants.ACCOUNT_IS_BAD_ERROR);
             LOGGER.debug("Wrong password. " + password);
             result = new ActionResult(ActionResult.METHOD.FORWARD, Constants.PAGE_PIZZA_UNLOG);
             return result;
@@ -90,7 +90,7 @@ public class LoginAction implements Action {
         session.setAttribute(Constants.ATTRIBUTE_USER, user);
         session.setAttribute(Constants.ATTRIBUTE_ID, user.getId());
         session.removeAttribute(Constants.ATTRIBUTE_EMAIL);
-        session.removeAttribute(Constants.ATTRIBUTE_LOGIN_ERROR);
+        session.removeAttribute(Constants.ATTRIBUTE_ERROR);
         LOGGER.debug("User " + user.getEmail() + " has been logged.");
         return result;
     }

@@ -53,6 +53,7 @@
                                     <span class="span"><fmt:message key="default.currency"/></span>
                                     <br>
                                     <input type="hidden" name="food" value="${pizza.id}"/>
+                                    <t:error-info error="${error}"/>
                                     <input class="add btn btn-primary" type="submit"
                                            value="<fmt:message key="default.addtolist"/>">
                                 </p>

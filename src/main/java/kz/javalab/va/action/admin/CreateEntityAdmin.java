@@ -190,7 +190,7 @@ public class CreateEntityAdmin implements Action {
             LOGGER.error("Error in validation", e);
         }
         if (!userNameValid) {
-            session.setAttribute(Constants.ATTRIBUTE_REGISTER_ERROR, Constants.USER_EXIST_ERROR);
+            session.setAttribute(Constants.ATTRIBUTE_ERROR, Constants.USER_EXIST_ERROR);
             LOGGER.error("Username already busy");
             result = USER_ADMIN_PAGE;
         } else {

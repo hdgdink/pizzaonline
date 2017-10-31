@@ -48,7 +48,7 @@ public class RegisterAction implements Action {
             throw new ActionException(e);
         }
         if (!userNameValid) {
-            session.setAttribute(Constants.ATTRIBUTE_REGISTER_ERROR, Constants.USER_EXIST_ERROR);
+            session.setAttribute(Constants.ATTRIBUTE_ERROR, Constants.USER_EXIST_ERROR);
             LOGGER.error("Username is not valid");
             result = REG_FAILED;
             return result;
@@ -73,10 +73,9 @@ public class RegisterAction implements Action {
             LOGGER.info("User with username: " + user.getUsername() + " registered");
             session.setAttribute(Constants.ATTRIBUTE_USER, user);
             session.setAttribute(Constants.ATTRIBUTE_ID, user.getId());
-            request.setAttribute(Constants.ATTRIBUTE_REGISTER_SUCCESS_KEY, Constants.ATTRIBUTE_REGISTRATION_SUCCESS_MESSAGE);
         } else {
             LOGGER.error("Re-password is not valid");
-            session.setAttribute(Constants.ATTRIBUTE_REGISTER_ERROR, Constants.PASSWORDS_NOT_MATCH_ERROR);
+            session.setAttribute(Constants.ATTRIBUTE_ERROR, Constants.PASSWORDS_NOT_MATCH_ERROR);
             result = REG_FAILED;
         }
         return result;

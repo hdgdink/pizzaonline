@@ -7,13 +7,7 @@ public class Constants {
 
     /* Attributes*/
     public static final String ATTRIBUTE_TYPE_LIST = "typeList";
-
     public static final String ATTRIBUTE_ERROR = "error";
-    public static final String ATTRIBUTE_LOGIN_ERROR = "logInError";
-    public static final String ATTRIBUTE_PASSWORD_ERROR = "passwordError";
-    public static final String ATTRIBUTE_OLD_PASSWORD_ERROR = "oldPasswordError";
-    public static final String ATTRIBUTE_REGISTER_ERROR = "registerError";
-
     public static final String ATTRIBUTE_LOCALE = "locale";
     public static final String ATTRIBUTE_USER = "user";
     public static final String ATTRIBUTE_ORDER_DETAILS = "order_details";
@@ -29,13 +23,13 @@ public class Constants {
     public static final String ATTRIBUTE_FIRSTNAME = "firstname";
     public static final String ATTRIBUTE_LASTNAME = "lastname";
     public static final String ATTRIBUTE_RE_PASSWORD = "re-password";
-    public static final String ATTRIBUTE_REGISTER_SUCCESS_KEY = "registerSuccess";
-    public static final String ATTRIBUTE_REGISTRATION_SUCCESS_MESSAGE = "success_registration";
     public static final String ATTRIBUTE_OLD_PASSWORD = "oldPassword";
     public static final String ATTRIBUTE_NEW_PASSWORD1 = "newPassword1";
     public static final String ATTRIBUTE_NEW_PASSWORD2 = "newPassword2";
     public static final String ATTRIBUTE_CHANGE_SUCCESS_MESSAGE = "password.changePasswordSuccess";
     public static final String ATTRIBUTE_CHANGE_PASS_SUCCESS = "changePassSuccess";
+    public static final String ATTRIBUTE_SUCCESSFULLY_ORDERED = "succesfullyOrdered";
+    public static final String ATTRIBUTE_SUCCESSFULLY_ORDERED_MESSAGE = "default.ordered";
     public static final String ATTRIBUTE_TYPE = "type";
     public static final String ATTRIBUTE_ORDER_SUM = "sumOfOrder";
     public static final String ATTRIBUTE_USER_ID = "userId";
@@ -109,8 +103,6 @@ public class Constants {
     public static final String JSP_STRING = ".jsp";
     public static final String WEB_INF_STRING = "/WEB-INF/";
     public static final String DO_STRING = "/do/";
-    public static final String STATIC_STRING = "/static/";
-    public static final String WEBJARS_STRING = "/webjars/";
     public static final String UTF_8 = "UTF-8";
 
     /*Columns of Tables*/

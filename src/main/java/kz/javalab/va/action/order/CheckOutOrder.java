@@ -55,6 +55,7 @@ public class CheckOutOrder implements Action {
                 }
             } else session.setAttribute(Constants.ATTRIBUTE_ERROR, Constants.BALANCE_IS_LOW_ERROR);
         } else session.setAttribute(Constants.ATTRIBUTE_ERROR, Constants.ACCOUNT_NOT_FOUND_ERROR);
+        session.setAttribute(Constants.ATTRIBUTE_SUCCESSFULLY_ORDERED, Constants.ATTRIBUTE_SUCCESSFULLY_ORDERED_MESSAGE);
         String referer = request.getHeader(Constants.PAGE_REFERER);
         referer = referer.substring(referer.lastIndexOf("/") + 1, referer.length());
         return new ActionResult(ActionResult.METHOD.REDIRECT, referer);

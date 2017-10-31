@@ -112,7 +112,7 @@ public class AddToOrderAction implements Action {
                 throw new ActionException(e);
             }
         } else {
-            session.setAttribute(Constants.ATTRIBUTE_LOGIN_ERROR, Constants.USER_NOT_LOGGED_ERROR);
+            session.setAttribute(Constants.ATTRIBUTE_ERROR, Constants.USER_NOT_LOGGED_ERROR);
         }
         String referer = request.getHeader(Constants.PAGE_REFERER);
         referer = referer.substring(referer.lastIndexOf("/") + 1, referer.length());

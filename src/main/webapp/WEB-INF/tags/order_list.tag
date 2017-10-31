@@ -1,6 +1,7 @@
 <%@tag description="list of orders" pageEncoding="UTF-8" %>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 
 <div id="order" class="section">
     <h1><fmt:message key="default.order"/></h1>
@@ -71,6 +72,8 @@
             <input type="tel" pattern="^\(\d{3}\)\d{3}-\d{2}-\d{2}$" name="phone" required/>
             <br>
             <hr>
+            <t:error-info error="${error}"/>
+            <t:info info="${succesfullyOrdered}"/>
             <input type="submit" class="btn btn-primary" value="<fmt:message key="default.checkout"/>"/>
             <a class="close" href="#close"></a>
         </form>

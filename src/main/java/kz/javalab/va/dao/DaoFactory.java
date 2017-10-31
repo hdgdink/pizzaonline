@@ -2,11 +2,9 @@ package kz.javalab.va.dao;
 
 import kz.javalab.va.connection.pool.ConnectionPool;
 import kz.javalab.va.connection.pool.ConnectionPoolException;
-import kz.javalab.va.util.Constants;
 import org.apache.log4j.Logger;
 
 import java.sql.Connection;
-import java.sql.PreparedStatement;
 
 public class DaoFactory {
     private final ConnectionPool pool = ConnectionPool.getInstance();
@@ -26,4 +24,4 @@ public class DaoFactory {
         }
         return connection;
     }
-    }
+}

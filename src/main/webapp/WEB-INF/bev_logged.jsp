@@ -21,9 +21,7 @@
 
     <div id="main">
         <t:header/>
-
         <t:navigation_user/>
-
         <div id="menu" class="section">
             <h1><span><fmt:message key="default.pizzamenu"/></span></h1>
             <hr>
@@ -52,6 +50,7 @@
                                     <span class="span"><fmt:message key="default.currency"/></span>
                                     <br>
                                     <input type="hidden" name="food" value="${bev.id}"/>
+                                    <t:error-info error="${error}"/>
                                     <input class="btn btn-primary" type="submit"
                                            value="<fmt:message key="default.addtolist"/>">
                                 </p>
@@ -61,9 +60,7 @@
                 </form>
             </c:forEach>
         </div>
-
         <t:order_list/>
-
         <div id="rasporka"></div>
     </div>
     <t:footer/>

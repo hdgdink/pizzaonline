@@ -52,12 +52,11 @@ public class UserPassUpdateAction implements Action {
         LOGGER.debug(newPassword2);
         LOGGER.debug(user.getPassword());
         if (!user.getPassword().equals(oldPassword)) {
-            session.removeAttribute(Constants.ATTRIBUTE_PASSWORD_ERROR);
-            session.setAttribute(Constants.ATTRIBUTE_OLD_PASSWORD_ERROR, Constants.OLD_PASS_WRONG_ERROR);
+            session.removeAttribute(Constants.ATTRIBUTE_ERROR);
+            session.setAttribute(Constants.ATTRIBUTE_ERROR, Constants.OLD_PASS_WRONG_ERROR);
             LOGGER.debug("Old password value is wrong.");
             return result;
         }
-        session.removeAttribute(Constants.ATTRIBUTE_OLD_PASSWORD_ERROR);
         passwordFieldsNull = FieldsValidator.equalNull(newPassword1, newPassword2);
         if (passwordFieldsNull) {
             LOGGER.warn("Old password field is not valid.");
@@ -65,12 +64,12 @@ public class UserPassUpdateAction implements Action {
         }
         newPasswordEmpty = FieldsValidator.empty(newPassword1);
         if (newPasswordEmpty) {
-            session.setAttribute(Constants.ATTRIBUTE_PASSWORD_ERROR, Constants.PASS_EMPTY_ERROR);
+            session.setAttribute(Constants.ATTRIBUTE_ERROR, Constants.PASS_EMPTY_ERROR);
             LOGGER.debug("New password value is empty.");
             return result;
         }
         if (!newPassword1.equals(newPassword2)) {
-            session.setAttribute(Constants.ATTRIBUTE_PASSWORD_ERROR, Constants.PASSWORDS_NOT_MATCH_ERROR);
+            session.setAttribute(Constants.ATTRIBUTE_ERROR, Constants.PASSWORDS_NOT_MATCH_ERROR);
             LOGGER.debug("Passwords don't match.");
             return result;
         }
@@ -89,8 +88,7 @@ public class UserPassUpdateAction implements Action {
         session.removeAttribute(Constants.ATTRIBUTE_OLD_PASSWORD);
         session.removeAttribute(Constants.ATTRIBUTE_NEW_PASSWORD1);
         session.removeAttribute(Constants.ATTRIBUTE_NEW_PASSWORD2);
-        session.removeAttribute(Constants.ATTRIBUTE_OLD_PASSWORD_ERROR);
-        session.removeAttribute(Constants.ATTRIBUTE_PASSWORD_ERROR);
+        session.removeAttribute(Constants.ATTRIBUTE_ERROR);
         return result;
     }
 }

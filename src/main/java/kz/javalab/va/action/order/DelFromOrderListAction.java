@@ -21,7 +21,6 @@ import java.util.List;
 public class DelFromOrderListAction implements Action {
     private static final Logger LOGGER = Logger.getLogger(LoginAction.class);
 
-
     @Override
     public ActionResult execute(HttpServletRequest request, HttpServletResponse response) throws ActionException {
         HttpSession session = request.getSession();
