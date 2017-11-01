@@ -28,6 +28,8 @@ public class RegisterAction implements Action {
         ActionResult result;
         User user;
         boolean userNameValid;
+        boolean emailValid;
+        boolean passValid;
         UserDao userDao;
         try {
             userDao = new UserDao();
@@ -43,13 +45,27 @@ public class RegisterAction implements Action {
         String password2 = request.getParameter(Constants.ATTRIBUTE_RE_PASSWORD);
         try {
             userNameValid = FieldsValidator.userNameCheck(username);
+            emailValid=FieldsValidator.emailValid(email);
+            passValid=FieldsValidator.passwordValid(password);
         } catch (ValidationException e) {
-            LOGGER.error("Validation is not succes", e);
+            LOGGER.error("Validation error", e);
             throw new ActionException(e);
         }
         if (!userNameValid) {
             session.setAttribute(Constants.ATTRIBUTE_ERROR, Constants.USER_EXIST_ERROR);
             LOGGER.error("Username is not valid");
+            result = REG_FAILED;
+            return result;
+        }
+        if (!emailValid) {
+            session.setAttribute(Constants.ATTRIBUTE_ERROR, Constants.EMAIL_VALID_ERROR);
+            LOGGER.error("Email is not valid");
+            result = REG_FAILED;
+            return result;
+        }
+        if (!passValid) {
+            session.setAttribute(Constants.ATTRIBUTE_ERROR, Constants.PASS_VALID_ERROR);
+            LOGGER.error("Password is not valid");
             result = REG_FAILED;
             return result;
         }

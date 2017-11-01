@@ -37,16 +37,18 @@
                                 <c:if test="${locale.language=='ru'}"><p>${bev.discriptionRu}</p></h3></c:if>
                                 <c:if test="${locale.language=='en'}"><p>${bev.discriptionEn}</p></h3></c:if>
                                 <p>
-                                    <select name="size" class="select">
-                                        <c:forEach items="${sizeList}" var="size">
+                                    <select name="size" class="select"
+                                            onchange="document.getElementById('${bev.id}').value=this.value*${bev.price};">
+                                        <c:forEach items="${sizeList}" var="size" begin="6" end="8">
+                                            <c:set var="size_value" value="${sizeList[0].size}"/>
                                             <option value="${size.size}"><fmt:message key="${size.name}"/></option>
                                         </c:forEach>
                                     </select>
                                 <p/>
                                 <t:count_group/>
                                 <p>
-                                    <input type="text" value="${price}" readonly="readonly" class="input_select"
-                                           id="price1"/>
+                                    <input type="text" value="${size_value*bev.price}" readonly="readonly"
+                                           class="input_select" id="${bev.id}"/>
                                     <span class="span"><fmt:message key="default.currency"/></span>
                                     <br>
                                     <input type="hidden" name="food" value="${bev.id}"/>

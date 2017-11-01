@@ -39,19 +39,20 @@
                             <c:if test="${locale.language=='ru'}"><p>${pizza.discriptionRu}</p></h3></c:if>
                             <c:if test="${locale.language=='en'}"><p>${pizza.discriptionEn}</p></h3></c:if>
                             <p>
-                                <select name="size" class="select">
-                                    <c:forEach items="${sizeList}" var="size">
+                                <select name="size" class="select"
+                                        onchange="document.getElementById('${pizza.id}').value=this.value*${pizza.price};">
+                                    <c:forEach items="${sizeList}" var="size" begin="0" end="2">
+                                        <c:set var="size_value" value="${sizeList[0].size}"/>
                                         <option value="${size.size}"><fmt:message key="${size.name}"/></option>
                                     </c:forEach>
                                 </select>
                             <p/>
                             <t:count_group/>
                             <p>
-
-                                <input type="text" value="${calcPrice}" readonly="readonly" class="input_select"/>
+                                <input type="text" value="${size_value*pizza.price}" readonly="readonly"
+                                       class="input_select" id="${pizza.id}"/>
                                 <span class="span"><fmt:message key="default.currency"/></span>
                                 <br>
-
                                 <input type="hidden" name="food" value="${pizza.id}"/>
                                 <br>
                                 <a href="#message_form" title="Add to order" class="add btn btn-primary">

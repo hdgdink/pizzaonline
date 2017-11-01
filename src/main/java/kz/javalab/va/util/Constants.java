@@ -95,6 +95,8 @@ public class Constants {
     public static final String BALANCE_IS_LOW_ERROR = "account.BalanceIsLow";
     public static final String PASSWORDS_NOT_MATCH_ERROR = "error.passwordsNotMatch";
     public static final String USER_EXIST_ERROR = "error.userExist";
+    public static final String EMAIL_VALID_ERROR = "error.emailNotValid";
+    public static final String PASS_VALID_ERROR = "error.passNotValid";
     public static final String OLD_PASS_WRONG_ERROR = "password.oldPasswordWrong";
     public static final String PASS_EMPTY_ERROR = "password.passwordEmpty";
     public static final String USER_NOT_LOGGED_ERROR = "error.UserIsNotLogged";

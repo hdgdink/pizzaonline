@@ -35,23 +35,24 @@
                             <c:if test="${locale.language=='ru'}"><p>${sub.discriptionRu}</p></h3></c:if>
                             <c:if test="${locale.language=='en'}"><p>${sub.discriptionEn}</p></h3></c:if>
                             <input type="hidden" name="food" value="${sub.id}"/>
-                            <p>
-                                <select name="size" class="select">
-                                    <c:forEach items="${sizeList}" var="size">
-                                        <option value="${size.size}"><fmt:message key="${size.name}"/></option>
-                                    </c:forEach>
-                                </select>
+                                <p>
+                                    <select name="size" class="select"
+                                            onchange="document.getElementById('${sub.id}').value=this.value*${sub.price};">
+                                        <c:forEach items="${sizeList}" var="size" begin="3" end="5">
+                                            <c:set var="size_value" value="${sizeList[0].size}"/>
+                                            <option value="${size.size}"><fmt:message key="${size.name}"/></option>
+                                        </c:forEach>
+                                    </select>
                             <p/>
                             <t:count_group/>
                             <p>
-                                <input type="text" value="${price}" readonly="readonly" class="input_select"
-                                       id="price1"/>
-                                <span class="span"><fmt:message key="default.currency"/></span>
-                                <br>
-                                <a href="#message_form" title="Add to order" class="add btn btn-primary">
-                                    <fmt:message key="default.addtolist"/></a>
-                            </p>
-
+                                <input type="text" value="${size_value*sub.price}" readonly="readonly"
+                                       class="input_select" id="${sub.id}"/>
+                                    <span class="span"><fmt:message key="default.currency"/></span>
+                                    <br>
+                                    <a href="#message_form" title="Add to order" class="add btn btn-primary">
+                                        <fmt:message key="default.addtolist"/></a>
+                                </p>
                             <a href="#x" class="overlay" id="message_form"></a>
                             <div class="popup">
                                 <h2><fmt:message key="default.loginNeed"/></h2>

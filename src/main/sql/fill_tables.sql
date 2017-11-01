@@ -2,9 +2,16 @@ INSERT INTO USER VALUES (0, 'Andrey', 'Vassilyev', 'admin', 'admin@mail.ru', 'ad
 INSERT INTO USER VALUES (1, 'Иван', 'Колымага', 'user', 'user@mail.ru', '123', 'CLIENT', '10000');
 INSERT INTO USER VALUES (2, 'Алеша', 'Колотун', 'user1', 'user1@mail.ru', '123', 'CLIENT', '10000');
 
-INSERT INTO SIZE VALUES (0, 6, 'default.small', TRUE);
-INSERT INTO SIZE VALUES (1, 8, 'default.medium', TRUE);
-INSERT INTO SIZE VALUES (2, 10, 'default.big', TRUE);
+INSERT INTO SIZE VALUES (0, 6, 'default.smallPizza', TRUE);
+INSERT INTO SIZE VALUES (1, 8, 'default.mediumPizza', TRUE);
+INSERT INTO SIZE VALUES (2, 10, 'default.bigPizza', TRUE);
+INSERT INTO SIZE VALUES (3, 6, 'default.smallSub', TRUE);
+INSERT INTO SIZE VALUES (4, 8, 'default.mediumSub', TRUE);
+INSERT INTO SIZE VALUES (5, 10, 'default.bigSub', TRUE);
+INSERT INTO SIZE VALUES (6, 6, 'default.smallBev', TRUE);
+INSERT INTO SIZE VALUES (7, 8, 'default.mediumBev', TRUE);
+INSERT INTO SIZE VALUES (8, 10, 'default.bigBev', TRUE);
+
 
 INSERT INTO TYPE VALUES (0, 'default.pizza', TRUE);
 INSERT INTO TYPE VALUES (1, 'default.subs', TRUE);
