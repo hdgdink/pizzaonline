@@ -28,7 +28,7 @@ public class UserPassUpdateAction implements Action {
         String oldPassword = request.getParameter(Constants.ATTRIBUTE_OLD_PASSWORD);
         String newPassword1 = request.getParameter(Constants.ATTRIBUTE_NEW_PASSWORD1);
         String newPassword2 = request.getParameter(Constants.ATTRIBUTE_NEW_PASSWORD2);
-        int id;
+        Integer id;
         boolean passwordFieldsNull;
         boolean newPasswordEmpty;
         UserDao userDao;
@@ -38,19 +38,11 @@ public class UserPassUpdateAction implements Action {
             LOGGER.error(Constants.USER_DAO_INIT_ERROR, e);
             throw new ActionException(e);
         }
-        try {
-            id = (int) session.getAttribute(Constants.ATTRIBUTE_ID);
-        } catch (IllegalArgumentException e) {
-            LOGGER.warn("Id field is not valid.", e);
-            throw new ActionException(e);
-        }
+        id = (Integer) session.getAttribute(Constants.ATTRIBUTE_ID);
         session.setAttribute(Constants.ATTRIBUTE_OLD_PASSWORD, oldPassword);
         session.setAttribute(Constants.ATTRIBUTE_NEW_PASSWORD1, newPassword1);
         session.setAttribute(Constants.ATTRIBUTE_NEW_PASSWORD2, newPassword2);
-        LOGGER.debug(oldPassword);
-        LOGGER.debug(newPassword1);
-        LOGGER.debug(newPassword2);
-        LOGGER.debug(user.getPassword());
+        LOGGER.debug("Old pass: " + oldPassword + ", New Pass1: " + newPassword1 + ", New Pass2" + newPassword2);
         if (!user.getPassword().equals(oldPassword)) {
             session.removeAttribute(Constants.ATTRIBUTE_ERROR);
             session.setAttribute(Constants.ATTRIBUTE_ERROR, Constants.OLD_PASS_WRONG_ERROR);

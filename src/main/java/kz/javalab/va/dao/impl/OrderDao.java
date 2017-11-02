@@ -10,9 +10,10 @@ import kz.javalab.va.entity.order.Status;
 import kz.javalab.va.util.Constants;
 import org.apache.log4j.Logger;
 
-import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class OrderDao extends AbstractDao<Integer, Order> {
     private static final Logger LOGGER = Logger.getLogger(OrderDao.class);
@@ -22,83 +23,18 @@ public class OrderDao extends AbstractDao<Integer, Order> {
     private static final String GET_ORDER_ID_BY_USER_ID = "SELECT MAX(ID) FROM CLIENT_ORDER WHERE USER_ID=?";
     private static final String UPDATE_ORDER = "UPDATE CLIENT_ORDER SET USER_ID = ?, SUM = ?, ADDRESS = ?, PHONE = ?, STATUS = ? WHERE ID = ?;";
     private static final String FIND_ALL_ORDERS = "SELECT * FROM CLIENT_ORDER ";
-    private static final String GET_ORDER_BY_ID = "SELECT * FROM CLIENT_ORDER WHERE ID = ?;";
 
     public OrderDao() throws ConnectionPoolException {
     }
 
     @Override
-    public List<Order> getAll() throws DAOException, ConnectionPoolException {
-        List<Order> orders = null;
-        LOGGER.info("OrderDao.getAll()");
-        Connection connection = daoFactory.getConnection();
-        try (Statement statement = connection.createStatement()) {
-            ResultSet resultSet = statement.executeQuery(FIND_ALL_ORDERS);
-            while (resultSet.next()) {
-                if (orders == null) {
-                    orders = new ArrayList<>();
-                }
-                Order order = parseResultSet(resultSet);
-                orders.add(order);
-            }
-        } catch (Exception e) {
-            LOGGER.warn(Constants.STATEMENT_CREATE_ERROR, e);
-            throw new DAOException(e);
-        } finally {
-            pool.returnConnection(connection);
-        }
-        return orders;
+    public String getReadQuery() {
+        return FIND_ALL_ORDERS;
     }
 
     @Override
-    public Order getById(Integer id) throws DAOException {
-        LOGGER.info("OrderDao.getById()");
-        Order order = null;
-        Connection connection = daoFactory.getConnection();
-        try (PreparedStatement statement = connection.prepareStatement(GET_ORDER_BY_ID)) {
-            statement.setInt(1, id);
-            ResultSet resultSet = statement.executeQuery();
-            if (resultSet.next()) {
-                order = parseResultSet(resultSet);
-            }
-        } catch (Exception e) {
-            LOGGER.warn(Constants.STATEMENT_CREATE_ERROR, e);
-            throw new DAOException(e);
-        } finally {
-            pool.returnConnection(connection);
-        }
-        return order;
-    }
-
-    @Override
-    public int create(Order entity) throws DAOException {
-        LOGGER.info("OrderDao.createOrder()");
-        Connection connection = daoFactory.getConnection();
-        try (PreparedStatement statement = connection.prepareStatement(CREATE_ORDER)) {
-            statementForCreate(statement, entity);
-            return statement.executeUpdate();
-        } catch (Exception e) {
-            LOGGER.warn(Constants.STATEMENT_CREATE_ERROR, e);
-            throw new DAOException(e);
-        } finally {
-            pool.returnConnection(connection);
-        }
-    }
-
-    @Override
-    public int update(Order entity) throws DAOException {
-        LOGGER.info("OrderDao.updateOrder()");
-        Connection connection = daoFactory.getConnection();
-        try (PreparedStatement statement = connection.prepareStatement(UPDATE_ORDER)) {
-            statementForCreate(statement, entity);
-            statement.setInt(6, entity.getId());
-            return statement.executeUpdate();
-        } catch (Exception e) {
-            LOGGER.warn(Constants.STATEMENT_CREATE_ERROR, e);
-            throw new DAOException(e);
-        } finally {
-            pool.returnConnection(connection);
-        }
+    public String getCreateQuery() {
+        return CREATE_ORDER;
     }
 
     public int getByUserId(Integer id) throws DAOException {
@@ -120,7 +56,8 @@ public class OrderDao extends AbstractDao<Integer, Order> {
         return orderId;
     }
 
-    private void statementForCreate(PreparedStatement statement, Order entity) throws DAOException {
+    @Override
+    public void statementForCreate(PreparedStatement statement, Order entity) throws DAOException {
         try {
             statement.setInt(1, entity.getUserId());
             statement.setInt(2, entity.getSumOfOrder());
@@ -128,12 +65,24 @@ public class OrderDao extends AbstractDao<Integer, Order> {
             statement.setString(4, entity.getPhone());
             statement.setString(5, String.valueOf(entity.getStatus()));
         } catch (Exception e) {
-            LOGGER.error("Preparing statement for order error", e);
+            LOGGER.error("Preparing statement for Create Order error", e);
             throw new DAOException(e);
         }
     }
 
-    private Order parseResultSet(ResultSet resultSet) throws DAOException {
+    @Override
+    public void statementForUpdate(PreparedStatement statement, Order entity) throws DAOException {
+        try {
+            statementForCreate(statement, entity);
+            statement.setInt(6, entity.getId());
+        } catch (Exception e) {
+            LOGGER.error("Preparing statement for Update Order error", e);
+            throw new DAOException(e);
+        }
+    }
+
+    @Override
+    public Order parseResultSetInstance(ResultSet resultSet) throws DAOException {
         Order order = new Order();
         try {
             order.setId(resultSet.getInt(Constants.ID_COL));
@@ -147,6 +96,11 @@ public class OrderDao extends AbstractDao<Integer, Order> {
             throw new DAOException(e);
         }
         return order;
+    }
+
+    @Override
+    public String getUpdateQuery() {
+        return UPDATE_ORDER;
     }
 
 }

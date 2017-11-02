@@ -22,23 +22,16 @@ public class EditSizeAction implements Action {
     public ActionResult execute(HttpServletRequest request, HttpServletResponse response) throws ActionException {
         HttpSession session = request.getSession();
         SizeDao sizeDao;
+        Integer id = Integer.parseInt(request.getParameter(Constants.ATTRIBUTE_ID));
         try {
             sizeDao = new SizeDao();
+            Size size = sizeDao.getById(id);
+            CreateEntityAdmin.setSize(size);
+            sizeDao.update(size);
+            LOGGER.info("Size was updated");
         } catch (ConnectionPoolException e) {
             LOGGER.error("Error of initialization SizeDao", e);
             throw new ActionException(e);
-        }
-        Integer id = Integer.parseInt(request.getParameter(Constants.ATTRIBUTE_ID));
-        Integer value = Integer.parseInt(request.getParameter(Constants.ATTRIBUTE_VAL));
-        String name = request.getParameter(Constants.ATTRIBUTE_NAME);
-        Boolean active = Boolean.parseBoolean(request.getParameter(Constants.ATTRIBUTE_ACTIVE));
-        try {
-            Size size = sizeDao.getById(id);
-            size.setSize(value);
-            size.setName(name);
-            size.setActive(active);
-            sizeDao.update(size);
-            LOGGER.info("Size was updated");
         } catch (DAOException e) {
             LOGGER.error("Error of SizeDao", e);
             throw new ActionException(e);

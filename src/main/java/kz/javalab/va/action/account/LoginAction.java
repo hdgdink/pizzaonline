@@ -25,15 +25,15 @@ import java.util.List;
 
 public class LoginAction implements Action {
     private static final Logger LOGGER = Logger.getLogger(LoginAction.class);
+    private OrderDetailsDao orderDetailsDao;
+    private OrderDao orderDao;
 
     @Override
     public ActionResult execute(HttpServletRequest request, HttpServletResponse response) throws ActionException {
         ActionResult result;
         HttpSession session = request.getSession();
         UserDao userDao;
-        OrderDao orderDao;
         Order order = null;
-        OrderDetailsDao orderDetailsDao;
         List<OrderDetails> orderDetails;
         try {
             orderDao = new OrderDao();
@@ -44,7 +44,6 @@ public class LoginAction implements Action {
             LOGGER.error("Error of connect to database.", e);
             throw new ActionException(e);
         }
-
         String username = request.getParameter(Constants.ATTRIBUTE_USERNAME);
         String password = request.getParameter(Constants.ATTRIBUTE_PASSWORD);
         User user;
@@ -73,14 +72,7 @@ public class LoginAction implements Action {
         else {
             try {
                 Integer orderId = orderDao.getByUserId(user.getId());
-                if (orderId != 0) {
-                    order = orderDao.getById(orderId);
-                    orderDetails = orderDetailsDao.getAllByOrderId(order.getId());
-                }
-                if (order != null && order.getStatus().equals(Status.UNPAID)) {
-                    session.setAttribute(Constants.ATTRIBUTE_ORDER_DETAILS, orderDetails);
-                    session.setAttribute(Constants.ATTRIBUTE_ORDER, order);
-                }
+                checkOrderForPaid(orderId, session, order, orderDetails);
             } catch (Exception e) {
                 LOGGER.error("Error at LoginAction while performing last unpaid order", e);
                 throw new ActionException(e);
@@ -94,4 +86,16 @@ public class LoginAction implements Action {
         LOGGER.debug("User " + user.getEmail() + " has been logged.");
         return result;
     }
+
+    private void checkOrderForPaid(Integer orderId, HttpSession session, Order order, List<OrderDetails> orderDetails) throws DAOException, ConnectionPoolException {
+        if (orderId != 0) {
+            order = orderDao.getById(orderId);
+            orderDetails = orderDetailsDao.getAllByOrderId(order.getId());
+        }
+        if (order != null && order.getStatus().equals(Status.UNPAID)) {
+            session.setAttribute(Constants.ATTRIBUTE_ORDER_DETAILS, orderDetails);
+            session.setAttribute(Constants.ATTRIBUTE_ORDER, order);
+        }
+    }
+
 }

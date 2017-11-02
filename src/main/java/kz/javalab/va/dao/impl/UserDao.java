@@ -13,7 +13,6 @@ import org.apache.log4j.Logger;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,7 +42,7 @@ public class UserDao extends AbstractDao<Integer, User> {
             statement.setString(1, username);
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.first()) {
-                user = parseResultSet(resultSet);
+                user = parseResultSetInstance(resultSet);
             }
         } catch (Exception e) {
             LOGGER.warn(Constants.STATEMENT_CREATE_ERROR, e);
@@ -54,29 +53,6 @@ public class UserDao extends AbstractDao<Integer, User> {
         return user;
     }
 
-
-    @Override
-    public List<User> getAll() throws DAOException {
-        LOGGER.info("UserDao.getAll()");
-        List<User> users = null;
-        Connection connection = daoFactory.getConnection();
-        try (Statement statement = connection.createStatement()) {
-            ResultSet resultSet = statement.executeQuery(FIND_ALL_USERS);
-            while (resultSet.next()) {
-                if (users == null) {
-                    users = new ArrayList<>();
-                }
-                User user = parseResultSet(resultSet);
-                users.add(user);
-            }
-        } catch (Exception e) {
-            LOGGER.warn(Constants.STATEMENT_CREATE_ERROR, e);
-            throw new DAOException(e);
-        } finally {
-            pool.returnConnection(connection);
-        }
-        return users;
-    }
 
     @Override
     public User getById(Integer id) throws DAOException {
@@ -87,7 +63,7 @@ public class UserDao extends AbstractDao<Integer, User> {
             statement.setInt(1, id);
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.first()) {
-                user = parseResultSet(resultSet);
+                user = parseResultSetInstance(resultSet);
             }
         } catch (Exception e) {
             LOGGER.warn(Constants.STATEMENT_CREATE_ERROR, e);
@@ -98,36 +74,6 @@ public class UserDao extends AbstractDao<Integer, User> {
         return user;
     }
 
-    @Override
-    public int create(User entity) throws DAOException {
-        LOGGER.info("UserDao.createUser()");
-        Connection connection = daoFactory.getConnection();
-        try (PreparedStatement statement = connection.prepareStatement(CREATE_USER)) {
-            statementForCreate(statement, entity);
-            return statement.executeUpdate();
-        } catch (Exception e) {
-            LOGGER.warn(Constants.STATEMENT_CREATE_ERROR, e);
-            throw new DAOException(e);
-        } finally {
-            pool.returnConnection(connection);
-        }
-    }
-
-    @Override
-    public int update(User entity) throws DAOException {
-        LOGGER.info("UserDao.updateUser()");
-        Connection connection = daoFactory.getConnection();
-        try (PreparedStatement statement = connection.prepareStatement(UPDATE_USER)) {
-            statementForCreate(statement, entity);
-            statement.setInt(8, entity.getId());
-            return statement.executeUpdate();
-        } catch (Exception e) {
-            LOGGER.warn(Constants.STATEMENT_CREATE_ERROR, e);
-            throw new DAOException(e);
-        } finally {
-            pool.returnConnection(connection);
-        }
-    }
 
     public void resetPassword(String newPassword, Integer id) throws DAOException {
         LOGGER.info("UserDao.resetPassword()");
@@ -154,7 +100,7 @@ public class UserDao extends AbstractDao<Integer, User> {
                 if (users == null) {
                     users = new ArrayList<>();
                 }
-                User user = parseResultSet(resultSet);
+                User user = parseResultSetInstance(resultSet);
                 users.add(user);
             }
         } catch (Exception e) {
@@ -166,7 +112,8 @@ public class UserDao extends AbstractDao<Integer, User> {
         return users;
     }
 
-    private void statementForCreate(PreparedStatement statement, User entity) throws DAOException {
+    @Override
+    public void statementForCreate(PreparedStatement statement, User entity) throws DAOException {
         try {
             statement.setString(1, entity.getFirstname());
             statement.setString(2, entity.getLastname());
@@ -176,12 +123,24 @@ public class UserDao extends AbstractDao<Integer, User> {
             statement.setString(6, String.valueOf(entity.getRole()));
             statement.setInt(7, entity.getBalance());
         } catch (Exception e) {
-            LOGGER.error("Preparing statement for User error", e);
+            LOGGER.error("Preparing statement for Create User error", e);
             throw new DAOException(e);
         }
     }
 
-    private User parseResultSet(ResultSet resultSet) throws DAOException {
+    @Override
+    public void statementForUpdate(PreparedStatement statement, User entity) throws DAOException {
+        try {
+            statementForCreate(statement, entity);
+            statement.setInt(8, entity.getId());
+        } catch (Exception e) {
+            LOGGER.error("Preparing statement for Update User error", e);
+            throw new DAOException(e);
+        }
+    }
+
+    @Override
+    public User parseResultSetInstance(ResultSet resultSet) throws DAOException {
         User user = new User();
         try {
             user.setId(resultSet.getInt(Constants.ID_COL));
@@ -197,5 +156,20 @@ public class UserDao extends AbstractDao<Integer, User> {
             throw new DAOException(e);
         }
         return user;
+    }
+
+    @Override
+    public String getReadQuery() {
+        return FIND_ALL_USERS;
+    }
+
+    @Override
+    public String getCreateQuery() {
+        return CREATE_USER;
+    }
+
+    @Override
+    public String getUpdateQuery() {
+        return UPDATE_USER;
     }
 }

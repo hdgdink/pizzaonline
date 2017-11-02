@@ -33,25 +33,33 @@ public class SecurityFilter implements Filter {
         actions.put("GET/subs_logged", authorized);
         actions.put("GET/pizza_logged", authorized);
         actions.put("GET/beverage_logged", authorized);
-        actions.put("GET/error", all);
-        actions.put("GET/locale", all);
-        actions.put("GET/registered", authorized);
-        actions.put("GET/logout", authorized);
+        actions.put("GET/user_cabinet", authorized);
         actions.put("GET/cabinet", authorized);
-        actions.put("GET/add_to_orderlist", authorized);
-        actions.put("GET/del_from_orderlist", authorized);
         actions.put("GET/products", admin);
         actions.put("GET/orders", admin);
         actions.put("GET/order_details", admin);
         actions.put("GET/sizes", admin);
         actions.put("GET/types", admin);
-        actions.put("GET/delete_error", all);
-
+        actions.put("GET/error", all);
+        actions.put("GET/locale", all);
+        actions.put("GET/logout", authorized);
+        actions.put("GET/add_to_orderlist", authorized);
+        actions.put("GET/del_from_orderlist", authorized);
         actions.put("POST/register", unreg);
         actions.put("POST/login", unreg);
         actions.put("POST/chekout_order", authorized);
         actions.put("POST/info_update", client);
         actions.put("POST/pass_update", client);
+        actions.put("POST/edit_user", admin);
+        actions.put("POST/edit_product", admin);
+        actions.put("POST/edit_sizes", admin);
+        actions.put("POST/edit_types", admin);
+        actions.put("POST/edit_order_details", admin);
+        actions.put("POST/edit_order", admin);
+        actions.put("POST/create_size", admin);
+        actions.put("POST/create_type", admin);
+        actions.put("POST/create_order_details", admin);
+        actions.put("POST/create_order", admin);
         actions.put("POST/create_product", admin);
         actions.put("POST/create_user", admin);
     }
@@ -87,5 +95,4 @@ public class SecurityFilter implements Filter {
         }
         chain.doFilter(request, response);
     }
-
 }

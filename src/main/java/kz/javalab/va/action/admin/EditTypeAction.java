@@ -22,21 +22,16 @@ public class EditTypeAction implements Action {
     public ActionResult execute(HttpServletRequest request, HttpServletResponse response) throws ActionException {
         HttpSession session = request.getSession();
         TypeDao typeDao;
+        Integer id = Integer.parseInt(request.getParameter(Constants.ATTRIBUTE_ID));
         try {
             typeDao = new TypeDao();
+            Type type = typeDao.getById(id);
+            CreateEntityAdmin.setType(type);
+            typeDao.update(type);
+            LOGGER.info("Type was updated");
         } catch (ConnectionPoolException e) {
             LOGGER.error("Error of initialization TypeDao", e);
             throw new ActionException(e);
-        }
-        Integer id = Integer.parseInt(request.getParameter(Constants.ATTRIBUTE_ID));
-        String value = request.getParameter(Constants.ATTRIBUTE_TYPE);
-        Boolean active = Boolean.parseBoolean(request.getParameter(Constants.ATTRIBUTE_ACTIVE));
-        try {
-            Type type = typeDao.getById(id);
-            type.setType(value);
-            type.setActive(active);
-            typeDao.update(type);
-            LOGGER.info("Type was updated");
         } catch (DAOException e) {
             LOGGER.error("Error updating Type", e);
             throw new ActionException(e);

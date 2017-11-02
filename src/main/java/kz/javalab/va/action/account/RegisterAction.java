@@ -21,12 +21,12 @@ public class RegisterAction implements Action {
     private static final Logger LOGGER = Logger.getLogger(RegisterAction.class);
     private static final ActionResult REG_SUCCESS = new ActionResult(ActionResult.METHOD.REDIRECT, Constants.PAGE_PIZZA_LOGGED);
     private static final ActionResult REG_FAILED = new ActionResult(ActionResult.METHOD.REDIRECT, Constants.ACTION_PIZZA);
+    private User user;
 
     @Override
     public ActionResult execute(HttpServletRequest request, HttpServletResponse response) throws ActionException {
         HttpSession session = request.getSession();
         ActionResult result;
-        User user;
         boolean userNameValid;
         boolean emailValid;
         boolean passValid;
@@ -37,16 +37,14 @@ public class RegisterAction implements Action {
             LOGGER.error(Constants.USER_DAO_INIT_ERROR, e);
             throw new ActionException(e);
         }
-        String firstname = request.getParameter(Constants.ATTRIBUTE_FIRSTNAME);
-        String lastname = request.getParameter(Constants.ATTRIBUTE_LASTNAME);
         String username = request.getParameter(Constants.ATTRIBUTE_USERNAME);
         String email = request.getParameter(Constants.ATTRIBUTE_EMAIL);
         String password = request.getParameter(Constants.ATTRIBUTE_PASSWORD);
         String password2 = request.getParameter(Constants.ATTRIBUTE_RE_PASSWORD);
         try {
             userNameValid = FieldsValidator.userNameCheck(username);
-            emailValid=FieldsValidator.emailValid(email);
-            passValid=FieldsValidator.passwordValid(password);
+            emailValid = FieldsValidator.emailValid(email);
+            passValid = FieldsValidator.passwordValid(password);
         } catch (ValidationException e) {
             LOGGER.error("Validation error", e);
             throw new ActionException(e);
@@ -70,14 +68,7 @@ public class RegisterAction implements Action {
             return result;
         }
         if (password.equals(password2)) {
-            user = new User();
-            user.setFirstname(firstname);
-            user.setLastname(lastname);
-            user.setUsername(username);
-            user.setEmail(email);
-            user.setPassword(password);
-            user.setRole(Role.CLIENT);
-            user.setBalance(0);
+            createUser(request, username, password, email);
             try {
                 userDao.create(user);
                 user = userDao.getByUsername(user.getUsername());
@@ -95,5 +86,19 @@ public class RegisterAction implements Action {
             result = REG_FAILED;
         }
         return result;
+    }
+
+    private User createUser(HttpServletRequest request, String username, String email, String password) {
+        String firstname = request.getParameter(Constants.ATTRIBUTE_FIRSTNAME);
+        String lastname = request.getParameter(Constants.ATTRIBUTE_LASTNAME);
+        user = new User();
+        user.setFirstname(firstname);
+        user.setLastname(lastname);
+        user.setUsername(username);
+        user.setEmail(email);
+        user.setPassword(password);
+        user.setRole(Role.CLIENT);
+        user.setBalance(0);
+        return user;
     }
 }

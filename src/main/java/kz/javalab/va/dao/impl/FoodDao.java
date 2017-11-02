@@ -12,7 +12,6 @@ import org.apache.log4j.Logger;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,7 +19,6 @@ public class FoodDao extends AbstractDao<Integer, Food> {
     private static final Logger LOGGER = Logger.getLogger(FoodDao.class);
     private final ConnectionPool pool = ConnectionPool.getInstance();
     private DaoFactory daoFactory = new DaoFactory();
-    private static final String GET_FOOD_BY_ID = "SELECT * FROM FOOD WHERE ID = ?;";
     private static final String FIND_ALL_FOOD = "SELECT * FROM FOOD ";
     private static final String CREATE_FOOD = "INSERT INTO FOOD(TYPE_ID,NAME_RU, NAME_EN, COMPOS_RU, COMPOS_EN, PRICE," +
             " IMG, ACTIVE) VALUES(?, ?, ?, ?, ?, ?, ?, ?);";
@@ -31,85 +29,8 @@ public class FoodDao extends AbstractDao<Integer, Food> {
     public FoodDao() throws ConnectionPoolException {
     }
 
-    @Override
-    public List<Food> getAll() throws DAOException, ConnectionPoolException {
-        LOGGER.info("FoodDao.getAll()");
-        List<Food> foods = null;
-        Connection connection = daoFactory.getConnection();
-        try (Statement statement = connection.createStatement()) {
-            ResultSet resultSet = statement.executeQuery(FIND_ALL_FOOD);
-            while (resultSet.next()) {
-                if (foods == null) {
-                    foods = new ArrayList<>();
-                }
-                Food food = parseResultSet(resultSet);
-                foods.add(food);
-            }
-            resultSet.close();
-        } catch (Exception e) {
-            LOGGER.warn(Constants.STATEMENT_CREATE_ERROR, e);
-            throw new DAOException(e);
-        } finally {
-
-            pool.returnConnection(connection);
-
-        }
-        return foods;
-    }
-
-    @Override
-    public Food getById(Integer id) throws DAOException {
-        LOGGER.info("FoodDao.getById()");
-        Food food = null;
-        Connection connection = daoFactory.getConnection();
-        try (PreparedStatement statement = connection.prepareStatement(GET_FOOD_BY_ID)) {
-            statement.setInt(1, id);
-            ResultSet resultSet = statement.executeQuery();
-            if (resultSet.next()) {
-                food = parseResultSet(resultSet);
-            }
-        } catch (Exception e) {
-            LOGGER.warn(Constants.STATEMENT_CREATE_ERROR, e);
-            throw new DAOException(e);
-        } finally {
-            pool.returnConnection(connection);
-        }
-        return food;
-    }
-
-
-    @Override
-    public int create(Food entity) throws DAOException {
-        LOGGER.info("UserDao.createFood()");
-        Connection connection = daoFactory.getConnection();
-        try (PreparedStatement statement = connection.prepareStatement(CREATE_FOOD)) {
-            statementForCreate(statement, entity);
-            return statement.executeUpdate();
-        } catch (Exception e) {
-            LOGGER.warn(Constants.STATEMENT_CREATE_ERROR, e);
-            throw new DAOException(e);
-        } finally {
-            pool.returnConnection(connection);
-        }
-    }
-
-    @Override
-    public int update(Food entity) throws DAOException {
-        LOGGER.info("FoodDao.updateFood()");
-        Connection connection = daoFactory.getConnection();
-        try (PreparedStatement statement = connection.prepareStatement(UPDATE_FOOD)) {
-            statementForCreate(statement, entity);
-            statement.setInt(9, entity.getId());
-            return statement.executeUpdate();
-        } catch (Exception e) {
-            LOGGER.warn(Constants.STATEMENT_CREATE_ERROR, e);
-            throw new DAOException(e);
-        } finally {
-            pool.returnConnection(connection);
-        }
-    }
-
     public List<Food> getAllByTypeId(Integer typeId) throws DAOException {
+        LOGGER.info("FoodDao.GetAllByTypeId()");
         List<Food> foods = null;
         Connection connection = daoFactory.getConnection();
         try (PreparedStatement statement = connection.prepareStatement(GET_ALL_FOOD_BY_TYPE)) {
@@ -119,7 +40,7 @@ public class FoodDao extends AbstractDao<Integer, Food> {
                 if (foods == null) {
                     foods = new ArrayList<>();
                 }
-                Food food = parseResultSet(resultSet);
+                Food food = parseResultSetInstance(resultSet);
                 if (food.isActive())
                     foods.add(food);
             }
@@ -132,7 +53,8 @@ public class FoodDao extends AbstractDao<Integer, Food> {
         return foods;
     }
 
-    private void statementForCreate(PreparedStatement statement, Food entity) throws DAOException {
+    @Override
+    public void statementForCreate(PreparedStatement statement, Food entity) throws DAOException {
         try {
             statement.setInt(1, entity.getTypeId());
             statement.setString(2, entity.getNameRu());
@@ -143,12 +65,25 @@ public class FoodDao extends AbstractDao<Integer, Food> {
             statement.setString(7, entity.getImg());
             statement.setBoolean(8, entity.isActive());
         } catch (Exception e) {
-            LOGGER.error("Preparing statement for product error", e);
+            LOGGER.error("Preparing statement for Create Product error", e);
             throw new DAOException(e);
         }
     }
 
-    private Food parseResultSet(ResultSet resultSet) throws DAOException {
+    @Override
+    public void statementForUpdate(PreparedStatement statement, Food entity) throws DAOException {
+        try {
+            statementForCreate(statement, entity);
+            statement.setInt(9, entity.getId());
+        } catch (Exception e) {
+            LOGGER.error("Preparing statement for Update Product error", e);
+            throw new DAOException(e);
+        }
+    }
+
+
+    @Override
+    public Food parseResultSetInstance(ResultSet resultSet) throws DAOException {
         Food food = new Food();
         try {
             food.setId(resultSet.getInt(Constants.ID_COL));
@@ -161,10 +96,25 @@ public class FoodDao extends AbstractDao<Integer, Food> {
             food.setImg(resultSet.getString(Constants.IMG_COL));
             food.setActive(resultSet.getBoolean(Constants.ACTIVE_COL));
         } catch (Exception e) {
-            LOGGER.error("Parsing resultSet to product error", e);
+            LOGGER.error("Parsing resultSet to Product error", e);
             throw new DAOException(e);
         }
         return food;
+    }
+
+    @Override
+    public String getReadQuery() {
+        return FIND_ALL_FOOD;
+    }
+
+    @Override
+    public String getCreateQuery() {
+        return CREATE_FOOD;
+    }
+
+    @Override
+    public String getUpdateQuery() {
+        return UPDATE_FOOD;
     }
 
 }

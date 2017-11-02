@@ -33,7 +33,7 @@ public class CreateEntityAdmin implements Action {
     private HttpSession session;
     private String entityName;
     private ActionResult result;
-    private HttpServletRequest req;
+    private static HttpServletRequest req;
 
     public CreateEntityAdmin(String entityName) {
         this.entityName = entityName;
@@ -53,17 +53,8 @@ public class CreateEntityAdmin implements Action {
     }
 
     private void createOrder() throws ActionException {
-        Integer sumOfOrder = Integer.parseInt(req.getParameter(Constants.ATTRIBUTE_ORDER_SUM));
-        Integer userId = Integer.parseInt(req.getParameter(Constants.ATTRIBUTE_USER_ID));
-        String address = req.getParameter(Constants.ATTRIBUTE_ADDRESS);
-        String phone = req.getParameter(Constants.ATTRIBUTE_PHONE);
-        Status status = Status.valueOf(req.getParameter(Constants.ATTRIBUTE_STATUS));
         Order order = new Order();
-        order.setSumOfOrder(sumOfOrder);
-        order.setUserId(userId);
-        order.setAddress(address);
-        order.setPhone(phone);
-        order.setStatus(status);
+        setOrder(order);
         try {
             OrderDao orderDao = new OrderDao();
             orderDao.create(order);
@@ -77,26 +68,8 @@ public class CreateEntityAdmin implements Action {
     }
 
     private void createOrderDetails() throws ActionException {
-        Integer foodId = Integer.parseInt(req.getParameter(Constants.ATTRIBUTE_PRODUCT_ID));
-        String foodNameRu = req.getParameter(Constants.ATTRIBUTE_NAME_RU);
-        String foodNameEn = req.getParameter(Constants.ATTRIBUTE_NAME_EN);
-        String sizeName = req.getParameter(Constants.ATTRIBUTE_SIZE_NAME);
-        Integer typeId = Integer.parseInt(req.getParameter(Constants.ATTRIBUTE_TYPE_ID));
-        String typeName = req.getParameter(Constants.ATTRIBUTE_TYPE_NAME);
-        Integer quantity = Integer.parseInt(req.getParameter(Constants.ATTRIBUTE_COUNT));
-        Integer orderId = Integer.parseInt(req.getParameter(Constants.ATTRIBUTE_ORDER_ID));
-        Integer price = Integer.parseInt(req.getParameter(Constants.ATTRIBUTE_PRICE));
         OrderDetails orderDetails = new OrderDetails();
-        orderDetails.setFoodNameRu(foodNameRu);
-        orderDetails.setFoodNameEn(foodNameEn);
-        orderDetails.setFoodId(foodId);
-        orderDetails.setTypeName(typeName);
-        orderDetails.setFinalPrice(price);
-        orderDetails.setSizeName(sizeName);
-        orderDetails.setTypeId(typeId);
-        orderDetails.setTypeName(typeName);
-        orderDetails.setQuantity(quantity);
-        orderDetails.setOrderId(orderId);
+        setOrderDetails(orderDetails);
         try {
             OrderDetailsDao orderDetailsDao = new OrderDetailsDao();
             orderDetailsDao.create(orderDetails);
@@ -108,11 +81,8 @@ public class CreateEntityAdmin implements Action {
     }
 
     private void createType() throws ActionException {
-        String value = req.getParameter(Constants.ATTRIBUTE_TYPE);
-        Boolean active = Boolean.parseBoolean(req.getParameter(Constants.ATTRIBUTE_ACTIVE));
         Type type = new Type();
-        type.setType(value);
-        type.setActive(active);
+        setType(type);
         try {
             TypeDao typeDao = new TypeDao();
             typeDao.create(type);
@@ -126,13 +96,8 @@ public class CreateEntityAdmin implements Action {
     }
 
     private void createSize() throws ActionException {
-        Integer value = Integer.parseInt(req.getParameter(Constants.ATTRIBUTE_VAL));
-        String name = req.getParameter(Constants.ATTRIBUTE_NAME);
-        Boolean active = Boolean.parseBoolean(req.getParameter(Constants.ATTRIBUTE_ACTIVE));
         Size size = new Size();
-        size.setSize(value);
-        size.setName(name);
-        size.setActive(active);
+        setSize(size);
         try {
             SizeDao sizeDao = new SizeDao();
             sizeDao.create(size);
@@ -146,23 +111,8 @@ public class CreateEntityAdmin implements Action {
     }
 
     private void createProduct() throws ActionException {
-        Integer type = Integer.parseInt(req.getParameter(Constants.ATTRIBUTE_TYPE_ID));
-        String nameRu = req.getParameter(Constants.ATTRIBUTE_NAME_RU);
-        String nameEn = req.getParameter(Constants.ATTRIBUTE_NAME_EN);
-        String discriptionRu = req.getParameter(Constants.ATTRIBUTE_COMPOS_RU);
-        String dicriptionEn = req.getParameter(Constants.ATTRIBUTE_COMPOS_EN);
-        Integer price = Integer.parseInt(req.getParameter(Constants.ATTRIBUTE_PRICE));
-        String img = req.getParameter(Constants.ATTRIBUTE_IMG_PATH);
-        Boolean active = Boolean.parseBoolean(req.getParameter(Constants.ATTRIBUTE_ACTIVE));
         Food food = new Food();
-        food.setPrice(price);
-        food.setImg(img);
-        food.setDiscriptionEn(dicriptionEn);
-        food.setDiscriptionRu(discriptionRu);
-        food.setNameEn(nameEn);
-        food.setNameRu(nameRu);
-        food.setTypeId(type);
-        food.setActive(active);
+        setFood(food);
         try {
             FoodDao foodDao = new FoodDao();
             foodDao.create(food);
@@ -177,12 +127,6 @@ public class CreateEntityAdmin implements Action {
 
     private void createUser() throws ActionException {
         String userName = req.getParameter(Constants.ATTRIBUTE_USERNAME);
-        String email = req.getParameter(Constants.ATTRIBUTE_EMAIL);
-        String firstName = req.getParameter(Constants.ATTRIBUTE_FIRSTNAME);
-        String lastName = req.getParameter(Constants.ATTRIBUTE_LASTNAME);
-        Integer balance = Integer.parseInt(req.getParameter(Constants.ATTRIBUTE_BALANCE));
-        String password = req.getParameter(Constants.ATTRIBUTE_PASSWORD);
-        Role role = Role.valueOf(req.getParameter(Constants.ATTRIBUTE_ROLE));
         boolean userNameValid = false;
         try {
             userNameValid = FieldsValidator.userNameCheck(userName);
@@ -195,13 +139,7 @@ public class CreateEntityAdmin implements Action {
             result = USER_ADMIN_PAGE;
         } else {
             User user = new User();
-            user.setFirstname(firstName);
-            user.setLastname(lastName);
-            user.setEmail(email);
-            user.setUsername(userName);
-            user.setPassword(password);
-            user.setBalance(balance);
-            user.setRole(role);
+            setUser(user, userName);
             try {
                 UserDao userDao = new UserDao();
                 userDao.create(user);
@@ -212,4 +150,98 @@ public class CreateEntityAdmin implements Action {
             result = USER_ADMIN_PAGE;
         }
     }
+
+    static Food setFood(Food food) {
+        Integer typeId = Integer.parseInt(req.getParameter(Constants.ATTRIBUTE_TYPE_ID));
+        String nameRu = req.getParameter(Constants.ATTRIBUTE_NAME_RU);
+        String nameEn = req.getParameter(Constants.ATTRIBUTE_NAME_EN);
+        String discriptionRu = req.getParameter(Constants.ATTRIBUTE_COMPOS_RU);
+        String dicriptionEn = req.getParameter(Constants.ATTRIBUTE_COMPOS_EN);
+        Integer price = Integer.parseInt(req.getParameter(Constants.ATTRIBUTE_PRICE));
+        String img = req.getParameter(Constants.ATTRIBUTE_IMG_PATH);
+        Boolean active = Boolean.parseBoolean(req.getParameter(Constants.ATTRIBUTE_ACTIVE));
+        food.setPrice(price);
+        food.setImg(img);
+        food.setDiscriptionEn(dicriptionEn);
+        food.setDiscriptionRu(discriptionRu);
+        food.setNameEn(nameEn);
+        food.setNameRu(nameRu);
+        food.setTypeId(typeId);
+        food.setActive(active);
+        return food;
+    }
+
+    static User setUser(User user, String userName) {
+        String email = req.getParameter(Constants.ATTRIBUTE_EMAIL);
+        String firstName = req.getParameter(Constants.ATTRIBUTE_FIRSTNAME);
+        String lastName = req.getParameter(Constants.ATTRIBUTE_LASTNAME);
+        Integer balance = Integer.parseInt(req.getParameter(Constants.ATTRIBUTE_BALANCE));
+        String password = req.getParameter(Constants.ATTRIBUTE_PASSWORD);
+        Role role = Role.valueOf(req.getParameter(Constants.ATTRIBUTE_ROLE));
+        user.setFirstname(firstName);
+        user.setLastname(lastName);
+        user.setEmail(email);
+        user.setUsername(userName);
+        user.setPassword(password);
+        user.setBalance(balance);
+        user.setRole(role);
+        return user;
+    }
+
+    static OrderDetails setOrderDetails(OrderDetails orderDetails) {
+        Integer foodId = Integer.parseInt(req.getParameter(Constants.ATTRIBUTE_PRODUCT_ID));
+        String foodNameRu = req.getParameter(Constants.ATTRIBUTE_NAME_RU);
+        String foodNameEn = req.getParameter(Constants.ATTRIBUTE_NAME_EN);
+        String sizeName = req.getParameter(Constants.ATTRIBUTE_SIZE_NAME);
+        Integer typeId = Integer.parseInt(req.getParameter(Constants.ATTRIBUTE_TYPE_ID));
+        String typeName = req.getParameter(Constants.ATTRIBUTE_TYPE_NAME);
+        Integer quantity = Integer.parseInt(req.getParameter(Constants.ATTRIBUTE_COUNT));
+        Integer orderId = Integer.parseInt(req.getParameter(Constants.ATTRIBUTE_ORDER_ID));
+        Integer price = Integer.parseInt(req.getParameter(Constants.ATTRIBUTE_PRICE));
+        orderDetails.setFoodNameRu(foodNameRu);
+        orderDetails.setFoodNameEn(foodNameEn);
+        orderDetails.setFoodId(foodId);
+        orderDetails.setTypeName(typeName);
+        orderDetails.setFinalPrice(price);
+        orderDetails.setSizeName(sizeName);
+        orderDetails.setTypeId(typeId);
+        orderDetails.setTypeName(typeName);
+        orderDetails.setQuantity(quantity);
+        orderDetails.setOrderId(orderId);
+        return orderDetails;
+    }
+
+    static Order setOrder(Order order) {
+        Integer sumOfOrder = Integer.parseInt(req.getParameter(Constants.ATTRIBUTE_ORDER_SUM));
+        Integer userId = Integer.parseInt(req.getParameter(Constants.ATTRIBUTE_USER_ID));
+        String address = req.getParameter(Constants.ATTRIBUTE_ADDRESS);
+        String phone = req.getParameter(Constants.ATTRIBUTE_PHONE);
+        Status status = Status.valueOf(req.getParameter(Constants.ATTRIBUTE_STATUS));
+        order.setSumOfOrder(sumOfOrder);
+        order.setUserId(userId);
+        order.setAddress(address);
+        order.setPhone(phone);
+        order.setStatus(status);
+        return order;
+    }
+
+    static Type setType(Type type) {
+        String value = req.getParameter(Constants.ATTRIBUTE_TYPE);
+        Boolean active = Boolean.parseBoolean(req.getParameter(Constants.ATTRIBUTE_ACTIVE));
+        type.setType(value);
+        type.setActive(active);
+        return type;
+    }
+
+    static Size setSize(Size size) {
+        Integer value = Integer.parseInt(req.getParameter(Constants.ATTRIBUTE_VAL));
+        String name = req.getParameter(Constants.ATTRIBUTE_NAME);
+        Boolean active = Boolean.parseBoolean(req.getParameter(Constants.ATTRIBUTE_ACTIVE));
+        size.setSize(value);
+        size.setName(name);
+        size.setActive(active);
+        return size;
+    }
+
+
 }

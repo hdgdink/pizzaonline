@@ -43,27 +43,9 @@ public class EditOrderDetailsAction implements Action {
 
     private void updateOrderDetails() throws ActionException {
         Integer id = Integer.parseInt(req.getParameter(Constants.ATTRIBUTE_ID));
-        Integer foodId = Integer.parseInt(req.getParameter(Constants.ATTRIBUTE_PRODUCT_ID));
-        String foodNameRu = req.getParameter(Constants.ATTRIBUTE_NAME_RU);
-        String foodNameEn = req.getParameter(Constants.ATTRIBUTE_NAME_EN);
-        String sizeName = req.getParameter(Constants.ATTRIBUTE_SIZE_NAME);
-        Integer typeId = Integer.parseInt(req.getParameter(Constants.ATTRIBUTE_TYPE_ID));
-        String typeName = req.getParameter(Constants.ATTRIBUTE_TYPE_NAME);
-        Integer quantity = Integer.parseInt(req.getParameter(Constants.ATTRIBUTE_QNT));
-        Integer orderId = Integer.parseInt(req.getParameter(Constants.ATTRIBUTE_ORDER_ID));
-        Integer price = Integer.parseInt(req.getParameter(Constants.ATTRIBUTE_PRICE));
         try {
             OrderDetails orderDetails = orderDetailsDao().getById(id);
-            orderDetails.setFoodNameRu(foodNameRu);
-            orderDetails.setFoodNameEn(foodNameEn);
-            orderDetails.setFoodId(foodId);
-            orderDetails.setTypeName(typeName);
-            orderDetails.setFinalPrice(price);
-            orderDetails.setSizeName(sizeName);
-            orderDetails.setTypeId(typeId);
-            orderDetails.setTypeName(typeName);
-            orderDetails.setQuantity(quantity);
-            orderDetails.setOrderId(orderId);
+            CreateEntityAdmin.setOrderDetails(orderDetails);
             orderDetailsDao().update(orderDetails);
         } catch (DAOException e) {
             LOGGER.error("Error at update OrderDetails", e);

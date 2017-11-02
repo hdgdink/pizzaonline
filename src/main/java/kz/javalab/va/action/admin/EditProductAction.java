@@ -34,24 +34,9 @@ public class EditProductAction implements Action {
 
     private void updateProduct() throws ActionException {
         Integer id = Integer.parseInt(req.getParameter(Constants.ATTRIBUTE_ID));
-        Integer typeId = Integer.parseInt(req.getParameter(Constants.ATTRIBUTE_TYPE_ID));
-        String nameRu = req.getParameter(Constants.ATTRIBUTE_NAME_RU);
-        String nameEn = req.getParameter(Constants.ATTRIBUTE_NAME_EN);
-        String discriptionRu = req.getParameter(Constants.ATTRIBUTE_COMPOS_RU);
-        String dicriptionEn = req.getParameter(Constants.ATTRIBUTE_COMPOS_EN);
-        Integer price = Integer.parseInt(req.getParameter(Constants.ATTRIBUTE_PRICE));
-        String img = req.getParameter(Constants.ATTRIBUTE_IMG_PATH);
-        Boolean active = Boolean.parseBoolean(req.getParameter(Constants.ATTRIBUTE_ACTIVE));
         try {
             Food food = foodDao().getById(id);
-            food.setPrice(price);
-            food.setImg(img);
-            food.setDiscriptionEn(dicriptionEn);
-            food.setDiscriptionRu(discriptionRu);
-            food.setNameEn(nameEn);
-            food.setNameRu(nameRu);
-            food.setTypeId(typeId);
-            food.setActive(active);
+            CreateEntityAdmin.setFood(food);
             foodDao().update(food);
             LOGGER.info("Product was update " + food.getId());
         } catch (DAOException e) {
