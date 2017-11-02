@@ -2,7 +2,9 @@ package kz.javalab.va.entity.order;
 
 import kz.javalab.va.entity.Entity;
 
-public class Order extends Entity {
+import java.io.Serializable;
+
+public class Order extends Entity implements Serializable {
     private Integer sumOfOrder;
     private Integer userId;
     private String address;

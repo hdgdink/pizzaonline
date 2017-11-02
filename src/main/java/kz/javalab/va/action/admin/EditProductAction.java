@@ -36,7 +36,7 @@ public class EditProductAction implements Action {
         Integer id = Integer.parseInt(req.getParameter(Constants.ATTRIBUTE_ID));
         try {
             Food food = foodDao().getById(id);
-            CreateEntityAdmin.setFood(food);
+            CreateEntityAdmin.setFood(food, req);
             foodDao().update(food);
             LOGGER.info("Product was update " + food.getId());
         } catch (DAOException e) {

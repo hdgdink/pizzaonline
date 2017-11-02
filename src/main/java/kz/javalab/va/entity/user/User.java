@@ -2,7 +2,9 @@ package kz.javalab.va.entity.user;
 
 import kz.javalab.va.entity.Entity;
 
-public class User extends Entity {
+import java.io.Serializable;
+
+public class User extends Entity implements Serializable {
     private String firstname;
     private String lastname;
     private String username;

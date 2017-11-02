@@ -26,7 +26,7 @@ public class EditTypeAction implements Action {
         try {
             typeDao = new TypeDao();
             Type type = typeDao.getById(id);
-            CreateEntityAdmin.setType(type);
+            CreateEntityAdmin.setType(type, request);
             typeDao.update(type);
             LOGGER.info("Type was updated");
         } catch (ConnectionPoolException e) {

@@ -54,7 +54,7 @@ public class CreateEntityAdmin implements Action {
 
     private void createOrder() throws ActionException {
         Order order = new Order();
-        setOrder(order);
+        setOrder(order, req);
         try {
             OrderDao orderDao = new OrderDao();
             orderDao.create(order);
@@ -69,7 +69,7 @@ public class CreateEntityAdmin implements Action {
 
     private void createOrderDetails() throws ActionException {
         OrderDetails orderDetails = new OrderDetails();
-        setOrderDetails(orderDetails);
+        setOrderDetails(orderDetails, req);
         try {
             OrderDetailsDao orderDetailsDao = new OrderDetailsDao();
             orderDetailsDao.create(orderDetails);
@@ -82,7 +82,7 @@ public class CreateEntityAdmin implements Action {
 
     private void createType() throws ActionException {
         Type type = new Type();
-        setType(type);
+        setType(type, req);
         try {
             TypeDao typeDao = new TypeDao();
             typeDao.create(type);
@@ -97,7 +97,7 @@ public class CreateEntityAdmin implements Action {
 
     private void createSize() throws ActionException {
         Size size = new Size();
-        setSize(size);
+        setSize(size, req);
         try {
             SizeDao sizeDao = new SizeDao();
             sizeDao.create(size);
@@ -112,7 +112,7 @@ public class CreateEntityAdmin implements Action {
 
     private void createProduct() throws ActionException {
         Food food = new Food();
-        setFood(food);
+        setFood(food, req);
         try {
             FoodDao foodDao = new FoodDao();
             foodDao.create(food);
@@ -139,7 +139,7 @@ public class CreateEntityAdmin implements Action {
             result = USER_ADMIN_PAGE;
         } else {
             User user = new User();
-            setUser(user, userName);
+            setUser(user, userName, req);
             try {
                 UserDao userDao = new UserDao();
                 userDao.create(user);
@@ -151,7 +151,7 @@ public class CreateEntityAdmin implements Action {
         }
     }
 
-    static Food setFood(Food food) {
+    static Food setFood(Food food, HttpServletRequest req) {
         Integer typeId = Integer.parseInt(req.getParameter(Constants.ATTRIBUTE_TYPE_ID));
         String nameRu = req.getParameter(Constants.ATTRIBUTE_NAME_RU);
         String nameEn = req.getParameter(Constants.ATTRIBUTE_NAME_EN);
@@ -171,7 +171,7 @@ public class CreateEntityAdmin implements Action {
         return food;
     }
 
-    static User setUser(User user, String userName) {
+    static User setUser(User user, String userName, HttpServletRequest req) {
         String email = req.getParameter(Constants.ATTRIBUTE_EMAIL);
         String firstName = req.getParameter(Constants.ATTRIBUTE_FIRSTNAME);
         String lastName = req.getParameter(Constants.ATTRIBUTE_LASTNAME);
@@ -188,7 +188,7 @@ public class CreateEntityAdmin implements Action {
         return user;
     }
 
-    static OrderDetails setOrderDetails(OrderDetails orderDetails) {
+    static OrderDetails setOrderDetails(OrderDetails orderDetails, HttpServletRequest req) {
         Integer foodId = Integer.parseInt(req.getParameter(Constants.ATTRIBUTE_PRODUCT_ID));
         String foodNameRu = req.getParameter(Constants.ATTRIBUTE_NAME_RU);
         String foodNameEn = req.getParameter(Constants.ATTRIBUTE_NAME_EN);
@@ -211,7 +211,7 @@ public class CreateEntityAdmin implements Action {
         return orderDetails;
     }
 
-    static Order setOrder(Order order) {
+    static Order setOrder(Order order, HttpServletRequest req) {
         Integer sumOfOrder = Integer.parseInt(req.getParameter(Constants.ATTRIBUTE_ORDER_SUM));
         Integer userId = Integer.parseInt(req.getParameter(Constants.ATTRIBUTE_USER_ID));
         String address = req.getParameter(Constants.ATTRIBUTE_ADDRESS);
@@ -225,7 +225,7 @@ public class CreateEntityAdmin implements Action {
         return order;
     }
 
-    static Type setType(Type type) {
+    static Type setType(Type type, HttpServletRequest req) {
         String value = req.getParameter(Constants.ATTRIBUTE_TYPE);
         Boolean active = Boolean.parseBoolean(req.getParameter(Constants.ATTRIBUTE_ACTIVE));
         type.setType(value);
@@ -233,7 +233,7 @@ public class CreateEntityAdmin implements Action {
         return type;
     }
 
-    static Size setSize(Size size) {
+    static Size setSize(Size size, HttpServletRequest req) {
         Integer value = Integer.parseInt(req.getParameter(Constants.ATTRIBUTE_VAL));
         String name = req.getParameter(Constants.ATTRIBUTE_NAME);
         Boolean active = Boolean.parseBoolean(req.getParameter(Constants.ATTRIBUTE_ACTIVE));

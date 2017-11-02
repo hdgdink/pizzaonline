@@ -31,7 +31,7 @@ public class EditUserAction implements Action {
                 LOGGER.info("Username is busy, select another");
                 session.setAttribute(Constants.ATTRIBUTE_ERROR, Constants.USER_EXIST_ERROR);
             } else {
-                CreateEntityAdmin.setUser(user, username);
+                CreateEntityAdmin.setUser(user, username, request);
                 userDao.update(user);
                 LOGGER.debug("User" + user.getId() + "updated");
             }

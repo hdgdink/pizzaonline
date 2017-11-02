@@ -45,7 +45,7 @@ public class EditOrderDetailsAction implements Action {
         Integer id = Integer.parseInt(req.getParameter(Constants.ATTRIBUTE_ID));
         try {
             OrderDetails orderDetails = orderDetailsDao().getById(id);
-            CreateEntityAdmin.setOrderDetails(orderDetails);
+            CreateEntityAdmin.setOrderDetails(orderDetails, req);
             orderDetailsDao().update(orderDetails);
         } catch (DAOException e) {
             LOGGER.error("Error at update OrderDetails", e);

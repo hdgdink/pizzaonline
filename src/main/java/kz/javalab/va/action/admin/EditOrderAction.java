@@ -27,7 +27,7 @@ public class EditOrderAction implements Action {
         try {
             orderDao = new OrderDao();
             Order order = orderDao.getById(id);
-            CreateEntityAdmin.setOrder(order);
+            CreateEntityAdmin.setOrder(order, request);
             orderDao.update(order);
             LOGGER.info("Order with Id:" + order.getId() + "was updated");
         } catch (ConnectionPoolException e) {

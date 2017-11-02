@@ -26,7 +26,7 @@ public class EditSizeAction implements Action {
         try {
             sizeDao = new SizeDao();
             Size size = sizeDao.getById(id);
-            CreateEntityAdmin.setSize(size);
+            CreateEntityAdmin.setSize(size, request);
             sizeDao.update(size);
             LOGGER.info("Size was updated");
         } catch (ConnectionPoolException e) {
