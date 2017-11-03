@@ -18,7 +18,6 @@
         <url-pattern>/do/*</url-pattern>
     </servlet-mapping>
     <servlet>
-        <description></description>
         <display-name>ErrorHandler</display-name>
         <servlet-name>ErrorHandler</servlet-name>
         <servlet-class>kz.javalab.va.servlet.ErrorHandler</servlet-class>
@@ -31,7 +30,7 @@
         <exception-type>
             java.lang.Throwable
         </exception-type>
-        <location>/do/error-handler</location>
+        <location>/do/error</location>
     </error-page>
 
     <listener>
