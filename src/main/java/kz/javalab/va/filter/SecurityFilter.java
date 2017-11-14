@@ -17,9 +17,6 @@ public class SecurityFilter implements Filter {
     private static final Logger LOGGER = Logger.getLogger(SecurityFilter.class);
     private Map<String, EnumSet<Role>> actions = new HashMap<>();
 
-    /**
-     * Creates a map of URLs and users who have rights to access it.
-     */
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
         EnumSet<Role> all = EnumSet.of(Role.UNREGISTERED_USER, Role.CLIENT, Role.ADMIN);
@@ -64,11 +61,6 @@ public class SecurityFilter implements Filter {
         actions.put("POST/create_user", admin);
     }
 
-    /**
-     * Checks current request URL. If User has rights to access this URL filter
-     * pass request to next filter, otherwise User will be forwarded to the
-     * 'Error' page.
-     */
     @Override
     public void doFilter(ServletRequest request, ServletResponse response,
                          FilterChain chain) throws IOException, ServletException {

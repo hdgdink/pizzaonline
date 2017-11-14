@@ -12,6 +12,7 @@ public class CharsetFilter implements Filter {
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
+        LOGGER.debug("Charset filter init...");
     }
 
     @Override

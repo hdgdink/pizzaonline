@@ -20,44 +20,51 @@ import javax.servlet.http.HttpSession;
 
 public class CheckOutOrder implements Action {
     private static final Logger LOGGER = Logger.getLogger(LoginAction.class);
+    private HttpServletRequest req;
 
     @Override
     public ActionResult execute(HttpServletRequest request, HttpServletResponse response) throws ActionException {
+        req = request;
         HttpSession session = request.getSession();
-        String address = request.getParameter(Constants.ATTRIBUTE_ADDRESS);
-        String phone = request.getParameter(Constants.ATTRIBUTE_PHONE);
         Order order = (Order) session.getAttribute(Constants.ATTRIBUTE_ORDER);
         User user = (User) session.getAttribute(Constants.ATTRIBUTE_USER);
         if (user != null) {
-            int balance = user.getBalance();
-            int sumOrder = order.getSumOfOrder();
-            if (balance >= sumOrder) {
-                balance = balance - sumOrder;
-                user.setBalance(balance);
-                order.setPhone(phone);
-                order.setStatus(Status.PAID_FOR);
-                order.setAddress(address);
-                try {
-                    OrderDao orderDao = new OrderDao();
-                    UserDao userDao = new UserDao();
-                    orderDao.update(order);
-                    LOGGER.info("Order is success");
-                    userDao.update(user);
-                    LOGGER.info("Balance of user is changed");
-                    session.removeAttribute(Constants.ATTRIBUTE_ORDER_DETAILS);
-                    session.removeAttribute(Constants.ATTRIBUTE_ORDER);
-                    session.removeAttribute(Constants.ATTRIBUTE_QNT);
-                    session.removeAttribute(Constants.ATTRIBUTE_SIZE);
-                    session.removeAttribute(Constants.ATTRIBUTE_FINALPRICE);
-                } catch (DAOException | ConnectionPoolException e) {
-                    LOGGER.error("Ordering Error", e);
-                    throw new ActionException(e);
-                }
-            } else session.setAttribute(Constants.ATTRIBUTE_ERROR, Constants.BALANCE_IS_LOW_ERROR);
+            doCheckOut(user, order);
         } else session.setAttribute(Constants.ATTRIBUTE_ERROR, Constants.ACCOUNT_NOT_FOUND_ERROR);
         session.setAttribute(Constants.ATTRIBUTE_SUCCESSFULLY_ORDERED, Constants.ATTRIBUTE_SUCCESSFULLY_ORDERED_MESSAGE);
         String referer = request.getHeader(Constants.PAGE_REFERER);
         referer = referer.substring(referer.lastIndexOf("/") + 1, referer.length());
         return new ActionResult(ActionResult.METHOD.REDIRECT, referer);
+    }
+
+    private void doCheckOut(User user, Order order) throws ActionException {
+        HttpSession session = req.getSession();
+        String address = req.getParameter(Constants.ATTRIBUTE_ADDRESS);
+        String phone = req.getParameter(Constants.ATTRIBUTE_PHONE);
+        int balance = user.getBalance();
+        int sumOrder = order.getSumOfOrder();
+        if (balance >= sumOrder) {
+            balance = balance - sumOrder;
+            user.setBalance(balance);
+            order.setPhone(phone);
+            order.setStatus(Status.PAID_FOR);
+            order.setAddress(address);
+            try {
+                OrderDao orderDao = new OrderDao();
+                UserDao userDao = new UserDao();
+                orderDao.update(order);
+                LOGGER.info("Order is success");
+                userDao.update(user);
+                LOGGER.info("Balance of user is changed");
+                session.removeAttribute(Constants.ATTRIBUTE_ORDER_DETAILS);
+                session.removeAttribute(Constants.ATTRIBUTE_ORDER);
+                session.removeAttribute(Constants.ATTRIBUTE_QNT);
+                session.removeAttribute(Constants.ATTRIBUTE_SIZE);
+                session.removeAttribute(Constants.ATTRIBUTE_FINALPRICE);
+            } catch (DAOException | ConnectionPoolException e) {
+                LOGGER.error("Ordering Error", e);
+                throw new ActionException(e);
+            }
+        } else session.setAttribute(Constants.ATTRIBUTE_ERROR, Constants.BALANCE_IS_LOW_ERROR);
     }
 }

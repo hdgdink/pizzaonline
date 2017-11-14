@@ -9,7 +9,8 @@
     <p><img src="../static/img/turtlelogo.png"></p>
     <form method="POST" action="login">
         <input type="text" placeholder="<fmt:message key="default.username"/>" value="" name="username" id="user_name"/>
-        <input type="password" value="<fmt:message key="default.password"/>" name="password" id="password"/>
+        <input type="password" placeholder="<fmt:message key="default.password"/>" value="" name="password"
+               id="password"/>
         <button class="button" id="login_pop" type="submit"><fmt:message key="default.login"/></button>
         <t:error-info error="${error}"/>
     </form>
