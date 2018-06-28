@@ -3,7 +3,6 @@ package kz.javalab.va.action.order;
 import kz.javalab.va.action.Action;
 import kz.javalab.va.action.ActionException;
 import kz.javalab.va.action.ActionResult;
-import kz.javalab.va.action.account.LoginAction;
 import kz.javalab.va.connection.pool.ConnectionPoolException;
 import kz.javalab.va.dao.DAOException;
 import kz.javalab.va.dao.impl.OrderDao;
@@ -19,7 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 public class CheckOutOrder implements Action {
-    private static final Logger LOGGER = Logger.getLogger(LoginAction.class);
+    private static final Logger LOGGER = Logger.getLogger(CheckOutOrder.class);
     private HttpServletRequest req;
 
     @Override
@@ -28,9 +27,11 @@ public class CheckOutOrder implements Action {
         HttpSession session = request.getSession();
         Order order = (Order) session.getAttribute(Constants.ATTRIBUTE_ORDER);
         User user = (User) session.getAttribute(Constants.ATTRIBUTE_USER);
+
         if (user != null) {
             doCheckOut(user, order);
         } else session.setAttribute(Constants.ATTRIBUTE_ERROR, Constants.ACCOUNT_NOT_FOUND_ERROR);
+
         session.setAttribute(Constants.ATTRIBUTE_SUCCESSFULLY_ORDERED, Constants.ATTRIBUTE_SUCCESSFULLY_ORDERED_MESSAGE);
         String referer = request.getHeader(Constants.PAGE_REFERER);
         referer = referer.substring(referer.lastIndexOf("/") + 1, referer.length());
@@ -43,12 +44,14 @@ public class CheckOutOrder implements Action {
         String phone = req.getParameter(Constants.ATTRIBUTE_PHONE);
         int balance = user.getBalance();
         int sumOrder = order.getSumOfOrder();
+
         if (balance >= sumOrder) {
             balance = balance - sumOrder;
             user.setBalance(balance);
             order.setPhone(phone);
             order.setStatus(Status.PAID_FOR);
             order.setAddress(address);
+
             try {
                 OrderDao orderDao = new OrderDao();
                 UserDao userDao = new UserDao();
@@ -65,6 +68,7 @@ public class CheckOutOrder implements Action {
                 LOGGER.error("Ordering Error", e);
                 throw new ActionException(e);
             }
+
         } else session.setAttribute(Constants.ATTRIBUTE_ERROR, Constants.BALANCE_IS_LOW_ERROR);
     }
 }
