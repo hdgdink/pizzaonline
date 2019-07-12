@@ -1,30 +1,42 @@
 package kz.javalab.va.dao.impl;
 
-import kz.javalab.va.connection.pool.ConnectionPool;
-import kz.javalab.va.connection.pool.ConnectionPoolException;
 import kz.javalab.va.dao.AbstractDao;
-import kz.javalab.va.dao.DAOException;
+import kz.javalab.va.dao.DaoException;
 import kz.javalab.va.dao.DaoFactory;
 import kz.javalab.va.entity.order.Order;
 import kz.javalab.va.entity.order.Status;
-import kz.javalab.va.util.Constants;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class OrderDao extends AbstractDao<Integer, Order> {
-    private static final Logger LOGGER = Logger.getLogger(OrderDao.class);
-    private final ConnectionPool pool = ConnectionPool.getInstance();
-    private DaoFactory daoFactory = new DaoFactory();
+@Component()
+@Repository
+@ComponentScan("kz.javalab.va")
+@Qualifier("orderDao")
+public class OrderDao extends AbstractDao<Integer, Order> implements Dao<Order> {
+    private static final Logger logger = Logger.getRootLogger();
+
+    @Autowired
+    private DaoFactory daoFactory;
+
     private static final String CREATE_ORDER = "INSERT INTO CLIENT_ORDER(USER_ID, SUM, ADDRESS, PHONE, STATUS) VALUES(?, ?, ?, ?, ?);";
     private static final String GET_ORDER_ID_BY_USER_ID = "SELECT MAX(ID) FROM CLIENT_ORDER WHERE USER_ID=?";
     private static final String UPDATE_ORDER = "UPDATE CLIENT_ORDER SET USER_ID = ?, SUM = ?, ADDRESS = ?, PHONE = ?, STATUS = ? WHERE ID = ?;";
     private static final String FIND_ALL_ORDERS = "SELECT * FROM CLIENT_ORDER ";
 
-    public OrderDao() throws ConnectionPoolException {
+    public OrderDao() {
+    }
+
+    public OrderDao(DaoFactory daoFactory) {
+        this.daoFactory = daoFactory;
     }
 
     @Override
@@ -37,27 +49,30 @@ public class OrderDao extends AbstractDao<Integer, Order> {
         return CREATE_ORDER;
     }
 
-    public int getByUserId(Integer id) throws DAOException {
-        LOGGER.info("OrderDao.getByUserId()");
+    public Integer getLastOrder(Integer id) {
         Integer orderId = null;
         Connection connection = daoFactory.getConnection();
+        ResultSet resultSet = null;
+
         try (PreparedStatement statement = connection.prepareStatement(GET_ORDER_ID_BY_USER_ID)) {
             statement.setInt(1, id);
-            ResultSet resultSet = statement.executeQuery();
+            resultSet = statement.executeQuery();
+
             if (resultSet.next()) {
-                orderId = resultSet.getInt(Constants.MAX_ID_COL);
+                orderId = resultSet.getInt("MAX(ID)");
             }
+
         } catch (Exception e) {
-            LOGGER.warn(Constants.STATEMENT_CREATE_ERROR, e);
-            throw new DAOException(e);
+            logger.error("Statement cannot be created.", e);
         } finally {
-            pool.returnConnection(connection);
+            daoFactory.closeResultSet(resultSet, connection);
         }
+
         return orderId;
     }
 
     @Override
-    public void statementForCreate(PreparedStatement statement, Order entity) throws DAOException {
+    public void statementForCreate(PreparedStatement statement, Order entity) throws DaoException {
         try {
             statement.setInt(1, entity.getUserId());
             statement.setInt(2, entity.getSumOfOrder());
@@ -65,35 +80,36 @@ public class OrderDao extends AbstractDao<Integer, Order> {
             statement.setString(4, entity.getPhone());
             statement.setString(5, String.valueOf(entity.getStatus()));
         } catch (Exception e) {
-            LOGGER.error("Preparing statement for Create Order error", e);
-            throw new DAOException(e);
+            logger.error("Preparing statement for Create Order error", e);
+            throw new DaoException(e);
         }
     }
 
     @Override
-    public void statementForUpdate(PreparedStatement statement, Order entity) throws DAOException {
+    public void statementForUpdate(PreparedStatement statement, Order entity) throws DaoException {
         try {
             statementForCreate(statement, entity);
             statement.setInt(6, entity.getId());
         } catch (Exception e) {
-            LOGGER.error("Preparing statement for Update Order error", e);
-            throw new DAOException(e);
+            logger.error("Preparing statement for Update Order error", e);
+            throw new DaoException(e);
         }
     }
 
     @Override
-    public Order parseResultSetInstance(ResultSet resultSet) throws DAOException {
+    public Order parseResultSetInstance(ResultSet resultSet) throws DaoException {
         Order order = new Order();
+
         try {
-            order.setId(resultSet.getInt(Constants.ID_COL));
-            order.setUserId(resultSet.getInt(Constants.USER_ID_COL));
-            order.setSumOfOrder(resultSet.getInt(Constants.SUM_COL));
-            order.setAddress(resultSet.getString(Constants.ADDRESS_COL));
-            order.setPhone(resultSet.getString(Constants.PHONE_COL));
-            order.setStatus(Status.valueOf(resultSet.getString(Constants.STATUS_COL)));
+            order.setId(resultSet.getInt("ID"));
+            order.setUserId(resultSet.getInt("USER_ID"));
+            order.setSumOfOrder(resultSet.getInt("SUM"));
+            order.setAddress(resultSet.getString("ADDRESS"));
+            order.setPhone(resultSet.getString("PHONE"));
+            order.setStatus(Status.valueOf(resultSet.getString("STATUS")));
         } catch (SQLException e) {
-            LOGGER.error("Parsing resultSet to order error", e);
-            throw new DAOException(e);
+            logger.error("Error of results parsing", e);
+            throw new DaoException(e);
         }
         return order;
     }
@@ -102,5 +118,4 @@ public class OrderDao extends AbstractDao<Integer, Order> {
     public String getUpdateQuery() {
         return UPDATE_ORDER;
     }
-
 }

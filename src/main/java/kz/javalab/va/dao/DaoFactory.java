@@ -1,27 +1,56 @@
 package kz.javalab.va.dao;
 
-import kz.javalab.va.connection.pool.ConnectionPool;
-import kz.javalab.va.connection.pool.ConnectionPoolException;
+import kz.javalab.va.config.ConnectionPool;
+import kz.javalab.va.config.ConnectionPoolException;
 import org.apache.log4j.Logger;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
+@Component
+@Repository
+@ComponentScan("kz.javalab.va")
 public class DaoFactory {
     private final ConnectionPool pool = ConnectionPool.getInstance();
-    private static final Logger LOGGER = Logger.getLogger(DaoFactory.class);
+    private static final Logger logger = Logger.getRootLogger();
 
-    public DaoFactory() throws ConnectionPoolException {
+    public DaoFactory(){
     }
 
-    public Connection getConnection() throws DAOException {
-        Connection connection;
+    public Connection getConnection(){
+        Connection connection = null;
+
         try {
             connection = pool.getConnection();
-            LOGGER.debug("Connection has been taken.");
+            logger.debug("Connection has been taken.");
         } catch (ConnectionPoolException e) {
-            LOGGER.warn("Connection can not be taken.", e);
-            throw new DAOException(e);
+            logger.warn("Connection can not be taken.", e);
         }
+
         return connection;
+    }
+
+    public void closeResultSet(ResultSet resultSet, Connection connection) {
+        if (resultSet != null) {
+
+            try {
+                resultSet.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+                logger.error("Error during ResultSet closing ");
+            }
+        }
+
+        returnConnection(connection);
+    }
+
+    public void returnConnection(Connection connection) {
+        if (connection != null) {
+            pool.returnConnection(connection);
+        }
     }
 }

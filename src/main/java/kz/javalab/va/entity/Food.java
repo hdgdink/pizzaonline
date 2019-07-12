@@ -1,21 +1,19 @@
 package kz.javalab.va.entity;
 
-import kz.javalab.va.connection.pool.ConnectionPoolException;
-import kz.javalab.va.dao.DAOException;
+import kz.javalab.va.config.ConnectionPoolException;
+import kz.javalab.va.dao.DaoException;
 import kz.javalab.va.dao.impl.TypeDao;
 import org.apache.log4j.Logger;
 
 import java.io.Serializable;
 
 public class Food extends Entity implements Serializable {
-    private static final Logger LOGGER = Logger.getLogger(Food.class);
     private Integer typeId;
     private String nameEn;
     private String nameRu;
     private String discriptionEn;
     private String discriptionRu;
     private Integer price;
-    private Type type;
     private String img;
     private Boolean active;
 
@@ -67,7 +65,6 @@ public class Food extends Entity implements Serializable {
         this.discriptionRu = discriptionRu;
     }
 
-
     public Integer getPrice() {
         return price;
     }
@@ -76,22 +73,25 @@ public class Food extends Entity implements Serializable {
         this.price = price;
     }
 
-    public Type getType() throws ConnectionPoolException {
-        try {
-            TypeDao typeDao = new TypeDao();
-            type = typeDao.getById(typeId);
-        } catch (DAOException e) {
-            LOGGER.error("Error of initialization TypeDao", e);
-            throw new RuntimeException("Error getting Type of product from database", e);
-        }
-        return type;
-    }
-
     public boolean isActive() {
         return active;
     }
 
     public void setActive(Boolean active) {
         this.active = active;
+    }
+
+    @Override
+    public String toString() {
+        return "Food{" +
+                "typeId=" + typeId +
+                ", nameEn='" + nameEn + '\'' +
+                ", nameRu='" + nameRu + '\'' +
+                ", discriptionEn='" + discriptionEn + '\'' +
+                ", discriptionRu='" + discriptionRu + '\'' +
+                ", price=" + price +
+                ", img='" + img + '\'' +
+                ", active=" + active +
+                '}';
     }
 }

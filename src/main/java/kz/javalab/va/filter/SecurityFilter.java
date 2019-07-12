@@ -2,7 +2,6 @@ package kz.javalab.va.filter;
 
 import kz.javalab.va.entity.user.Role;
 import kz.javalab.va.entity.user.User;
-import kz.javalab.va.util.Constants;
 import org.apache.log4j.Logger;
 
 import javax.servlet.*;
@@ -18,7 +17,7 @@ public class SecurityFilter implements Filter {
     private Map<String, EnumSet<Role>> actions = new HashMap<>();
 
     @Override
-    public void init(FilterConfig filterConfig) throws ServletException {
+    public void init(FilterConfig filterConfig) {
         EnumSet<Role> all = EnumSet.of(Role.UNREGISTERED_USER, Role.CLIENT, Role.ADMIN);
         EnumSet<Role> authorized = EnumSet.of(Role.CLIENT, Role.ADMIN);
         EnumSet<Role> client = EnumSet.of(Role.CLIENT);
@@ -64,27 +63,33 @@ public class SecurityFilter implements Filter {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response,
                          FilterChain chain) throws IOException, ServletException {
+
         HttpServletRequest httpRequest = (HttpServletRequest) request;
         HttpSession session = httpRequest.getSession();
         EnumSet<Role> allowedRoles = actions.get(httpRequest.getMethod()
                 + httpRequest.getPathInfo());
+
         LOGGER.info("Path" + httpRequest.getMethod() + "/" + httpRequest.getPathInfo());
-        User currentUser = (User) session.getAttribute(Constants.ATTRIBUTE_USER);
+        User currentUser = (User) session.getAttribute("user");
         Role currentUserRole;
+
         if (currentUser == null) {
             currentUserRole = Role.UNREGISTERED_USER;
         } else {
             currentUserRole = currentUser.getRole();
         }
+
         if (allowedRoles == null) {
             chain.doFilter(request, response);
             return;
         }
+
         if (!allowedRoles.contains(currentUserRole)) {
-            session.setAttribute(Constants.ATTRIBUTE_ERROR, Constants.ACCESS_DENIED_ERROR);
-            request.getRequestDispatcher(Constants.PAGE_ERROR).forward(request, response);
+            session.setAttribute("error", "error.accessDenied");
+            request.getRequestDispatcher("error").forward(request, response);
             return;
         }
+
         chain.doFilter(request, response);
     }
 }

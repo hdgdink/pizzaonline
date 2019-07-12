@@ -50,4 +50,15 @@ public class Order extends Entity implements Serializable {
     public void setStatus(Status status) {
         this.status = status;
     }
+
+    @Override
+    public String toString() {
+        return "Order{" +
+                "sumOfOrder=" + sumOfOrder +
+                ", userId=" + userId +
+                ", address='" + address + '\'' +
+                ", phone='" + phone + '\'' +
+                ", status=" + status +
+                '}';
+    }
 }

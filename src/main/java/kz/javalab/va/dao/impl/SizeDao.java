@@ -1,13 +1,15 @@
 package kz.javalab.va.dao.impl;
 
-import kz.javalab.va.connection.pool.ConnectionPool;
-import kz.javalab.va.connection.pool.ConnectionPoolException;
 import kz.javalab.va.dao.AbstractDao;
-import kz.javalab.va.dao.DAOException;
+import kz.javalab.va.dao.DaoException;
 import kz.javalab.va.dao.DaoFactory;
 import kz.javalab.va.entity.Size;
-import kz.javalab.va.util.Constants;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -15,17 +17,28 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SizeDao extends AbstractDao<Integer, Size> {
-    private static final Logger LOGGER = Logger.getLogger(SizeDao.class);
-    private final ConnectionPool pool = ConnectionPool.getInstance();
-    private DaoFactory daoFactory = new DaoFactory();
-    private static final String UPDATE_SIZE = "UPDATE SIZE SET SIZE = ?, NAME = ?, ACTIVE = ?  WHERE ID = ?;";
-    private static final String CREATE_SIZE = "INSERT INTO SIZE ( SIZE, NAME, ACTIVE) VALUES(?, ?, ?);";
-    private static final String FIND_ALL_SIZES = "SELECT * FROM SIZE ";
-    private static final String GET_SIZE_BY_VALUE = "SELECT * FROM SIZE WHERE SIZE = ?;";
-    private static final String GET_ALL_SIZES_BY_ACTIVE = "SELECT * FROM SIZE WHERE ACTIVE = ?;";
+@Component()
+@Repository
+@ComponentScan("kz.javalab.va")
+@Qualifier("sizeDao")
+public class SizeDao extends AbstractDao<Integer, Size> implements Dao<Size> {
+    private static final String STATEMENT_CREATE_ERROR = "Statement cannot be created.";
+    private static final Logger logger = Logger.getRootLogger();
 
-    public SizeDao() throws ConnectionPoolException {
+    @Autowired
+    private DaoFactory daoFactory;
+
+    private static final String UPDATE_SIZE = "UPDATE PROD_SIZE SET SIZE_VAL = ?, NAME = ?, ACTIVE = ?  WHERE ID = ?;";
+    private static final String CREATE_SIZE = "INSERT INTO PROD_SIZE ( SIZE_VAL, NAME, ACTIVE) VALUES(?, ?, ?);";
+    private static final String FIND_ALL_SIZES = "SELECT * FROM PROD_SIZE ";
+    private static final String GET_SIZE_BY_VALUE = "SELECT * FROM PROD_SIZE WHERE SIZE_VAL = ?;";
+    private static final String GET_ALL_SIZES_BY_ACTIVE = "SELECT * FROM PROD_SIZE WHERE ACTIVE = ?;";
+
+    public SizeDao(DaoFactory daoFactory) {
+        this.daoFactory = daoFactory;
+    }
+
+    public SizeDao() {
     }
 
 
@@ -39,82 +52,87 @@ public class SizeDao extends AbstractDao<Integer, Size> {
         return CREATE_SIZE;
     }
 
-    public Size getByValue(Integer value) throws DAOException {
-        LOGGER.info("SizeDao.getByValue()");
+    public Size getByValue(Integer value) {
         Size size = null;
         Connection connection = daoFactory.getConnection();
+        ResultSet resultSet = null;
+
         try (PreparedStatement statement = connection.prepareStatement(GET_SIZE_BY_VALUE)) {
             statement.setInt(1, value);
-            ResultSet resultSet = statement.executeQuery();
+            resultSet = statement.executeQuery();
+
             if (resultSet.next()) {
                 size = parseResultSetInstance(resultSet);
             }
         } catch (Exception e) {
-            LOGGER.warn(Constants.STATEMENT_CREATE_ERROR, e);
-            throw new DAOException(e);
+            logger.error(STATEMENT_CREATE_ERROR, e);
         } finally {
-            pool.returnConnection(connection);
+            daoFactory.closeResultSet(resultSet, connection);
         }
+
         return size;
     }
 
-    public List<Size> getAllByActive(Boolean active) throws DAOException {
-        List<Size> sizeList = null;
+    public List<Size> getAllByActive(Boolean active) throws DaoException {
+        List<Size> sizeList = new ArrayList<>();
         Connection connection = daoFactory.getConnection();
+        ResultSet resultSet = null;
+
         try (PreparedStatement statement = connection.prepareStatement(GET_ALL_SIZES_BY_ACTIVE)) {
             statement.setBoolean(1, active);
-            ResultSet resultSet = statement.executeQuery();
+            resultSet = statement.executeQuery();
+
             while (resultSet.next()) {
-                if (sizeList == null) {
-                    sizeList = new ArrayList<>();
-                }
                 Size size = parseResultSetInstance(resultSet);
+
                 if (size.getActive())
                     sizeList.add(size);
             }
         } catch (Exception e) {
-            LOGGER.warn(Constants.STATEMENT_CREATE_ERROR, e);
-            throw new DAOException(e);
+            logger.error(STATEMENT_CREATE_ERROR, e);
+            throw new DaoException(e);
         } finally {
-            pool.returnConnection(connection);
+            daoFactory.closeResultSet(resultSet, connection);
         }
+
         return sizeList;
     }
 
     @Override
-    public void statementForCreate(PreparedStatement statement, Size entity) throws DAOException {
+    public void statementForCreate(PreparedStatement statement, Size entity) throws DaoException {
         try {
             statement.setInt(1, entity.getSize());
             statement.setString(2, entity.getName());
             statement.setBoolean(3, entity.getActive());
         } catch (Exception e) {
-            LOGGER.error("Preparing statement for Create Size error", e);
-            throw new DAOException(e);
+            logger.error("Preparing statement for Create Size error", e);
+            throw new DaoException(e);
         }
     }
 
     @Override
-    public void statementForUpdate(PreparedStatement statement, Size entity) throws DAOException {
+    public void statementForUpdate(PreparedStatement statement, Size entity) throws DaoException {
         try {
             statementForCreate(statement, entity);
             statement.setInt(4, entity.getId());
         } catch (Exception e) {
-            LOGGER.error("Preparing statement for Update Size error", e);
-            throw new DAOException(e);
+            logger.error("Preparing statement for Update Size error", e);
+            throw new DaoException(e);
         }
     }
 
     @Override
-    public Size parseResultSetInstance(ResultSet resultSet) throws DAOException {
+    public Size parseResultSetInstance(ResultSet resultSet) throws DaoException {
         Size size = new Size();
+
         try {
-            size.setId(resultSet.getInt(Constants.ID_COL));
-            size.setSize(resultSet.getInt(Constants.SIZE_COL));
-            size.setName(resultSet.getString(Constants.NAME_COL));
-            size.setActive(resultSet.getBoolean(Constants.ACTIVE_COL));
+            size.setId(resultSet.getInt("ID"));
+            size.setSize(resultSet.getInt("SIZE_VAL"));
+            size.setName(resultSet.getString("NAME"));
+            size.setActive(resultSet.getBoolean("ACTIVE"));
         } catch (Exception e) {
-            LOGGER.error("Parsing resultSet to Size error", e);
-            throw new DAOException(e);
+            logger.error("Error of results parsing", e);
+            throw new DaoException(e);
         }
         return size;
     }
@@ -123,5 +141,4 @@ public class SizeDao extends AbstractDao<Integer, Size> {
     public String getUpdateQuery() {
         return UPDATE_SIZE;
     }
-
 }
